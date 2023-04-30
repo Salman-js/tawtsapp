@@ -4,8 +4,7 @@ import {
   createStackNavigator,
   TransitionPresets,
 } from '@react-navigation/stack';
-import HomeScreen from './homeScreen';
-import BottomTab from './bottomTab';
+import DrawerStack from './drawerStack';
 
 const Stack = createStackNavigator();
 export default function AuthStack({ navigation }) {
@@ -17,7 +16,7 @@ export default function AuthStack({ navigation }) {
     >
       <Stack.Screen
         name='Main'
-        component={BottomTab}
+        component={DrawerStack}
         options={{ headerShown: false }}
       />
     </Stack.Navigator>
