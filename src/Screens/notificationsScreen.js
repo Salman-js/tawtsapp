@@ -1,10 +1,16 @@
 import { View, Text, ScrollView } from 'react-native';
 import tw from 'twrnc';
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 import { Surface } from '@react-native-material/core';
 import NotificationItem from '../Components/notificationItem';
 
-const NotificationsScreen = () => {
+const NotificationsScreen = ({ navigation }) => {
+  const scrollView = useRef(null);
+  useEffect(() => {
+    const scrollToTop = navigation.addListener('tabPress', (e) => {
+      scrollView.current.scrollTo({ x: 5, y: 5, animated: true });
+    });
+  }, []);
   return (
     <View className='h-full flex justify-between items-center bg-[#271b2d] w-full'>
       <Surface
@@ -21,6 +27,7 @@ const NotificationsScreen = () => {
         className='w-full'
         contentContainerStyle={tw.style('bg-transparent p-2 pb-16')}
         showsVerticalScrollIndicator={false}
+        ref={scrollView}
       >
         <Text className='text-2xl font-bold text-slate-200 my-auto mb-3 pl-3'>
           Today

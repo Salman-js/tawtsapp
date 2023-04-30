@@ -1,6 +1,6 @@
 import { View, Text, ScrollView } from 'react-native';
 import tw from 'twrnc';
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 import {
   Avatar,
   IconButton,
@@ -12,7 +12,13 @@ import Ionicons from '@expo/vector-icons/Ionicons';
 import AntDesign from '@expo/vector-icons/AntDesign';
 import PostItem from '../Components/postItem';
 
-const ProfileScreen = () => {
+const ProfileScreen = ({ navigation }) => {
+  const scrollView = useRef(null);
+  useEffect(() => {
+    const scrollToTop = navigation.addListener('tabPress', (e) => {
+      scrollView.current.scrollTo({ x: 5, y: 5, animated: true });
+    });
+  }, []);
   return (
     <View className='h-full flex justify-between items-center bg-[#271b2d] w-full'>
       <Surface
@@ -35,6 +41,7 @@ const ProfileScreen = () => {
         className='w-full'
         contentContainerStyle={tw.style('bg-transparent p-2 pb-16')}
         showsVerticalScrollIndicator={false}
+        ref={scrollView}
       >
         <Surface
           style={tw.style('rounded-3xl p-3 mb-2', {
