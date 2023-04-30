@@ -1,12 +1,14 @@
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { TransitionPresets } from '@react-navigation/stack';
 import tw from 'twrnc';
-import Feather from 'react-native-vector-icons/Feather';
 import Octicons from 'react-native-vector-icons/Octicons';
+import Ionicons from '@expo/vector-icons/Ionicons';
+import SimpleLineIcons from '@expo/vector-icons/SimpleLineIcons';
+import AntDesign from '@expo/vector-icons/AntDesign';
 import HomeScreen from './homeScreen';
+import SearchScreen from './searchScreen';
+import NotificationsScreen from './notificationsScreen';
 import ProfileScreen from './profileScreen';
-import SavedScreen from './savedScreen';
-import OrdersScreen from './ordersScreen';
 
 const Tab = createBottomTabNavigator();
 
@@ -14,11 +16,15 @@ export default function BottomTab() {
   return (
     <Tab.Navigator
       screenOptions={{
-        tabBarStyle: tw.style('h-16'),
-        tabBarLabelStyle: tw.style('-mt-2 mb-2', {
-          fontSize: 12,
+        tabBarStyle: tw.style('h-16 rounded-t-2xl shadow-lg', {
+          backgroundColor: '#202427',
+          borderTopWidth: 0,
+          borderLeftWidth: 0.2,
+          borderRightWidth: 0.2,
+          position: 'absolute',
         }),
         tabBarHideOnKeyboard: true,
+        tabBarShowLabel: false,
         headerShown: false,
         ...TransitionPresets.SlideFromRightIOS,
       }}
@@ -27,25 +33,24 @@ export default function BottomTab() {
         name='Landing'
         component={HomeScreen}
         options={{
-          title: 'Home',
-          tabBarIcon: (props) => <Octicons name='home' {...props} size={30} />,
+          tabBarIcon: (props) => <Octicons name='home' {...props} size={27} />,
         }}
       />
       <Tab.Screen
-        name='Orders'
-        component={OrdersScreen}
+        name='Search'
+        component={SearchScreen}
         options={{
-          title: 'Orders',
-          tabBarIcon: (props) => <Feather name='truck' {...props} size={30} />,
-        }}
-      />
-      <Tab.Screen
-        name='Saved'
-        component={SavedScreen}
-        options={{
-          title: 'Saved',
           tabBarIcon: (props) => (
-            <Feather name='bookmark' {...props} size={30} />
+            <Ionicons name='search-outline' {...props} size={27} />
+          ),
+        }}
+      />
+      <Tab.Screen
+        name='Notifications'
+        component={NotificationsScreen}
+        options={{
+          tabBarIcon: (props) => (
+            <SimpleLineIcons name='bell' {...props} size={25} />
           ),
         }}
       />
@@ -53,8 +58,7 @@ export default function BottomTab() {
         name='Profile'
         component={ProfileScreen}
         options={{
-          title: 'Profile',
-          tabBarIcon: (props) => <Feather name='user' {...props} size={30} />,
+          tabBarIcon: (props) => <AntDesign name='user' {...props} size={27} />,
         }}
       />
     </Tab.Navigator>
