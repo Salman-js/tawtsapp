@@ -15,7 +15,7 @@ const PostItem = () => {
   return (
     <Surface
       style={tw.style('rounded-3xl overflow-hidden mb-2', {
-        backgroundColor: '#202427',
+        backgroundColor: '#32283c',
       })}
       elevation={3}
     >
@@ -28,7 +28,15 @@ const PostItem = () => {
                 size={30}
               />
               <View className='ml-2'>
-                <Text className='font-bold text-gray-200'>Salman M.</Text>
+                <View className='flex flex-row space-x-1'>
+                  <Text className='font-bold text-gray-200'>Salman M.</Text>
+                  <Text
+                    className='text-sm text-gray-400 text-left'
+                    numberOfLines={1}
+                  >
+                    @theartist
+                  </Text>
+                </View>
                 <Text className='text-xs font-light text-gray-300'>
                   1 hour ago
                 </Text>

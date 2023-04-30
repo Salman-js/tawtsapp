@@ -17,7 +17,7 @@ export default function BottomTab() {
     <Tab.Navigator
       screenOptions={{
         tabBarStyle: tw.style('h-16 rounded-t-2xl shadow-lg', {
-          backgroundColor: '#202427',
+          backgroundColor: '#32283c',
           borderTopWidth: 0,
           borderLeftWidth: 0.2,
           borderRightWidth: 0.2,

@@ -9,7 +9,7 @@ module.exports = {
         DEFAULT: '1px',
       },
       colors: {
-        'regal-darker': '#0f1112',
+        'regal-darker': '#271b2d',
         'regal-dark': '#202427',
       },
     },

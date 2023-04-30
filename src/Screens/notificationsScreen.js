@@ -3,7 +3,7 @@ import React from 'react';
 
 const NotificationsScreen = () => {
   return (
-    <View>
+    <View className='h-full flex justify-between items-center bg-[#271b2d] w-full'>
       <Text>NotificationsScreen</Text>
     </View>
   );

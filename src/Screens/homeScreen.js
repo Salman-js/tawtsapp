@@ -6,10 +6,10 @@ import PostItem from '../Components/postItem';
 
 const HomeScreen = () => {
   return (
-    <View className='h-full flex justify-between items-center bg-regal-darker w-full'>
+    <View className='h-full flex justify-between items-center bg-[#271b2d] w-full'>
       <Surface
         style={tw.style(
-          'w-full flex flex-row justify-between p-6 pt-14 rounded-b-xl bg-transparent'
+          'w-full flex flex-row justify-between p-4 pt-14 rounded-b-xl bg-transparent'
         )}
         elevation={3}
       >
