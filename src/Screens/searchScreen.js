@@ -36,7 +36,8 @@ const SearchScreen = () => {
           icon={(props) => (
             <Icon name='tune-variant' {...props} color='#ece9e9' />
           )}
-          style={tw.style('')}
+          style={tw.style('my-auto')}
+          onPress={() => setIsModalOpen(true)}
         />
       </Surface>
       <ScrollView
@@ -52,10 +53,17 @@ const SearchScreen = () => {
       <Modal
         isVisible={isModalOpen}
         onSwipeComplete={() => setIsModalOpen(false)}
+        onBackdropPress={() => setIsModalOpen(false)}
         swipeDirection={['down']}
         style={tw.style('justify-end m-0')}
+        animationInTiming={300}
+        animationOutTiming={300}
+        backdropOpacity={0.5}
+        backdropColor='#32283c'
       >
-        <View className='h-49 w-full'></View>
+        <View className='h-40 w-full bg-[#271b2d] rounded-3xl p-3'>
+          <View className='w-10 bg-slate-500 h-[6] rounded-full mx-auto'></View>
+        </View>
       </Modal>
     </View>
   );
