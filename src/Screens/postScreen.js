@@ -92,7 +92,7 @@ const PostScreen = ({ navigation }) => {
             <View className='w-full flex flex-row justify-start space-x-2 mt-3'>
               <Pressable style={tw.style('my-auto')}>
                 <Text className='text-base text-gray-100 break-words'>
-                  150 <Text className='font-bold'> Retweets</Text>
+                  150 <Text className='font-bold'> Bookmarks</Text>
                 </Text>
               </Pressable>
               <Pressable style={tw.style('my-auto')}>
@@ -119,10 +119,10 @@ const PostScreen = ({ navigation }) => {
               <View className='flex flex-row'>
                 <IconButton
                   icon={(props) => (
-                    <AntDesign
-                      name='retweet'
+                    <Ionicons
+                      name='bookmark-outline'
                       {...props}
-                      color='#ebe5e5'
+                      color='#ece9e9'
                       size={24}
                     />
                   )}
@@ -141,12 +141,6 @@ const PostScreen = ({ navigation }) => {
                 />
               </View>
             </View>
-            <IconButton
-              icon={(props) => (
-                <Icon name='bookmark-outline' {...props} color='#ece9e9' />
-              )}
-              style={tw.style('')}
-            />
           </View>
         </Surface>
         <View className='w-full rounded-3xl bg-[#32283c] p-4 mt-2'>

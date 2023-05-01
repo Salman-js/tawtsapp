@@ -85,7 +85,7 @@ const PostItem = () => {
             <View className='flex flex-row'>
               <View className='rounded-full flex justify-center items-center overflow-hidden'>
                 <Pressable style={tw.style('w-full p-2 flex-row')}>
-                  <AntDesign name='retweet' color='#ece9e9' size={24} />
+                  <Ionicons name='bookmark-outline' color='#ece9e9' size={24} />
                   <Text className='text-xs text-gray-100 break-words my-auto ml-2'>
                     150
                   </Text>
@@ -103,12 +103,6 @@ const PostItem = () => {
               </View>
             </View>
           </View>
-          <IconButton
-            icon={(props) => (
-              <Icon name='bookmark-outline' {...props} color='#ece9e9' />
-            )}
-            style={tw.style('')}
-          />
         </View>
       </Pressable>
     </Surface>
