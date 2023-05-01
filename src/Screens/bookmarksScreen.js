@@ -19,7 +19,7 @@ const BookmarksScreen = ({ navigation }) => {
         )}
         elevation={3}
       >
-        <Text className='text-3xl font-bold text-slate-400 my-auto'>
+        <Text className='text-3xl font-bold text-slate-200 my-auto'>
           Bookmarks
         </Text>
       </Surface>
