@@ -46,46 +46,48 @@ export default function CustomDrawer(props) {
       >
         <DrawerItemList {...props} />
       </DrawerContentScrollView>
-      <View className='flex-col items-center py-3 border-t border-gray-400 bg-[#271b2d]'>
-        <Pressable
-          style={tw`w-full flex-row p-4 pl-6`}
-          onPress={() => navigation.navigate('Settings')}
-        >
-          <Icon
-            name='settings-outline'
-            size={28}
-            style={tw``}
-            {...props}
-            color='#e4dddd'
-          />
-          <Text style={tw`text-gray-200 w-full ml-3 mt-1`} variant='body1'>
-            Settings and privacy
-          </Text>
-        </Pressable>
-        <Pressable
-          style={tw`w-full flex-row p-4 pl-6`}
-          onPress={() => navigation.navigate('Main')}
-        >
-          <Icon name='exit-outline' size={28} style={tw``} color='#f25959' />
-          <Text style={tw`text-red-500 w-full ml-3 mt-1`} variant='body1'>
-            Logout
-          </Text>
-        </Pressable>
-      </View>
+      <View className='w-full px-6'>
+        <View className='flex-col items-center py-3 border-t border-gray-400 bg-[#271b2d]'>
+          <Pressable
+            style={tw`w-full flex-row p-4 pl-0`}
+            onPress={() => navigation.navigate('Settings')}
+          >
+            <Icon
+              name='settings-outline'
+              size={28}
+              style={tw``}
+              {...props}
+              color='#e4dddd'
+            />
+            <Text style={tw`text-gray-200 w-full ml-3 mt-1`} variant='body1'>
+              Settings and privacy
+            </Text>
+          </Pressable>
+          <Pressable
+            style={tw`w-full flex-row p-4 pl-0`}
+            onPress={() => navigation.navigate('Main')}
+          >
+            <Icon name='exit-outline' size={28} style={tw``} color='#f25959' />
+            <Text style={tw`text-red-500 w-full ml-3 mt-1`} variant='body1'>
+              Logout
+            </Text>
+          </Pressable>
+        </View>
 
-      <View className='flex-row justify-end border-t border-gray-500 bg-[#271b2d]'>
-        <Pressable
-          style={tw`px-4 py-2`}
-          onPress={() => navigation.navigate('Main')}
-        >
-          <Icon
-            name='share-social-sharp'
-            size={24}
-            style={tw``}
-            {...props}
-            color='#edcce0c6'
-          />
-        </Pressable>
+        <View className='flex-row justify-end border-t border-gray-500 bg-[#271b2d]'>
+          <Pressable
+            style={tw`px-4 py-2`}
+            onPress={() => navigation.navigate('Main')}
+          >
+            <Icon
+              name='share-social-sharp'
+              size={24}
+              style={tw``}
+              {...props}
+              color='#edcce0c6'
+            />
+          </Pressable>
+        </View>
       </View>
     </View>
   );

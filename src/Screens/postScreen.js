@@ -14,6 +14,7 @@ import {
 import PostItem from '../Components/postItem';
 import { FAB } from 'react-native-paper';
 import { Input } from '@rneui/themed';
+import CommentItem from '../Components/commentItem';
 
 const PostScreen = ({ navigation }) => {
   return (
@@ -35,7 +36,7 @@ const PostScreen = ({ navigation }) => {
       </Surface>
       <ScrollView
         className='w-full'
-        contentContainerStyle={tw.style('bg-transparent p-2 pb-16')}
+        contentContainerStyle={tw.style('bg-transparent p-2')}
         showsVerticalScrollIndicator={false}
       >
         <Surface
@@ -88,8 +89,20 @@ const PostScreen = ({ navigation }) => {
               quisquam veniam exercitationem omnis voluptatum explicabo
               voluptates!
             </Text>
+            <View className='w-full flex flex-row justify-start space-x-2 mt-3'>
+              <Pressable style={tw.style('my-auto')}>
+                <Text className='text-base text-gray-100 break-words'>
+                  150 <Text className='font-bold'> Retweets</Text>
+                </Text>
+              </Pressable>
+              <Pressable style={tw.style('my-auto')}>
+                <Text className='text-base text-gray-100 break-words'>
+                  150 <Text className='font-bold'> Likes</Text>
+                </Text>
+              </Pressable>
+            </View>
           </View>
-          <View className='w-full flex flex-row justify-between mt-3'>
+          <View className='w-full flex flex-row justify-between mt-1'>
             <View className='flex flex-row justify-start space-x-2'>
               <View className='flex flex-row'>
                 <IconButton
@@ -102,11 +115,6 @@ const PostScreen = ({ navigation }) => {
                     />
                   )}
                 />
-                <Pressable style={tw.style('my-auto')}>
-                  <Text className='text-base text-gray-100 break-words underline'>
-                    150
-                  </Text>
-                </Pressable>
               </View>
               <View className='flex flex-row'>
                 <IconButton
@@ -119,11 +127,6 @@ const PostScreen = ({ navigation }) => {
                     />
                   )}
                 />
-                <Pressable style={tw.style('my-auto')}>
-                  <Text className='text-base text-gray-100 break-words underline'>
-                    150
-                  </Text>
-                </Pressable>
               </View>
               <View className='flex flex-row'>
                 <IconButton
@@ -136,11 +139,6 @@ const PostScreen = ({ navigation }) => {
                     />
                   )}
                 />
-                <Pressable style={tw.style('my-auto')}>
-                  <Text className='text-base text-gray-100 break-words underline'>
-                    150
-                  </Text>
-                </Pressable>
               </View>
             </View>
             <IconButton
@@ -151,8 +149,13 @@ const PostScreen = ({ navigation }) => {
             />
           </View>
         </Surface>
-        <View className='w-full rounded-3xl bg-[#32283c] p-4 mt-4'>
-          <Text className='text-lg font-bold text-gray-200'>Replies</Text>
+        <View className='w-full rounded-3xl bg-[#32283c] p-4 mt-2'>
+          <Text className='text-xl font-bold text-gray-200 pl-4 mb-2'>
+            Replies
+          </Text>
+          <CommentItem />
+          <CommentItem />
+          <CommentItem />
         </View>
       </ScrollView>
     </View>
