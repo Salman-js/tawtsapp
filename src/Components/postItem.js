@@ -10,8 +10,10 @@ import {
 import Icon from '@expo/vector-icons/MaterialCommunityIcons';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import AntDesign from '@expo/vector-icons/AntDesign';
+import { useNavigation } from '@react-navigation/native';
 
 const PostItem = () => {
+  const navigation = useNavigation();
   return (
     <Surface
       style={tw.style('rounded-3xl overflow-hidden mb-2', {
@@ -19,10 +21,16 @@ const PostItem = () => {
       })}
       elevation={3}
     >
-      <Pressable style={tw.style('w-full p-4 pt-2')}>
+      <Pressable
+        style={tw.style('w-full p-4 pt-2')}
+        onPress={() => navigation.navigate('Post')}
+      >
         <View className='w-full flex flex-row justify-between items-center'>
           <View className='overflow-hidden rounded-xl'>
-            <Pressable style={tw.style('flex flex-row justify-start p-1')}>
+            <Pressable
+              style={tw.style('flex flex-row justify-start p-1')}
+              onPress={() => navigation.navigate('User')}
+            >
               <Avatar
                 image={{ uri: 'https://mui.com/static/images/avatar/1.jpg' }}
                 size={30}
