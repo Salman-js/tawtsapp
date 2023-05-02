@@ -23,9 +23,9 @@ const ProfileScreen = ({ navigation }) => {
     <View className='h-full flex justify-between items-center bg-[#271b2d] w-full'>
       <Surface
         style={tw.style(
-          'w-full flex flex-row justify-between p-4 pt-14 rounded-b-xl bg-transparent'
+          'w-full flex flex-row justify-between p-4 pt-14 bg-transparent'
         )}
-        elevation={3}
+        elevation={1}
       >
         <Text className='text-2xl font-bold text-slate-200 my-auto'>
           Profile

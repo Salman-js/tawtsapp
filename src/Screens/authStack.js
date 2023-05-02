@@ -9,6 +9,8 @@ import UserScreen from './userScreen';
 import NewPostScreen from './newPostScreen';
 import PostScreen from './postScreen';
 import LikesScreen from './likesScreen';
+import SignInScreen from './loginScreen';
+import SignUpScreen from './signUpScreen';
 
 const Stack = createStackNavigator();
 export default function AuthStack({ navigation }) {
@@ -18,6 +20,16 @@ export default function AuthStack({ navigation }) {
         ...TransitionPresets.SlideFromRightIOS,
       }}
     >
+      <Stack.Screen
+        name='Sign In'
+        component={SignInScreen}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name='Sign Up'
+        component={SignUpScreen}
+        options={{ headerShown: false }}
+      />
       <Stack.Screen
         name='Main'
         component={DrawerStack}

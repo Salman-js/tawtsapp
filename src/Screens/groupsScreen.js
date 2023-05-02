@@ -16,20 +16,11 @@ const GroupsScreen = ({ navigation }) => {
     <View className='h-full flex items-center bg-[#271b2d] w-full'>
       <Surface
         style={tw.style(
-          'w-full flex flex-row justify-between p-4 pt-14 rounded-b-xl bg-transparent'
+          'w-full flex flex-row justify-between p-4 pt-14 bg-transparent'
         )}
-        elevation={3}
+        elevation={1}
       >
-        <View className='overflow-hidden rounded-full'>
-          <Pressable onPress={() => navigation.openDrawer()}>
-            <Avatar
-              image={{ uri: 'https://mui.com/static/images/avatar/1.jpg' }}
-              size={38}
-              style={tw.style('my-auto')}
-            />
-          </Pressable>
-        </View>
-        <Text className='text-2xl font-bold text-slate-200 my-auto'>
+        <Text className='text-3xl font-bold text-slate-200 my-auto'>
           Groups
         </Text>
       </Surface>

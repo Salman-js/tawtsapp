@@ -24,6 +24,7 @@ export default function DrawerStack() {
         swipeEnabled: true,
         swipeEdgeWidth: 150,
         headerShown: false,
+        drawerItemStyle: tw.style('rounded-lg px-3'),
         drawerLabelStyle: tw.style('-ml-4 text-blue-300 text-xl'),
         drawerInactiveTintColor: '#90b9f7',
         drawerStyle: tw.style('', {

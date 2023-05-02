@@ -19,9 +19,9 @@ const SearchScreen = ({ navigation }) => {
     <View className='h-full flex justify-between items-center bg-[#271b2d] w-full'>
       <Surface
         style={tw.style(
-          'w-full flex flex-row justify-between p-4 pt-14 rounded-b-xl bg-transparent'
+          'w-full flex flex-row justify-between p-4 pt-14 bg-transparent'
         )}
-        elevation={3}
+        elevation={1}
       >
         <View className='overflow-hidden rounded-full my-auto'>
           <Pressable onPress={() => navigation.openDrawer()}>
@@ -36,7 +36,7 @@ const SearchScreen = ({ navigation }) => {
           placeholder='Search'
           platform='ios'
           containerStyle={tw.style('p-0 bg-transparent', {
-            width: '76%',
+            width: '75%',
           })}
           showCancel={false}
           lightTheme={false}
