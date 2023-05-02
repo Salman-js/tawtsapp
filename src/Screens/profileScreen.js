@@ -56,19 +56,18 @@ const ProfileScreen = ({ navigation }) => {
               style={tw.style('my-auto')}
             />
             <View className='flex flex-row space-x-2'>
-              <View className='rounded-xl bg-slate-600 overflow-hidden'>
-                <Pressable
-                  style={tw.style('flex justify-center items-center py-4 px-6')}
-                >
-                  <Text className='font-bold text-sm text-white'>250</Text>
-                  <Text className='font-light text-xs text-gray-300'>
-                    Tawts
-                  </Text>
-                </Pressable>
+              <View className='rounded-xl bg-slate-600 overflow-hidden flex justify-center items-center py-4 px-6'>
+                <Text className='font-bold text-sm text-white'>250</Text>
+                <Text className='font-light text-xs text-gray-300'>Tawts</Text>
               </View>
               <View className='rounded-xl bg-slate-600 overflow-hidden'>
                 <Pressable
                   style={tw.style('flex justify-center items-center py-4 px-6')}
+                  onPress={() =>
+                    navigation.navigate('Users', {
+                      type: 'Followers',
+                    })
+                  }
                 >
                   <Text className='font-bold text-sm text-white'>250</Text>
                   <Text className='font-light text-xs text-gray-300'>
@@ -79,6 +78,11 @@ const ProfileScreen = ({ navigation }) => {
               <View className='rounded-xl bg-slate-600 overflow-hidden'>
                 <Pressable
                   style={tw.style('flex justify-center items-center py-4 px-6')}
+                  onPress={() =>
+                    navigation.navigate('Users', {
+                      type: 'Following',
+                    })
+                  }
                 >
                   <Text className='font-bold text-sm text-white'>250</Text>
                   <Text className='font-light text-xs text-gray-300'>

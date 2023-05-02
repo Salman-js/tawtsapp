@@ -41,12 +41,11 @@ const SignUpScreen = ({ navigation }) => {
         </View>
         <Surface
           style={tw.style(
-            'w-full rounded-3xl p-3 py-6 mb-8 flex items-center justify-center',
+            'w-full rounded-3xl p-3 py-6 mb-3 flex items-center justify-center',
             {
               backgroundColor: '#32283c',
             }
           )}
-          elevation={3}
         >
           <Text className='text-2xl font-semibold text-slate-200'>
             Create your account

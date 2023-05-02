@@ -8,9 +8,9 @@ import DrawerStack from './drawerStack';
 import UserScreen from './userScreen';
 import NewPostScreen from './newPostScreen';
 import PostScreen from './postScreen';
-import LikesScreen from './likesScreen';
 import SignInScreen from './loginScreen';
 import SignUpScreen from './signUpScreen';
+import UsersScreen from './usersScreen';
 
 const Stack = createStackNavigator();
 export default function AuthStack({ navigation }) {
@@ -54,8 +54,8 @@ export default function AuthStack({ navigation }) {
         }}
       />
       <Stack.Screen
-        name='Likes'
-        component={LikesScreen}
+        name='Users'
+        component={UsersScreen}
         options={{
           headerShown: false,
           ...TransitionPresets.ModalPresentationIOS,

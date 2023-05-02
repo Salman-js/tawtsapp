@@ -10,9 +10,12 @@ import {
 } from '@react-native-material/core';
 import PostItem from '../Components/postItem';
 import UserItem from '../Components/userItem';
+import { useNavigation } from '@react-navigation/native';
 
-const LikesScreen = ({ navigation }) => {
+const UsersScreen = ({ route }) => {
   const scrollView = useRef(null);
+  const navigation = useNavigation();
+  const { type } = route.params;
   useEffect(() => {
     const scrollToTop = navigation.addListener('tabPress', (e) => {
       scrollView.current.scrollTo({ x: 5, y: 5, animated: true });
@@ -32,7 +35,9 @@ const LikesScreen = ({ navigation }) => {
           style={tw.style('my-auto')}
           onPress={() => navigation.goBack()}
         />
-        <Text className='text-2xl font-bold text-slate-200 my-auto'>Likes</Text>
+        <Text className='text-2xl font-bold text-slate-200 my-auto'>
+          {type}
+        </Text>
       </Surface>
       <ScrollView
         className='w-full'
@@ -52,4 +57,4 @@ const LikesScreen = ({ navigation }) => {
   );
 };
 
-export default LikesScreen;
+export default UsersScreen;
