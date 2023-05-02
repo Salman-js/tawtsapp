@@ -20,7 +20,16 @@ const GroupsScreen = ({ navigation }) => {
         )}
         elevation={3}
       >
-        <Text className='text-3xl font-bold text-slate-200 my-auto'>
+        <View className='overflow-hidden rounded-full'>
+          <Pressable onPress={() => navigation.openDrawer()}>
+            <Avatar
+              image={{ uri: 'https://mui.com/static/images/avatar/1.jpg' }}
+              size={38}
+              style={tw.style('my-auto')}
+            />
+          </Pressable>
+        </View>
+        <Text className='text-2xl font-bold text-slate-200 my-auto'>
           Groups
         </Text>
       </Surface>

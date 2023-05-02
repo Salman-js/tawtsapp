@@ -95,7 +95,10 @@ const PostScreen = ({ navigation }) => {
                   150 <Text className='font-bold'> Bookmarks</Text>
                 </Text>
               </Pressable>
-              <Pressable style={tw.style('my-auto')}>
+              <Pressable
+                style={tw.style('my-auto')}
+                onPress={() => navigation.navigate('Likes')}
+              >
                 <Text className='text-base text-gray-100 break-words'>
                   150 <Text className='font-bold'> Likes</Text>
                 </Text>

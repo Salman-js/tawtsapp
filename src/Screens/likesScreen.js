@@ -1,10 +1,16 @@
 import { View, Text, Dimensions, Image, ScrollView } from 'react-native';
 import React, { useEffect, useRef, useState } from 'react';
+import AntDesign from '@expo/vector-icons/AntDesign';
 import tw from 'twrnc';
-import { Avatar, Pressable, Surface } from '@react-native-material/core';
+import {
+  Avatar,
+  IconButton,
+  Pressable,
+  Surface,
+} from '@react-native-material/core';
 import PostItem from '../Components/postItem';
 
-const BookmarksScreen = ({ navigation }) => {
+const LikesScreen = ({ navigation }) => {
   const scrollView = useRef(null);
   useEffect(() => {
     const scrollToTop = navigation.addListener('tabPress', (e) => {
@@ -19,32 +25,23 @@ const BookmarksScreen = ({ navigation }) => {
         )}
         elevation={3}
       >
-        <View className='overflow-hidden rounded-full'>
-          <Pressable onPress={() => navigation.openDrawer()}>
-            <Avatar
-              image={{ uri: 'https://mui.com/static/images/avatar/1.jpg' }}
-              size={38}
-              style={tw.style('my-auto')}
-            />
-          </Pressable>
-        </View>
-        <Text className='text-2xl font-bold text-slate-200 my-auto'>
-          Bookmarks
-        </Text>
+        <IconButton
+          icon={(props) => (
+            <AntDesign name='arrowleft' {...props} color='#ece9e9' />
+          )}
+          style={tw.style('bg-black bg-opacity-25')}
+          onPress={() => navigation.goBack()}
+        />
+        <Text className='text-2xl font-bold text-slate-200 my-auto'>Likes</Text>
       </Surface>
       <ScrollView
         className='w-full'
         contentContainerStyle={tw.style('bg-transparent p-2')}
         showsVerticalScrollIndicator={false}
         ref={scrollView}
-      >
-        <PostItem />
-        <PostItem />
-        <PostItem />
-        <PostItem />
-      </ScrollView>
+      ></ScrollView>
     </View>
   );
 };
 
-export default BookmarksScreen;
+export default LikesScreen;

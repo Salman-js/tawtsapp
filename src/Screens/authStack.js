@@ -8,6 +8,7 @@ import DrawerStack from './drawerStack';
 import UserScreen from './userScreen';
 import NewPostScreen from './newPostScreen';
 import PostScreen from './postScreen';
+import LikesScreen from './likesScreen';
 
 const Stack = createStackNavigator();
 export default function AuthStack({ navigation }) {
@@ -35,6 +36,14 @@ export default function AuthStack({ navigation }) {
       <Stack.Screen
         name='New Post'
         component={NewPostScreen}
+        options={{
+          headerShown: false,
+          ...TransitionPresets.ModalPresentationIOS,
+        }}
+      />
+      <Stack.Screen
+        name='Likes'
+        component={LikesScreen}
         options={{
           headerShown: false,
           ...TransitionPresets.ModalPresentationIOS,

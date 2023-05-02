@@ -3,11 +3,13 @@ import tw from 'twrnc';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import Icons from 'react-native-vector-icons/MaterialCommunityIcons';
+import AntDesign from 'react-native-vector-icons/AntDesign';
 import { useWindowDimensions } from 'react-native';
 import BottomTab from './bottomTab';
 import BookmarksScreen from './bookmarksScreen';
 import CustomDrawer from '../Components/Navigation Components/drawer';
 import GroupsScreen from './groupsScreen';
+import AnalyticsScreen from './analyticsScreen';
 
 const Drawer = createDrawerNavigator();
 
@@ -22,7 +24,7 @@ export default function DrawerStack() {
         swipeEnabled: true,
         swipeEdgeWidth: 150,
         headerShown: false,
-        drawerLabelStyle: tw.style('-ml-4 text-blue-300'),
+        drawerLabelStyle: tw.style('-ml-4 text-blue-300 text-xl'),
         drawerInactiveTintColor: '#90b9f7',
         drawerStyle: tw.style('', {
           backgroundColor: '#271b2d',
@@ -45,7 +47,7 @@ export default function DrawerStack() {
         component={BookmarksScreen}
         options={{
           drawerIcon: (props) => (
-            <Ionicons name='bookmarks-outline' size={20} {...props} />
+            <Ionicons name='bookmarks-outline' size={24} {...props} />
           ),
         }}
       />
@@ -54,7 +56,16 @@ export default function DrawerStack() {
         component={GroupsScreen}
         options={{
           drawerIcon: (props) => (
-            <Icons name='account-group-outline' size={20} {...props} />
+            <Icons name='account-group-outline' size={24} {...props} />
+          ),
+        }}
+      />
+      <Drawer.Screen
+        name='Analytics'
+        component={AnalyticsScreen}
+        options={{
+          drawerIcon: (props) => (
+            <AntDesign name='barschart' size={24} {...props} />
           ),
         }}
       />

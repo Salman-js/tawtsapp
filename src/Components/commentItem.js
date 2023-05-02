@@ -65,6 +65,30 @@ const CommentItem = () => {
         <View className='flex flex-row justify-start space-x-2'>
           <View className='flex flex-row'>
             <View className='rounded-full flex justify-center items-center overflow-hidden'>
+              <Pressable style={tw.style('w-full p-2 flex-row')}>
+                <Ionicons
+                  name='chatbubble-ellipses-outline'
+                  color='#ece9e9'
+                  size={24}
+                />
+                <Text className='text-xs text-gray-100 break-words my-auto ml-2'>
+                  150
+                </Text>
+              </Pressable>
+            </View>
+          </View>
+          <View className='flex flex-row'>
+            <View className='rounded-full flex justify-center items-center overflow-hidden'>
+              <Pressable style={tw.style('w-full p-2 flex-row')}>
+                <Ionicons name='bookmark-outline' color='#ece9e9' size={24} />
+                <Text className='text-xs text-gray-100 break-words my-auto ml-2'>
+                  150
+                </Text>
+              </Pressable>
+            </View>
+          </View>
+          <View className='flex flex-row'>
+            <View className='rounded-full flex justify-center items-center overflow-hidden'>
               <Pressable style={tw.style('w-full p-2 flex flex-row')}>
                 <Ionicons name='heart-outline' color='#ece9e9' size={24} />
                 <Text className='text-xs text-gray-100 break-words my-auto ml-1'>

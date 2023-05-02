@@ -2,12 +2,17 @@ import { View, Text, ScrollView } from 'react-native';
 import tw from 'twrnc';
 import React, { useState } from 'react';
 import Icon from '@expo/vector-icons/MaterialCommunityIcons';
-import { IconButton, Surface } from '@react-native-material/core';
+import {
+  Avatar,
+  IconButton,
+  Pressable,
+  Surface,
+} from '@react-native-material/core';
 import { SearchBar } from '@rneui/themed';
 import PostItem from '../Components/postItem';
 import Modal from 'react-native-modal';
 
-const SearchScreen = () => {
+const SearchScreen = ({ navigation }) => {
   const [searchString, setSearchString] = useState('');
   const [isModalOpen, setIsModalOpen] = useState(false);
   return (
@@ -18,16 +23,25 @@ const SearchScreen = () => {
         )}
         elevation={3}
       >
+        <View className='overflow-hidden rounded-full my-auto'>
+          <Pressable onPress={() => navigation.openDrawer()}>
+            <Avatar
+              image={{ uri: 'https://mui.com/static/images/avatar/1.jpg' }}
+              size={38}
+              style={tw.style('my-auto')}
+            />
+          </Pressable>
+        </View>
         <SearchBar
           placeholder='Search'
           platform='ios'
           containerStyle={tw.style('p-0 bg-transparent', {
-            width: '87%',
+            width: '76%',
           })}
           showCancel={false}
           lightTheme={false}
           inputContainerStyle={tw.style('p-0 rounded-full pl-2 bg-slate-700')}
-          inputStyle={tw.style('text-gray-300')}
+          inputStyle={tw.style('text-gray-300 h-12')}
           cancelButtonProps={{ style: tw.style('text-gray-300') }}
           onChangeText={(e) => setSearchString(e)}
           value={searchString}

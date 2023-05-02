@@ -1,7 +1,7 @@
 import { View, Text, ScrollView } from 'react-native';
 import tw from 'twrnc';
 import React, { useEffect, useRef } from 'react';
-import { Surface } from '@react-native-material/core';
+import { Avatar, Pressable, Surface } from '@react-native-material/core';
 import NotificationItem from '../Components/notificationItem';
 
 const NotificationsScreen = ({ navigation }) => {
@@ -19,7 +19,16 @@ const NotificationsScreen = ({ navigation }) => {
         )}
         elevation={3}
       >
-        <Text className='text-3xl font-bold text-slate-400 my-auto'>
+        <View className='overflow-hidden rounded-full'>
+          <Pressable onPress={() => navigation.openDrawer()}>
+            <Avatar
+              image={{ uri: 'https://mui.com/static/images/avatar/1.jpg' }}
+              size={38}
+              style={tw.style('my-auto')}
+            />
+          </Pressable>
+        </View>
+        <Text className='text-2xl font-bold text-slate-200 my-auto'>
           Notifications
         </Text>
       </Surface>

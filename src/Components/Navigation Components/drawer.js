@@ -50,7 +50,7 @@ export default function CustomDrawer(props) {
         <View className='flex-col items-center py-3 border-t border-gray-400 bg-[#271b2d]'>
           <Pressable
             style={tw`w-full flex-row p-4 pl-0`}
-            onPress={() => navigation.navigate('Settings')}
+            onPress={() => navigation.navigate('Landing')}
           >
             <Icon
               name='settings-outline'

@@ -73,8 +73,25 @@ const UserScreen = ({ navigation }) => {
             </View>
           </View>
           <View className='w-full flex justify-start pt-3'>
-            <Text className='font-bold text-lg text-white'>Salman M.</Text>
-            <Text className='text-sm text-gray-400 text-left'>@theartist</Text>
+            <View className='w-full flex flex-row justify-between pr-3'>
+              <View>
+                <Text className='font-bold text-lg text-white'>Salman M.</Text>
+                <Text className='text-sm text-gray-400 text-left'>
+                  @theartist
+                </Text>
+              </View>
+              <View className='w-1/4 overflow-hidden border border-slate-200 rounded-full my-auto'>
+                <Pressable
+                  style={tw.style(
+                    'w-full py-1 px-2 flex justify-center items-center'
+                  )}
+                >
+                  <Text className='text-sm text-slate-200 text-left'>
+                    Follow
+                  </Text>
+                </Pressable>
+              </View>
+            </View>
             <Text className='text-sm text-gray-300 break-words text-left mt-3'>
               Lorem ipsum dolor sit amet, consectetur adipisicing elit. Tempora
               laborum voluptatibus aliquam et beatae blanditiis.
