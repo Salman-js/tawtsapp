@@ -9,6 +9,7 @@ import {
   Surface,
 } from '@react-native-material/core';
 import PostItem from '../Components/postItem';
+import UserItem from '../Components/userItem';
 
 const LikesScreen = ({ navigation }) => {
   const scrollView = useRef(null);
@@ -21,15 +22,14 @@ const LikesScreen = ({ navigation }) => {
     <View className='h-full flex justify-between items-center bg-[#271b2d] w-full'>
       <Surface
         style={tw.style(
-          'w-full flex flex-row justify-between p-4 pt-14 rounded-b-xl bg-transparent'
+          'w-full flex flex-row justify-between p-4 rounded-b-xl bg-transparent'
         )}
-        elevation={3}
       >
         <IconButton
           icon={(props) => (
             <AntDesign name='arrowleft' {...props} color='#ece9e9' />
           )}
-          style={tw.style('bg-black bg-opacity-25')}
+          style={tw.style('my-auto')}
           onPress={() => navigation.goBack()}
         />
         <Text className='text-2xl font-bold text-slate-200 my-auto'>Likes</Text>
@@ -39,7 +39,15 @@ const LikesScreen = ({ navigation }) => {
         contentContainerStyle={tw.style('bg-transparent p-2')}
         showsVerticalScrollIndicator={false}
         ref={scrollView}
-      ></ScrollView>
+      >
+        <UserItem />
+        <UserItem />
+        <UserItem />
+        <UserItem />
+        <UserItem />
+        <UserItem />
+        <UserItem />
+      </ScrollView>
     </View>
   );
 };
