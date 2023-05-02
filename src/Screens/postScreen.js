@@ -1,9 +1,8 @@
-import { View, Text, Dimensions, Image, ScrollView } from 'react-native';
+import { View, Text, ScrollView } from 'react-native';
 import React from 'react';
 import Icon from '@expo/vector-icons/MaterialCommunityIcons';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import Feather from '@expo/vector-icons/Feather';
-import AntDesign from '@expo/vector-icons/AntDesign';
 import tw from 'twrnc';
 import {
   Avatar,
@@ -11,9 +10,6 @@ import {
   Pressable,
   Surface,
 } from '@react-native-material/core';
-import PostItem from '../Components/postItem';
-import { FAB } from 'react-native-paper';
-import { Input } from '@rneui/themed';
 import CommentItem from '../Components/commentItem';
 
 const PostScreen = ({ navigation }) => {
