@@ -24,22 +24,13 @@ const IntroScreen = ({ navigation }) => {
             '#271b2d',
             '#271b2d',
           ]}
-          style={tw.style(
-            'h-full flex justify-between items-center w-full pt-20'
-          )}
+          style={tw.style('h-full flex justify-end items-center w-full pt-20')}
         >
-          <Image
-            source={require('../../assets/logoLong.png')}
-            style={tw.style('', {
-              width: 200,
-              height: 70,
-            })}
-          />
           <View className='w-5/6 flex flex-col space-y-2 pb-8'>
             <Text className='text-3xl font-bold text-center text-slate-200'>
               Meet your people
             </Text>
-            <Text className='text-xl text-center text-slate-300 mb-3'>
+            <Text className='text-xl text-center text-slate-300 mb-6'>
               Just another social media app
             </Text>
             <Button
