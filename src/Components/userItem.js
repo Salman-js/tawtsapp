@@ -11,8 +11,10 @@ import Icon from '@expo/vector-icons/MaterialCommunityIcons';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import AntDesign from '@expo/vector-icons/AntDesign';
 import { useNavigation } from '@react-navigation/native';
+import { useSelector } from 'react-redux';
 
-const UserItem = () => {
+const UserItem = ({ item }) => {
+  const { user } = useSelector((state) => state.auth);
   const navigation = useNavigation();
   return (
     <Surface
@@ -26,35 +28,43 @@ const UserItem = () => {
         onPress={() => navigation.navigate('User')}
       >
         <View className='w-full flex flex-row space-x-1'>
-          <Avatar
-            image={{ uri: 'https://mui.com/static/images/avatar/1.jpg' }}
-            size={34}
-          />
+          {item.userAvatar ? (
+            <Avatar
+              image={{ uri: 'https://mui.com/static/images/avatar/1.jpg' }}
+              size={34}
+            />
+          ) : (
+            <Avatar label={item.userName} size={34} />
+          )}
           <View className='w-11/12 flex flex-col justify-between pr-3 pl-2'>
             <View className='w-full flex flex-row justify-between'>
               <View>
                 <Text className='font-bold text-base text-white'>
-                  Salman M.
+                  {item.userName}
                 </Text>
                 <Text className='text-sm text-gray-400 text-left'>
-                  @theartist
+                  @{item.userHandle}
                 </Text>
               </View>
-              <View className='w-1/4 overflow-hidden border border-slate-200 rounded-full my-auto'>
-                <Pressable
-                  style={tw.style(
-                    'w-full py-1 px-2 flex justify-center items-center'
-                  )}
-                >
-                  <Text className='text-sm text-slate-200 text-left'>
-                    Follow
-                  </Text>
-                </Pressable>
-              </View>
+              {parseInt(item.userId) !== user.id && (
+                <View className='w-1/4 overflow-hidden border border-slate-200 rounded-full my-auto'>
+                  <Pressable
+                    style={tw.style(
+                      'w-full py-1 px-2 flex justify-center items-center'
+                    )}
+                  >
+                    <Text className='text-sm text-slate-200 text-left'>
+                      Follow
+                    </Text>
+                  </Pressable>
+                </View>
+              )}
             </View>
-            <Text className='text-sm text-gray-300 break-words text-left mt-2'>
-              Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-            </Text>
+            {item.userBio && (
+              <Text className='text-sm text-gray-300 break-words text-left mt-2'>
+                {item.userBio}
+              </Text>
+            )}
           </View>
         </View>
       </Pressable>

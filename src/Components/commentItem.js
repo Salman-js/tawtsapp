@@ -11,9 +11,11 @@ import Icon from '@expo/vector-icons/MaterialCommunityIcons';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import ago from 's-ago';
 import { useNavigation } from '@react-navigation/native';
+import { useSelector } from 'react-redux';
 
 const CommentItem = ({ item }) => {
   const navigation = useNavigation();
+  const { user } = useSelector((state) => state.auth);
   return (
     <Surface
       style={tw.style('rounded-3xl overflow-hidden mb-2 w-full p-4 pt-2', {
@@ -24,7 +26,11 @@ const CommentItem = ({ item }) => {
         <View className='overflow-hidden rounded-xl'>
           <Pressable
             style={tw.style('flex flex-row justify-start p-1')}
-            onPress={() => navigation.navigate('User')}
+            onPress={() =>
+              navigation.navigate(
+                item.userHandle === user?.handle ? 'Profile' : 'User'
+              )
+            }
           >
             {item.userAvatar ? (
               <Avatar

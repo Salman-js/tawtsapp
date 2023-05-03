@@ -203,7 +203,8 @@ const ProfileScreen = ({ navigation }) => {
                   style={tw.style('flex justify-center items-center py-4 px-6')}
                   onPress={() =>
                     navigation.navigate('Users', {
-                      type: 'Followers',
+                      type: 'followers',
+                      item: { id: user.id },
                     })
                   }
                 >
@@ -220,7 +221,8 @@ const ProfileScreen = ({ navigation }) => {
                   style={tw.style('flex justify-center items-center py-4 px-6')}
                   onPress={() =>
                     navigation.navigate('Users', {
-                      type: 'Following',
+                      type: 'following',
+                      item: { id: user.id },
                     })
                   }
                 >

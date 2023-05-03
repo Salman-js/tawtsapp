@@ -17,9 +17,11 @@ import ago from 's-ago';
 import { getPostLikes, getReplies } from '../api/tawts';
 import { useQuery } from '@tanstack/react-query';
 import { useToast } from 'react-native-toast-notifications';
+import { useSelector } from 'react-redux';
 
 const PostScreen = ({ route }) => {
   const navigation = useNavigation();
+  const { user } = useSelector((state) => state.auth);
   const { item } = route.params;
   const toast = useToast(null);
   const repliesQuery = useQuery({
@@ -102,7 +104,11 @@ const PostScreen = ({ route }) => {
             <View className='overflow-hidden rounded-xl'>
               <Pressable
                 style={tw.style('flex flex-row justify-start p-1')}
-                onPress={() => navigation.navigate('User')}
+                onPress={() =>
+                  navigation.navigate(
+                    item.userHandle === user?.handle ? 'Profile' : 'User'
+                  )
+                }
               >
                 {item.userAvatar ? (
                   <Avatar
@@ -160,7 +166,7 @@ const PostScreen = ({ route }) => {
                 onPress={() =>
                   navigation.navigate('Users', {
                     type: 'likes',
-                    func: getPostLikes(item.id),
+                    item,
                   })
                 }
               >

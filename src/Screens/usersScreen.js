@@ -1,6 +1,7 @@
 import { View, Text, Dimensions, Image, ScrollView } from 'react-native';
 import React, { useEffect, useRef, useState } from 'react';
 import AntDesign from '@expo/vector-icons/AntDesign';
+import Material from '@expo/vector-icons/MaterialIcons';
 import tw from 'twrnc';
 import {
   Avatar,
@@ -12,14 +13,25 @@ import PostItem from '../Components/postItem';
 import UserItem from '../Components/userItem';
 import { useNavigation } from '@react-navigation/native';
 import { useQuery } from '@tanstack/react-query';
+import { getPostLikes } from '../api/tawts';
+import { getMyFollowers, getMyFollowings } from '../api/user';
 
 const UsersScreen = ({ route }) => {
   const scrollView = useRef(null);
   const navigation = useNavigation();
-  const { type, func } = route.params;
+  const { type, item } = route.params;
   const { data, isLoading, refetch, isInitialLoading } = useQuery({
     queryKey: ['users', type, item.id],
-    queryFn: () => func,
+    queryFn: () =>
+      type === 'likes'
+        ? getPostLikes(item.id)
+        : type === 'followers'
+        ? getMyFollowers(item.id)
+        : type === 'following'
+        ? getMyFollowings(item.id)
+        : type === 'Followers'
+        ? getMyFollowers(item.id)
+        : getMyFollowers(item.id),
     onError: (error) => {
       console.log('Request: ', error.request);
       console.log('Response: ', error.response);
@@ -94,13 +106,16 @@ const UsersScreen = ({ route }) => {
         showsVerticalScrollIndicator={false}
         ref={scrollView}
       >
-        <UserItem />
-        <UserItem />
-        <UserItem />
-        <UserItem />
-        <UserItem />
-        <UserItem />
-        <UserItem />
+        {data?.length ? (
+          data.map((user) => <UserItem key={user.id} item={user} />)
+        ) : (
+          <View className='m-auto flex items-center justify-center mt-12'>
+            <Material name='bubble-chart' color='#ece9e9' size={80} />
+            <Text className='text-xl text-slate-200 mt-2 text-center'>
+              Nothing here...
+            </Text>
+          </View>
+        )}
       </ScrollView>
     </View>
   );
