@@ -14,7 +14,12 @@ import UserItem from '../Components/userItem';
 import { useNavigation } from '@react-navigation/native';
 import { useQuery } from '@tanstack/react-query';
 import { getPostLikes } from '../api/tawts';
-import { getMyFollowers, getMyFollowings } from '../api/user';
+import {
+  getFollowers,
+  getFollowings,
+  getMyFollowers,
+  getMyFollowings,
+} from '../api/user';
 
 const UsersScreen = ({ route }) => {
   const scrollView = useRef(null);
@@ -30,8 +35,8 @@ const UsersScreen = ({ route }) => {
         : type === 'following'
         ? getMyFollowings(item.id)
         : type === 'Followers'
-        ? getMyFollowers(item.id)
-        : getMyFollowers(item.id),
+        ? getFollowers(item.id)
+        : getFollowings(item.id),
     onError: (error) => {
       console.log('Request: ', error.request);
       console.log('Response: ', error.response);
