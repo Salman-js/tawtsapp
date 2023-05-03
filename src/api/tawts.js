@@ -44,6 +44,34 @@ export const unlikeTawt = async (id) => {
     .then((res) => res.data);
 };
 
+// Bookmark tawt
+export const bookmarkTawt = async (id) => {
+  const config = {
+    headers: {
+      'Content-Type': 'application/json',
+      'x-auth-token': await AsyncStorage.getItem('token'),
+    },
+    timeout: 5000,
+  };
+  return await axios
+    .post(`${URI}/api/post/bookmark/${id}`, config)
+    .then((res) => res.data);
+};
+
+// remove tawt from bookmarks
+export const removeBookmark = async (id) => {
+  const config = {
+    headers: {
+      'Content-Type': 'application/json',
+      'x-auth-token': await AsyncStorage.getItem('token'),
+    },
+    timeout: 5000,
+  };
+  return await axios
+    .post(`${URI}/api/post/unbookmark/${id}`, config)
+    .then((res) => res.data);
+};
+
 // Get tawts
 export const getTawts = async () => {
   const config = {
