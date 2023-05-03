@@ -12,7 +12,7 @@ import setAuthToken from '../utils/setAuthToken';
 import { URI } from './constants';
 
 // Login
-export const login = (email, password) => async (dispatch) => {
+export const login = (handle, password) => async (dispatch) => {
   dispatch(setLoading());
   const config = {
     headers: {
@@ -21,7 +21,7 @@ export const login = (email, password) => async (dispatch) => {
     timeout: 5000,
   };
 
-  const body = JSON.stringify({ email, password });
+  const body = JSON.stringify({ handle, password });
 
   try {
     const res = await axios.post(`${URI}/api/auth`, body, config);
@@ -100,7 +100,7 @@ export const register = (userData) => async (dispatch) => {
   const body = JSON.stringify(userData);
 
   try {
-    const res = await axios.post(`${URI}/api/affiliate`, body, config);
+    const res = await axios.post(`${URI}/api/user`, body, config);
     dispatch(setAuthenticated());
     try {
       await AsyncStorage.setItem('token', res.data.token);

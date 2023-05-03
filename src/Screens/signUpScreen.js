@@ -1,6 +1,6 @@
 import { View, Text, ScrollView } from 'react-native';
 import tw from 'twrnc';
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import {
   Avatar,
   Divider,
@@ -17,9 +17,61 @@ import Ionicons from '@expo/vector-icons/Ionicons';
 import AntDesign from '@expo/vector-icons/AntDesign';
 import PostItem from '../Components/postItem';
 import { Button, Input } from '@rneui/themed';
+import { useDispatch, useSelector } from 'react-redux';
+import { register } from '../api/auth';
+import { emptyErrors } from '../../slices/errorSlice';
+import { useToast } from 'react-native-toast-notifications';
 
 const SignUpScreen = ({ navigation }) => {
   const scrollView = useRef(null);
+  const dispatch = useDispatch();
+  const { user, loading } = useSelector((state) => state.auth);
+  const toast = useToast(null);
+  const errors = useSelector((state) => state.errors);
+  const [signupData, setSignupData] = useState({
+    name: '',
+    handle: '',
+    password: '',
+  });
+  function onSubmit() {
+    dispatch(register(signupData));
+  }
+  useEffect(() => {
+    if (Object.keys(errors).length !== 0) {
+      if (errors.checkhandle) {
+        toast.show('Username is taken. Try another', {
+          icon: <Icon name='alert-circle' size={20} color='white' />,
+          placement: 'top',
+          type: 'danger',
+          duration: 4000,
+          style: { marginTop: 50 },
+          textStyle: { padding: 0 },
+        });
+      } else if (errors.connection || errors.unknown) {
+        toast.show('Connection problem. Please try again', {
+          icon: <Icon name='alert-circle' size={20} color='white' />,
+          placement: 'bottom',
+          type: 'danger',
+          duration: 4000,
+          style: { padding: 0 },
+          textStyle: { padding: 0 },
+        });
+      }
+      console.log('Errors: ', errors);
+      setTimeout(() => {
+        dispatch(emptyErrors());
+      }, 8000);
+    }
+  }, [errors]);
+  useEffect(() => {
+    if (user) {
+      navigation.navigate('Main');
+      navigation.reset({
+        index: 0,
+        routes: [{ name: 'Main' }],
+      });
+    }
+  }, [user]);
   useEffect(() => {
     const scrollToTop = navigation.addListener('tabPress', (e) => {
       scrollView.current.scrollTo({ x: 5, y: 5, animated: true });
@@ -59,6 +111,13 @@ const SignUpScreen = ({ navigation }) => {
                 borderBottomWidth: 0,
                 backgroundColor: '#271b2d',
               })}
+              value={signupData.name}
+              onChangeText={(e) =>
+                setSignupData({
+                  ...signupData,
+                  name: e,
+                })
+              }
               errorStyle={tw.style('hidden')}
               containerStyle={tw.style('')}
             />
@@ -70,6 +129,18 @@ const SignUpScreen = ({ navigation }) => {
                 borderBottomWidth: 0,
                 backgroundColor: '#271b2d',
               })}
+              rightIcon={
+                (errors.user || errors.password) && (
+                  <Icon name='alert-circle' size={24} color='#ea900a' />
+                )
+              }
+              value={signupData.handle}
+              onChangeText={(e) =>
+                setSignupData({
+                  ...signupData,
+                  handle: e,
+                })
+              }
               errorStyle={tw.style('hidden')}
               containerStyle={tw.style('mt-3')}
             />
@@ -82,18 +153,33 @@ const SignUpScreen = ({ navigation }) => {
                 borderBottomWidth: 0,
                 backgroundColor: '#271b2d',
               })}
+              value={signupData.password}
+              onChangeText={(e) =>
+                setSignupData({
+                  ...signupData,
+                  password: e,
+                })
+              }
               errorStyle={tw.style('hidden')}
               containerStyle={tw.style('mt-3')}
             />
             <Button
               title='Sign up'
-              loading={false}
+              loading={loading}
               buttonStyle={tw.style('rounded-full py-3 overflow-hidden', {
                 backgroundColor: '#271b2d',
               })}
+              disabledStyle={tw.style('', {
+                backgroundColor: '#271b2d',
+              })}
+              disabled={
+                !signupData.name.trim().length ||
+                !signupData.handle.trim().length ||
+                !signupData.password.trim().length
+              }
               titleStyle={tw.style('font-bold text-xl')}
               containerStyle={tw.style('mt-3 mx-3 overflow-hidden')}
-              onPress={() => navigation.navigate('Main')}
+              onPress={onSubmit}
             />
           </View>
         </Surface>

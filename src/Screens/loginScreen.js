@@ -1,6 +1,6 @@
 import { View, Text, ScrollView } from 'react-native';
 import tw from 'twrnc';
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import {
   Avatar,
   Divider,
@@ -13,13 +13,62 @@ import {
   FacebookSocialButton,
 } from 'react-native-social-buttons';
 import Icon from '@expo/vector-icons/MaterialCommunityIcons';
-import Ionicons from '@expo/vector-icons/Ionicons';
-import AntDesign from '@expo/vector-icons/AntDesign';
-import PostItem from '../Components/postItem';
 import { Button, Input } from '@rneui/themed';
+import { useDispatch, useSelector } from 'react-redux';
+import { login } from '../api/auth';
+import { useToast } from 'react-native-toast-notifications';
+import { emptyErrors } from '../../slices/errorSlice';
 
 const SignInScreen = ({ navigation }) => {
   const scrollView = useRef(null);
+  const dispatch = useDispatch();
+  const { isAuthenticated, user, loading } = useSelector((state) => state.auth);
+  const errors = useSelector((state) => state.errors);
+  const toast = useToast(null);
+  const [loginData, setLoginData] = useState({
+    handle: '',
+    password: '',
+  });
+
+  function onLogin() {
+    dispatch(login(loginData.handle, loginData.password));
+  }
+  useEffect(() => {
+    if (Object.keys(errors).length !== 0) {
+      if (errors.password || errors.user) {
+        toast.show('Invalid email or password', {
+          icon: <Icon name='alert-circle' size={20} color='white' />,
+          placement: 'top',
+          type: 'danger',
+          duration: 4000,
+          style: { marginTop: 50 },
+          textStyle: { padding: 0 },
+        });
+      } else if (errors.connection || errors.unknown) {
+        toast.show('Connection problem. Please try again', {
+          icon: <Icon name='alert-circle' size={20} color='white' />,
+          placement: 'bottom',
+          type: 'danger',
+          duration: 4000,
+          style: { padding: 0 },
+          textStyle: { padding: 0 },
+        });
+      }
+      console.log('Errors: ', errors);
+      setTimeout(() => {
+        dispatch(emptyErrors());
+      }, 8000);
+    }
+  }, [errors]);
+  useEffect(() => {
+    if (user) {
+      navigation.navigate('Main');
+      navigation.reset({
+        index: 0,
+        routes: [{ name: 'Main' }],
+      });
+    }
+  }, [isAuthenticated, user]);
   useEffect(() => {
     const scrollToTop = navigation.addListener('tabPress', (e) => {
       scrollView.current.scrollTo({ x: 5, y: 5, animated: true });
@@ -58,6 +107,18 @@ const SignInScreen = ({ navigation }) => {
                 borderBottomWidth: 0,
                 backgroundColor: '#271b2d',
               })}
+              rightIcon={
+                (errors.user || errors.password) && (
+                  <Icon name='alert-circle' size={24} color='red' />
+                )
+              }
+              value={loginData.handle}
+              onChangeText={(e) =>
+                setLoginData({
+                  ...loginData,
+                  handle: e,
+                })
+              }
               errorStyle={tw.style('hidden')}
               containerStyle={tw.style('')}
             />
@@ -70,18 +131,32 @@ const SignInScreen = ({ navigation }) => {
                 borderBottomWidth: 0,
                 backgroundColor: '#271b2d',
               })}
+              value={loginData.password}
+              onChangeText={(e) =>
+                setLoginData({
+                  ...loginData,
+                  password: e,
+                })
+              }
               errorStyle={tw.style('hidden')}
               containerStyle={tw.style('mt-3')}
             />
             <Button
               title='Login'
-              loading={false}
+              loading={loading}
               buttonStyle={tw.style('rounded-full py-3 overflow-hidden', {
                 backgroundColor: '#271b2d',
               })}
               titleStyle={tw.style('font-bold text-xl')}
               containerStyle={tw.style('mt-3 mx-3 overflow-hidden')}
-              onPress={() => navigation.navigate('Main')}
+              disabledStyle={tw.style('', {
+                backgroundColor: '#271b2d',
+              })}
+              disabled={
+                !loginData.handle.trim().length ||
+                !loginData.password.trim().length
+              }
+              onPress={onLogin}
             />
           </View>
         </Surface>

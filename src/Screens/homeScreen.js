@@ -4,14 +4,25 @@ import tw from 'twrnc';
 import { Avatar, Pressable, Surface } from '@react-native-material/core';
 import PostItem from '../Components/postItem';
 import { FAB } from 'react-native-paper';
+import { useSelector } from 'react-redux';
 
 const HomeScreen = ({ navigation }) => {
   const scrollView = useRef(null);
+  const { user } = useSelector((state) => state.auth);
   useEffect(() => {
     const scrollToTop = navigation.addListener('tabPress', (e) => {
       scrollView.current.scrollTo({ x: 5, y: 5, animated: true });
     });
   }, []);
+  useEffect(() => {
+    if (!user) {
+      navigation.navigate('Intro');
+      navigation.reset({
+        index: 0,
+        routes: [{ name: 'Intro' }],
+      });
+    }
+  }, [user]);
   return (
     <View className='h-full flex justify-between items-center bg-[#271b2d] w-full'>
       <Surface
