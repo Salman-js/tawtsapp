@@ -8,6 +8,7 @@ import {
   Surface,
 } from '@react-native-material/core';
 import Icon from '@expo/vector-icons/MaterialCommunityIcons';
+import Material from '@expo/vector-icons/MaterialIcons';
 import Feather from '@expo/vector-icons/Feather';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import AntDesign from '@expo/vector-icons/AntDesign';
@@ -169,14 +170,18 @@ const ProfileScreen = ({ navigation }) => {
           elevation={3}
         >
           <View className='w-full flex flex-row justify-start space-x-4'>
-            {data.avatar ? (
+            {user.avatar ? (
               <Avatar
                 image={{ uri: 'https://mui.com/static/images/avatar/1.jpg' }}
                 size={60}
                 style={tw.style('my-auto')}
               />
             ) : (
-              <Avatar label={user.name} size={60} style={tw.style('my-auto')} />
+              <Avatar
+                label={user?.name}
+                size={60}
+                style={tw.style('my-auto')}
+              />
             )}
             <View className='flex flex-row space-x-2'>
               <View className='rounded-xl bg-slate-600 overflow-hidden flex justify-center items-center py-4 px-6'>
@@ -222,9 +227,9 @@ const ProfileScreen = ({ navigation }) => {
             </View>
           </View>
           <View className='w-full flex justify-start pt-3'>
-            <Text className='font-bold text-lg text-white'>{user.name}</Text>
+            <Text className='font-bold text-lg text-white'>{user?.name}</Text>
             <Text className='text-sm text-gray-400 text-left'>
-              @{user.handle}
+              @{user?.handle}
             </Text>
             {data.bio && (
               <Text className='text-sm text-gray-300 break-words text-left mt-3'>
@@ -261,9 +266,16 @@ const ProfileScreen = ({ navigation }) => {
             </View>
           </View>
         </Surface>
-        <PostItem />
-        <PostItem />
-        <PostItem />
+        {tawtsQuery.data?.length ? (
+          tawtsQuery.data.map((tawt) => <PostItem item={tawt} />)
+        ) : (
+          <View className='m-auto flex items-center justify-center mt-12'>
+            <Material name='bubble-chart' color='#ece9e9' size={80} />
+            <Text className='text-xl text-slate-200 mt-2 text-center'>
+              No tawts
+            </Text>
+          </View>
+        )}
       </ScrollView>
     </View>
   );

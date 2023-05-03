@@ -4,11 +4,116 @@ import tw from 'twrnc';
 import { Avatar, Pressable, Surface } from '@react-native-material/core';
 import PostItem from '../Components/postItem';
 import { FAB } from 'react-native-paper';
+import Material from '@expo/vector-icons/MaterialIcons';
+import Feather from '@expo/vector-icons/Feather';
 import { useSelector } from 'react-redux';
+import { useQuery } from '@tanstack/react-query';
+import { getTawts } from '../api/tawts';
+import { getProfile } from '../api/auth';
+import { RefreshControl } from 'react-native';
 
 const HomeScreen = ({ navigation }) => {
   const scrollView = useRef(null);
   const { user } = useSelector((state) => state.auth);
+  const { data, isLoading, refetch, isRefetching } = useQuery({
+    queryKey: ['profile'],
+    queryFn: () => getProfile(),
+    onError: (error) => {
+      console.log('Request: ', error.request);
+      console.log('Response: ', error.response);
+      if (error.response) {
+        if (error.response?.data.token) {
+          toast.show('Session expired, Login required', {
+            icon: <Feather name='alert-circle' size={20} color='white' />,
+            placement: 'bottom',
+            type: 'danger',
+            duration: 4000,
+            style: { marginBottom: 50 },
+            textStyle: { padding: 0 },
+          });
+        }
+        if (error.response.data.unknown) {
+          toast.show('Server error. Please, try again', {
+            icon: <Feather name='alert-circle' size={20} color='white' />,
+            placement: 'bottom',
+            type: 'danger',
+            duration: 4000,
+            style: { marginBottom: 50 },
+            textStyle: { padding: 0 },
+          });
+        }
+      } else if (error.request) {
+        toast.show('Error connecting to the server', {
+          icon: <Feather name='alert-circle' size={20} color='white' />,
+          placement: 'bottom',
+          type: 'danger',
+          duration: 4000,
+          style: { marginBottom: 50 },
+          textStyle: { padding: 0 },
+        });
+      } else {
+        toast.show('Unknown Error. Please, try again', {
+          icon: <Feather name='alert-circle' size={20} color='white' />,
+          placement: 'bottom',
+          type: 'danger',
+          duration: 4000,
+          style: { marginBottom: 50 },
+          textStyle: { padding: 0 },
+        });
+      }
+    },
+  });
+  const tawtsQuery = useQuery({
+    queryKey: ['tawts'],
+    queryFn: () => getTawts(),
+    onError: (error) => {
+      console.log('Request: ', error.request);
+      console.log('Response: ', error.response);
+      if (error.response) {
+        if (error.response?.data.token) {
+          toast.show('Session expired, Login required', {
+            icon: <Feather name='alert-circle' size={20} color='white' />,
+            placement: 'bottom',
+            type: 'danger',
+            duration: 4000,
+            style: { marginBottom: 50 },
+            textStyle: { padding: 0 },
+          });
+        }
+        if (error.response.data.unknown) {
+          toast.show('Server error. Please, try again', {
+            icon: <Feather name='alert-circle' size={20} color='white' />,
+            placement: 'bottom',
+            type: 'danger',
+            duration: 4000,
+            style: { marginBottom: 50 },
+            textStyle: { padding: 0 },
+          });
+        }
+      } else if (error.request) {
+        toast.show('Error connecting to the server', {
+          icon: <Feather name='alert-circle' size={20} color='white' />,
+          placement: 'bottom',
+          type: 'danger',
+          duration: 4000,
+          style: { marginBottom: 50 },
+          textStyle: { padding: 0 },
+        });
+      } else {
+        toast.show('Unknown Error. Please, try again', {
+          icon: <Feather name='alert-circle' size={20} color='white' />,
+          placement: 'bottom',
+          type: 'danger',
+          duration: 4000,
+          style: { marginBottom: 50 },
+          textStyle: { padding: 0 },
+        });
+      }
+    },
+    onSuccess: (data) => {
+      console.log(data);
+    },
+  });
   useEffect(() => {
     const scrollToTop = navigation.addListener('tabPress', (e) => {
       scrollView.current.scrollTo({ x: 5, y: 5, animated: true });
@@ -33,11 +138,19 @@ const HomeScreen = ({ navigation }) => {
       >
         <View className='overflow-hidden rounded-full'>
           <Pressable onPress={() => navigation.openDrawer()}>
-            <Avatar
-              image={{ uri: 'https://mui.com/static/images/avatar/1.jpg' }}
-              size={38}
-              style={tw.style('my-auto')}
-            />
+            {data?.avatar ? (
+              <Avatar
+                image={{ uri: 'https://mui.com/static/images/avatar/1.jpg' }}
+                size={38}
+                style={tw.style('my-auto')}
+              />
+            ) : (
+              <Avatar
+                label={user?.name}
+                size={38}
+                style={tw.style('my-auto')}
+              />
+            )}
           </Pressable>
         </View>
         <Pressable
@@ -59,11 +172,26 @@ const HomeScreen = ({ navigation }) => {
         ref={scrollView}
         bounces
         alwaysBounceVertical
+        refreshControl={
+          <RefreshControl
+            refreshing={tawtsQuery.isRefetching}
+            onRefresh={() => {
+              refetch();
+              tawtsQuery.refetch();
+            }}
+          />
+        }
       >
-        <PostItem />
-        <PostItem />
-        <PostItem />
-        <PostItem />
+        {tawtsQuery.data?.length ? (
+          tawtsQuery.data.map((tawt) => <PostItem item={tawt} />)
+        ) : (
+          <View className='m-auto flex items-center justify-center mt-12'>
+            <Material name='bubble-chart' color='#ece9e9' size={80} />
+            <Text className='text-xl text-slate-200 mt-2 text-center'>
+              No tawts
+            </Text>
+          </View>
+        )}
       </ScrollView>
       <View className='absolute bottom-16 right-3 p-4 flex items-center justify-center'>
         <FAB

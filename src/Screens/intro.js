@@ -1,12 +1,22 @@
 import { View, Text } from 'react-native';
-import React from 'react';
+import React, { useEffect } from 'react';
 import tw from 'twrnc';
 import { LinearGradient } from 'expo-linear-gradient';
 import { ImageBackground } from 'react-native';
 import { Button } from '@rneui/themed';
-import { Image } from 'react-native';
+import { useSelector } from 'react-redux';
 
 const IntroScreen = ({ navigation }) => {
+  const { user } = useSelector((state) => state.auth);
+  useEffect(() => {
+    if (user) {
+      navigation.navigate('Main');
+      navigation.reset({
+        index: 0,
+        routes: [{ name: 'Main' }],
+      });
+    }
+  }, [user]);
   return (
     <View className='h-full flex justify-between items-center'>
       <ImageBackground
