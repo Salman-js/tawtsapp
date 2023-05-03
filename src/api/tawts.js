@@ -16,6 +16,20 @@ export const postTawt = async (postData) => {
     .then((res) => res.data);
 };
 
+// Post a reply
+export const replyToTawt = async (replyData) => {
+  const config = {
+    headers: {
+      'Content-Type': 'application/json',
+      'x-auth-token': await AsyncStorage.getItem('token'),
+    },
+    timeout: 5000,
+  };
+  return await axios
+    .post(`${URI}/api/post/reply/${replyData.postId}`, replyData, config)
+    .then((res) => res.data);
+};
+
 // Like tawt
 export const likeTawt = async (id) => {
   const config = {

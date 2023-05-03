@@ -12,6 +12,7 @@ import SignInScreen from './loginScreen';
 import SignUpScreen from './signUpScreen';
 import UsersScreen from './usersScreen';
 import IntroScreen from './intro';
+import NewReplyScreen from './newReplyScreen';
 
 const Stack = createStackNavigator();
 export default function AuthStack({ navigation }) {
@@ -54,6 +55,14 @@ export default function AuthStack({ navigation }) {
       <Stack.Screen
         name='New Post'
         component={NewPostScreen}
+        options={{
+          headerShown: false,
+          ...TransitionPresets.ModalPresentationIOS,
+        }}
+      />
+      <Stack.Screen
+        name='New Reply'
+        component={NewReplyScreen}
         options={{
           headerShown: false,
           ...TransitionPresets.ModalPresentationIOS,

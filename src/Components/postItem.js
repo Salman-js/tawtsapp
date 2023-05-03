@@ -9,7 +9,7 @@ import {
 } from '@react-native-material/core';
 import Icon from '@expo/vector-icons/MaterialCommunityIcons';
 import Ionicons from '@expo/vector-icons/Ionicons';
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, useRoute } from '@react-navigation/native';
 import ago from 's-ago';
 import { useSelector } from 'react-redux';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
@@ -24,6 +24,7 @@ import {
 const PostItem = ({ item }) => {
   const { user } = useSelector((state) => state.auth);
   const navigation = useNavigation();
+  const route = useRoute();
   const toast = useToast(null);
   const queryClient = useQueryClient();
   const likeMutation = useMutation({
@@ -210,82 +211,95 @@ const PostItem = ({ item }) => {
         <View className='w-full'>
           <Text className='text-xs text-gray-100 break-words'>{item.body}</Text>
         </View>
-        <View className='w-full flex flex-row justify-between mt-3'>
-          <View className='flex flex-row justify-start space-x-2'>
-            <View className='flex flex-row'>
-              <View className='rounded-full flex justify-center items-center overflow-hidden'>
-                <Pressable style={tw.style('w-full p-2 flex-row')}>
-                  <Ionicons
-                    name='chatbubble-ellipses-outline'
-                    color='#ece9e9'
-                    size={24}
-                  />
-                  <Text className='text-xs text-gray-100 break-words my-auto ml-2'>
-                    {item.replies}
-                  </Text>
-                </Pressable>
-              </View>
-            </View>
-            <View className='flex flex-row'>
-              <View className='rounded-full flex justify-center items-center overflow-hidden'>
-                {queryClient
-                  .getQueryData(['bookmarks'])
-                  .find((liked) => parseInt(liked.postId) === item.id) ? (
+        {route.name !== 'New Reply' && (
+          <View className='w-full flex flex-row justify-between mt-3'>
+            <View className='flex flex-row justify-start space-x-2'>
+              <View className='flex flex-row'>
+                <View className='rounded-full flex justify-center items-center overflow-hidden'>
                   <Pressable
                     style={tw.style('w-full p-2 flex-row')}
-                    onPress={unBookmark}
-                  >
-                    <Ionicons name='bookmark' color='#ece9e9' size={24} />
-                    <Text className='text-xs text-gray-100 break-words my-auto ml-2'>
-                      {item.bookmarks}
-                    </Text>
-                  </Pressable>
-                ) : (
-                  <Pressable
-                    style={tw.style('w-full p-2 flex-row')}
-                    onPress={onBookmark}
+                    onPress={() =>
+                      navigation.navigate('New Reply', {
+                        item,
+                      })
+                    }
                   >
                     <Ionicons
-                      name='bookmark-outline'
+                      name='chatbubble-ellipses-outline'
                       color='#ece9e9'
                       size={24}
                     />
                     <Text className='text-xs text-gray-100 break-words my-auto ml-2'>
-                      {item.bookmarks}
+                      {item.replies}
                     </Text>
                   </Pressable>
-                )}
+                </View>
               </View>
-            </View>
-            <View className='flex flex-row'>
-              <View className='rounded-full flex justify-center items-center overflow-hidden'>
-                {queryClient
-                  .getQueryData(['likes'])
-                  .find((liked) => parseInt(liked.postId) === item.id) ? (
-                  <Pressable
-                    style={tw.style('w-full p-2 flex flex-row')}
-                    onPress={unLike}
-                  >
-                    <Ionicons name='heart' color='#f22626' size={24} />
-                    <Text className='text-xs text-gray-100 break-words my-auto ml-1'>
-                      {item.likes}
-                    </Text>
-                  </Pressable>
-                ) : (
-                  <Pressable
-                    style={tw.style('w-full p-2 flex flex-row')}
-                    onPress={onLike}
-                  >
-                    <Ionicons name='heart-outline' color='#ece9e9' size={24} />
-                    <Text className='text-xs text-gray-100 break-words my-auto ml-1'>
-                      {item.likes}
-                    </Text>
-                  </Pressable>
-                )}
+              <View className='flex flex-row'>
+                <View className='rounded-full flex justify-center items-center overflow-hidden'>
+                  {queryClient
+                    .getQueryData(['bookmarks'])
+                    .find((liked) => parseInt(liked.postId) === item.id) ? (
+                    <Pressable
+                      style={tw.style('w-full p-2 flex-row')}
+                      onPress={unBookmark}
+                    >
+                      <Ionicons name='bookmark' color='#ece9e9' size={24} />
+                      <Text className='text-xs text-gray-100 break-words my-auto ml-2'>
+                        {item.bookmarks}
+                      </Text>
+                    </Pressable>
+                  ) : (
+                    <Pressable
+                      style={tw.style('w-full p-2 flex-row')}
+                      onPress={onBookmark}
+                    >
+                      <Ionicons
+                        name='bookmark-outline'
+                        color='#ece9e9'
+                        size={24}
+                      />
+                      <Text className='text-xs text-gray-100 break-words my-auto ml-2'>
+                        {item.bookmarks}
+                      </Text>
+                    </Pressable>
+                  )}
+                </View>
+              </View>
+              <View className='flex flex-row'>
+                <View className='rounded-full flex justify-center items-center overflow-hidden'>
+                  {queryClient
+                    .getQueryData(['likes'])
+                    .find((liked) => parseInt(liked.postId) === item.id) ? (
+                    <Pressable
+                      style={tw.style('w-full p-2 flex flex-row')}
+                      onPress={unLike}
+                    >
+                      <Ionicons name='heart' color='#f22626' size={24} />
+                      <Text className='text-xs text-gray-100 break-words my-auto ml-1'>
+                        {item.likes}
+                      </Text>
+                    </Pressable>
+                  ) : (
+                    <Pressable
+                      style={tw.style('w-full p-2 flex flex-row')}
+                      onPress={onLike}
+                    >
+                      <Ionicons
+                        name='heart-outline'
+                        color='#ece9e9'
+                        size={24}
+                      />
+                      <Text className='text-xs text-gray-100 break-words my-auto ml-1'>
+                        {item.likes}
+                      </Text>
+                    </Pressable>
+                  )}
+                </View>
               </View>
             </View>
           </View>
-        </View>
+        )}
       </Pressable>
     </Surface>
   );
