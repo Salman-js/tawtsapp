@@ -11,10 +11,12 @@ import { useQuery } from '@tanstack/react-query';
 import { getTawts } from '../api/tawts';
 import { getProfile } from '../api/auth';
 import { RefreshControl } from 'react-native';
+import { useToast } from 'react-native-toast-notifications';
 
 const HomeScreen = ({ navigation }) => {
   const scrollView = useRef(null);
   const { user } = useSelector((state) => state.auth);
+  const toast = useToast(null);
   const { data, isLoading, refetch, isRefetching } = useQuery({
     queryKey: ['profile'],
     queryFn: () => getProfile(),
@@ -183,7 +185,7 @@ const HomeScreen = ({ navigation }) => {
         }
       >
         {tawtsQuery.data?.length ? (
-          tawtsQuery.data.map((tawt) => <PostItem item={tawt} />)
+          tawtsQuery.data.map((tawt) => <PostItem key={tawt.id} item={tawt} />)
         ) : (
           <View className='m-auto flex items-center justify-center mt-12'>
             <Material name='bubble-chart' color='#ece9e9' size={80} />

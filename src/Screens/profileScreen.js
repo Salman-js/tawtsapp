@@ -267,7 +267,7 @@ const ProfileScreen = ({ navigation }) => {
           </View>
         </Surface>
         {tawtsQuery.data?.length ? (
-          tawtsQuery.data.map((tawt) => <PostItem item={tawt} />)
+          tawtsQuery.data.map((tawt) => <PostItem key={tawt.id} item={tawt} />)
         ) : (
           <View className='m-auto flex items-center justify-center mt-12'>
             <Material name='bubble-chart' color='#ece9e9' size={80} />
