@@ -3,9 +3,11 @@ import React, { useEffect, useRef, useState } from 'react';
 import tw from 'twrnc';
 import { Avatar, Pressable, Surface } from '@react-native-material/core';
 import PostItem from '../Components/postItem';
+import { useSelector } from 'react-redux';
 
 const AnalyticsScreen = ({ navigation }) => {
   const scrollView = useRef(null);
+  const { user } = useSelector((state) => state.auth);
   useEffect(() => {
     const scrollToTop = navigation.addListener('tabPress', (e) => {
       scrollView.current.scrollTo({ x: 5, y: 5, animated: true });
@@ -21,11 +23,19 @@ const AnalyticsScreen = ({ navigation }) => {
       >
         <View className='overflow-hidden rounded-full'>
           <Pressable onPress={() => navigation.openDrawer()}>
-            <Avatar
-              image={{ uri: 'https://mui.com/static/images/avatar/1.jpg' }}
-              size={38}
-              style={tw.style('my-auto')}
-            />
+            {user?.avatar ? (
+              <Avatar
+                image={{ uri: 'https://mui.com/static/images/avatar/1.jpg' }}
+                size={38}
+                style={tw.style('my-auto')}
+              />
+            ) : (
+              <Avatar
+                label={user?.name}
+                size={38}
+                style={tw.style('my-auto')}
+              />
+            )}
           </Pressable>
         </View>
         <Text className='text-2xl font-bold text-slate-200 my-auto ml-4'>

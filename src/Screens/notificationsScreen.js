@@ -3,9 +3,11 @@ import tw from 'twrnc';
 import React, { useEffect, useRef } from 'react';
 import { Avatar, Pressable, Surface } from '@react-native-material/core';
 import NotificationItem from '../Components/notificationItem';
+import { useSelector } from 'react-redux';
 
 const NotificationsScreen = ({ navigation }) => {
   const scrollView = useRef(null);
+  const { user } = useSelector((state) => state.auth);
   useEffect(() => {
     const scrollToTop = navigation.addListener('tabPress', (e) => {
       scrollView.current.scrollTo({ x: 5, y: 5, animated: true });
@@ -21,11 +23,19 @@ const NotificationsScreen = ({ navigation }) => {
       >
         <View className='overflow-hidden rounded-full'>
           <Pressable onPress={() => navigation.openDrawer()}>
-            <Avatar
-              image={{ uri: 'https://mui.com/static/images/avatar/1.jpg' }}
-              size={38}
-              style={tw.style('my-auto')}
-            />
+            {user?.avatar ? (
+              <Avatar
+                image={{ uri: 'https://mui.com/static/images/avatar/1.jpg' }}
+                size={38}
+                style={tw.style('my-auto')}
+              />
+            ) : (
+              <Avatar
+                label={user?.name}
+                size={38}
+                style={tw.style('my-auto')}
+              />
+            )}
           </Pressable>
         </View>
         <Text className='text-2xl font-bold text-slate-200 my-auto'>

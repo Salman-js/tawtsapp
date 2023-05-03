@@ -11,10 +11,12 @@ import {
 import { SearchBar } from '@rneui/themed';
 import PostItem from '../Components/postItem';
 import Modal from 'react-native-modal';
+import { useSelector } from 'react-redux';
 
 const SearchScreen = ({ navigation }) => {
   const [searchString, setSearchString] = useState('');
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const { user } = useSelector((state) => state.auth);
   return (
     <View className='h-full flex justify-between items-center bg-[#271b2d] w-full'>
       <Surface
@@ -25,11 +27,19 @@ const SearchScreen = ({ navigation }) => {
       >
         <View className='overflow-hidden rounded-full my-auto'>
           <Pressable onPress={() => navigation.openDrawer()}>
-            <Avatar
-              image={{ uri: 'https://mui.com/static/images/avatar/1.jpg' }}
-              size={38}
-              style={tw.style('my-auto')}
-            />
+            {user?.avatar ? (
+              <Avatar
+                image={{ uri: 'https://mui.com/static/images/avatar/1.jpg' }}
+                size={38}
+                style={tw.style('my-auto')}
+              />
+            ) : (
+              <Avatar
+                label={user?.name}
+                size={38}
+                style={tw.style('my-auto')}
+              />
+            )}
           </Pressable>
         </View>
         <SearchBar
