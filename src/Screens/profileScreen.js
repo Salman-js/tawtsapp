@@ -1,4 +1,4 @@
-import { View, Text, ScrollView } from 'react-native';
+import { View, Text, ScrollView, RefreshControl } from 'react-native';
 import tw from 'twrnc';
 import React, { useEffect, useRef } from 'react';
 import {
@@ -8,12 +8,122 @@ import {
   Surface,
 } from '@react-native-material/core';
 import Icon from '@expo/vector-icons/MaterialCommunityIcons';
+import Feather from '@expo/vector-icons/Feather';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import AntDesign from '@expo/vector-icons/AntDesign';
 import PostItem from '../Components/postItem';
+import { useToast } from 'react-native-toast-notifications';
+import { getProfile } from '../api/auth';
+import { useQuery } from '@tanstack/react-query';
+import { useSelector } from 'react-redux';
+import { getMyTawts } from '../api/tawts';
 
 const ProfileScreen = ({ navigation }) => {
   const scrollView = useRef(null);
+  const toast = useToast(null);
+  const { user } = useSelector((state) => state.auth);
+  const { data, isLoading, refetch, isRefetching } = useQuery({
+    queryKey: ['profile'],
+    queryFn: () => getProfile(),
+    onError: (error) => {
+      console.log('Request: ', error.request);
+      console.log('Response: ', error.response);
+      if (error.response) {
+        if (error.response?.data.token) {
+          toast.show('Session expired, Login required', {
+            icon: <Feather name='alert-circle' size={20} color='white' />,
+            placement: 'bottom',
+            type: 'danger',
+            duration: 4000,
+            style: { marginBottom: 50 },
+            textStyle: { padding: 0 },
+          });
+        }
+        if (error.response.data.unknown) {
+          toast.show('Server error. Please, try again', {
+            icon: <Feather name='alert-circle' size={20} color='white' />,
+            placement: 'bottom',
+            type: 'danger',
+            duration: 4000,
+            style: { marginBottom: 50 },
+            textStyle: { padding: 0 },
+          });
+        }
+      } else if (error.request) {
+        toast.show('Error connecting to the server', {
+          icon: <Feather name='alert-circle' size={20} color='white' />,
+          placement: 'bottom',
+          type: 'danger',
+          duration: 4000,
+          style: { marginBottom: 50 },
+          textStyle: { padding: 0 },
+        });
+      } else {
+        toast.show('Unknown Error. Please, try again', {
+          icon: <Feather name='alert-circle' size={20} color='white' />,
+          placement: 'bottom',
+          type: 'danger',
+          duration: 4000,
+          style: { marginBottom: 50 },
+          textStyle: { padding: 0 },
+        });
+      }
+    },
+    onSuccess: (data) => {
+      console.log(data);
+    },
+  });
+  const tawtsQuery = useQuery({
+    queryKey: ['tawts', 'my'],
+    queryFn: () => getMyTawts(),
+    onError: (error) => {
+      console.log('Request: ', error.request);
+      console.log('Response: ', error.response);
+      if (error.response) {
+        if (error.response?.data.token) {
+          toast.show('Session expired, Login required', {
+            icon: <Feather name='alert-circle' size={20} color='white' />,
+            placement: 'bottom',
+            type: 'danger',
+            duration: 4000,
+            style: { marginBottom: 50 },
+            textStyle: { padding: 0 },
+          });
+        }
+        if (error.response.data.unknown) {
+          toast.show('Server error. Please, try again', {
+            icon: <Feather name='alert-circle' size={20} color='white' />,
+            placement: 'bottom',
+            type: 'danger',
+            duration: 4000,
+            style: { marginBottom: 50 },
+            textStyle: { padding: 0 },
+          });
+        }
+      } else if (error.request) {
+        toast.show('Error connecting to the server', {
+          icon: <Feather name='alert-circle' size={20} color='white' />,
+          placement: 'bottom',
+          type: 'danger',
+          duration: 4000,
+          style: { marginBottom: 50 },
+          textStyle: { padding: 0 },
+        });
+      } else {
+        toast.show('Unknown Error. Please, try again', {
+          icon: <Feather name='alert-circle' size={20} color='white' />,
+          placement: 'bottom',
+          type: 'danger',
+          duration: 4000,
+          style: { marginBottom: 50 },
+          textStyle: { padding: 0 },
+        });
+      }
+    },
+    onSuccess: (data) => {
+      console.log(data);
+    },
+  });
   useEffect(() => {
     const scrollToTop = navigation.addListener('tabPress', (e) => {
       scrollView.current.scrollTo({ x: 5, y: 5, animated: true });
@@ -42,6 +152,15 @@ const ProfileScreen = ({ navigation }) => {
         contentContainerStyle={tw.style('bg-transparent p-2 pb-16')}
         showsVerticalScrollIndicator={false}
         ref={scrollView}
+        refreshControl={
+          <RefreshControl
+            refreshing={isRefetching}
+            onRefresh={() => {
+              refetch();
+              tawtsQuery.refetch();
+            }}
+          />
+        }
       >
         <Surface
           style={tw.style('rounded-3xl p-3 mb-2', {
@@ -50,14 +169,20 @@ const ProfileScreen = ({ navigation }) => {
           elevation={3}
         >
           <View className='w-full flex flex-row justify-start space-x-4'>
-            <Avatar
-              image={{ uri: 'https://mui.com/static/images/avatar/1.jpg' }}
-              size={60}
-              style={tw.style('my-auto')}
-            />
+            {data.avatar ? (
+              <Avatar
+                image={{ uri: 'https://mui.com/static/images/avatar/1.jpg' }}
+                size={60}
+                style={tw.style('my-auto')}
+              />
+            ) : (
+              <Avatar label={user.name} size={60} style={tw.style('my-auto')} />
+            )}
             <View className='flex flex-row space-x-2'>
               <View className='rounded-xl bg-slate-600 overflow-hidden flex justify-center items-center py-4 px-6'>
-                <Text className='font-bold text-sm text-white'>250</Text>
+                <Text className='font-bold text-sm text-white'>
+                  {tawtsQuery.data?.length}
+                </Text>
                 <Text className='font-light text-xs text-gray-300'>Tawts</Text>
               </View>
               <View className='rounded-xl bg-slate-600 overflow-hidden'>
@@ -69,7 +194,9 @@ const ProfileScreen = ({ navigation }) => {
                     })
                   }
                 >
-                  <Text className='font-bold text-sm text-white'>250</Text>
+                  <Text className='font-bold text-sm text-white'>
+                    {data.followers}
+                  </Text>
                   <Text className='font-light text-xs text-gray-300'>
                     Followers
                   </Text>
@@ -84,7 +211,9 @@ const ProfileScreen = ({ navigation }) => {
                     })
                   }
                 >
-                  <Text className='font-bold text-sm text-white'>250</Text>
+                  <Text className='font-bold text-sm text-white'>
+                    {data.following}
+                  </Text>
                   <Text className='font-light text-xs text-gray-300'>
                     Following
                   </Text>
@@ -93,35 +222,42 @@ const ProfileScreen = ({ navigation }) => {
             </View>
           </View>
           <View className='w-full flex justify-start pt-3'>
-            <Text className='font-bold text-lg text-white'>Salman M.</Text>
-            <Text className='text-sm text-gray-400 text-left'>@theartist</Text>
-            <Text className='text-sm text-gray-300 break-words text-left mt-3'>
-              Lorem ipsum dolor sit amet, consectetur adipisicing elit. Tempora
-              laborum voluptatibus aliquam et beatae blanditiis.
+            <Text className='font-bold text-lg text-white'>{user.name}</Text>
+            <Text className='text-sm text-gray-400 text-left'>
+              @{user.handle}
             </Text>
+            {data.bio && (
+              <Text className='text-sm text-gray-300 break-words text-left mt-3'>
+                {data.bio}
+              </Text>
+            )}
             <View className='w-full flex flex-row justify-start space-x-10 mt-3'>
-              <View className='flex flex-row space-x-1'>
-                <Ionicons
-                  name='location-outline'
-                  color='#6d829f'
-                  size={15}
-                  style={tw.style('my-auto')}
-                />
-                <Text className='text-sm text-gray-300 break-words text-left'>
-                  Addis Ababa
-                </Text>
-              </View>
-              <View className='flex flex-row space-x-1'>
-                <AntDesign
-                  name='link'
-                  color='#6d829f'
-                  size={15}
-                  style={tw.style('my-auto')}
-                />
-                <Text className='text-sm text-blue-300 break-words text-left'>
-                  salman.dev.et
-                </Text>
-              </View>
+              {data.location && (
+                <View className='flex flex-row space-x-1'>
+                  <Ionicons
+                    name='location-outline'
+                    color='#6d829f'
+                    size={15}
+                    style={tw.style('my-auto')}
+                  />
+                  <Text className='text-sm text-gray-300 break-words text-left'>
+                    {data.location}
+                  </Text>
+                </View>
+              )}
+              {data.website && (
+                <View className='flex flex-row space-x-1'>
+                  <AntDesign
+                    name='link'
+                    color='#6d829f'
+                    size={15}
+                    style={tw.style('my-auto')}
+                  />
+                  <Text className='text-sm text-blue-300 break-words text-left'>
+                    {data.website}
+                  </Text>
+                </View>
+              )}
             </View>
           </View>
         </Surface>

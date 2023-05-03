@@ -129,6 +129,20 @@ export const register = (userData) => async (dispatch) => {
   }
 };
 
+// Get profile
+export const getProfile = async () => {
+  const config = {
+    headers: {
+      'Content-Type': 'application/json',
+      'x-auth-token': await AsyncStorage.getItem('token'),
+    },
+    timeout: 5000,
+  };
+  return await axios
+    .get(`${URI}/api/auth/profile`, config)
+    .then((res) => res.data[0]);
+};
+
 export const logout = () => async (dispatch) => {
   dispatch(setLogout());
   await AsyncStorage.removeItem('token');
