@@ -11,9 +11,97 @@ import Icon from '@expo/vector-icons/MaterialCommunityIcons';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { useNavigation } from '@react-navigation/native';
 import ago from 's-ago';
+import { useSelector } from 'react-redux';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { useToast } from 'react-native-toast-notifications';
+import { likeTawt, unlikeTawt } from '../api/tawts';
 
 const PostItem = ({ item }) => {
+  const { user } = useSelector((state) => state.auth);
   const navigation = useNavigation();
+  const toast = useToast(null);
+  const queryClient = useQueryClient();
+  const likeMutation = useMutation({
+    mutationFn: likeTawt,
+    onMutate: (id) => {
+      queryClient.setQueryData(['likes'], (oldLikes) => {
+        return [
+          ...oldLikes,
+          {
+            userId: user.id,
+            id: new Date().getTime(),
+            postId: id,
+            createdAt: new Date().getTime(),
+          },
+        ];
+      });
+      queryClient.setQueryData(['tawts'], (oldTawts) => {
+        let newTawts = oldTawts;
+        newTawts[newTawts.findIndex((tawt) => tawt.id === item.id)] = {
+          ...newTawts[newTawts.findIndex((tawt) => tawt.id === item.id)],
+          likes:
+            newTawts[newTawts.findIndex((tawt) => tawt.id === item.id)].likes +
+            1,
+        };
+      });
+      queryClient.setQueryData(['tawts', 'my'], (oldTawts) => {
+        let newTawts = oldTawts;
+        newTawts[newTawts.findIndex((tawt) => tawt.id === item.id)] = {
+          ...newTawts[newTawts.findIndex((tawt) => tawt.id === item.id)],
+          likes:
+            newTawts[newTawts.findIndex((tawt) => tawt.id === item.id)].likes +
+            1,
+        };
+      });
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries(['likes'], { exact: true });
+      queryClient.invalidateQueries(['tawts'], { exact: true });
+      queryClient.invalidateQueries(['tawts', 'my'], { exact: true });
+    },
+  });
+  const unlikeMutation = useMutation({
+    mutationFn: unlikeTawt,
+    onMutate: (id) => {
+      queryClient.setQueryData(['likes'], (oldLikes) => {
+        return oldLikes.filter((liked) => liked.postId !== id);
+      });
+      queryClient.setQueryData(['tawts'], (oldTawts) => {
+        let newTawts = oldTawts;
+        newTawts[newTawts.findIndex((tawt) => tawt.id === item.id)] = {
+          ...newTawts[newTawts.findIndex((tawt) => tawt.id === item.id)],
+          likes:
+            newTawts[newTawts.findIndex((tawt) => tawt.id === item.id)].likes -
+            1,
+        };
+      });
+      queryClient.setQueryData(['tawts', 'my'], (oldTawts) => {
+        let newTawts = oldTawts;
+        newTawts[newTawts.findIndex((tawt) => tawt.id === item.id)] = {
+          ...newTawts[newTawts.findIndex((tawt) => tawt.id === item.id)],
+          likes:
+            newTawts[newTawts.findIndex((tawt) => tawt.id === item.id)].likes -
+            1,
+        };
+      });
+    },
+    onError: (err) => {
+      console.log(err);
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries(['likes'], { exact: true });
+      queryClient.invalidateQueries(['tawts'], { exact: true });
+      queryClient.invalidateQueries(['tawts', 'my'], { exact: true });
+    },
+  });
+
+  function onLike() {
+    likeMutation.mutate(item.id);
+  }
+
+  function unLike() {
+    unlikeMutation.mutate(item.id);
+  }
   return (
     <Surface
       style={tw.style('rounded-3xl overflow-hidden mb-2', {
@@ -29,7 +117,11 @@ const PostItem = ({ item }) => {
           <View className='overflow-hidden rounded-xl'>
             <Pressable
               style={tw.style('flex flex-row justify-start p-1')}
-              onPress={() => navigation.navigate('User')}
+              onPress={() =>
+                navigation.navigate(
+                  item.userHandle === user?.handle ? 'Profile' : 'User'
+                )
+              }
             >
               {item.userAvatar ? (
                 <Avatar
@@ -98,12 +190,29 @@ const PostItem = ({ item }) => {
             </View>
             <View className='flex flex-row'>
               <View className='rounded-full flex justify-center items-center overflow-hidden'>
-                <Pressable style={tw.style('w-full p-2 flex flex-row')}>
-                  <Ionicons name='heart-outline' color='#ece9e9' size={24} />
-                  <Text className='text-xs text-gray-100 break-words my-auto ml-1'>
-                    {item.likes}
-                  </Text>
-                </Pressable>
+                {queryClient
+                  .getQueryData(['likes'])
+                  .find((liked) => parseInt(liked.postId) === item.id) ? (
+                  <Pressable
+                    style={tw.style('w-full p-2 flex flex-row')}
+                    onPress={unLike}
+                  >
+                    <Ionicons name='heart' color='#f22626' size={24} />
+                    <Text className='text-xs text-gray-100 break-words my-auto ml-1'>
+                      {item.likes}
+                    </Text>
+                  </Pressable>
+                ) : (
+                  <Pressable
+                    style={tw.style('w-full p-2 flex flex-row')}
+                    onPress={onLike}
+                  >
+                    <Ionicons name='heart-outline' color='#ece9e9' size={24} />
+                    <Text className='text-xs text-gray-100 break-words my-auto ml-1'>
+                      {item.likes}
+                    </Text>
+                  </Pressable>
+                )}
               </View>
             </View>
           </View>

@@ -8,8 +8,7 @@ import Material from '@expo/vector-icons/MaterialIcons';
 import Feather from '@expo/vector-icons/Feather';
 import { useSelector } from 'react-redux';
 import { useQuery } from '@tanstack/react-query';
-import { getTawts } from '../api/tawts';
-import { getProfile } from '../api/auth';
+import { getMyBookmarks, getMyLikes, getTawts } from '../api/tawts';
 import { RefreshControl } from 'react-native';
 import { useToast } from 'react-native-toast-notifications';
 
@@ -17,53 +16,13 @@ const HomeScreen = ({ navigation }) => {
   const scrollView = useRef(null);
   const { user } = useSelector((state) => state.auth);
   const toast = useToast(null);
-  const { data, isLoading, refetch, isRefetching } = useQuery({
-    queryKey: ['profile'],
-    queryFn: () => getProfile(),
-    onError: (error) => {
-      console.log('Request: ', error.request);
-      console.log('Response: ', error.response);
-      if (error.response) {
-        if (error.response?.data.token) {
-          toast.show('Session expired, Login required', {
-            icon: <Feather name='alert-circle' size={20} color='white' />,
-            placement: 'bottom',
-            type: 'danger',
-            duration: 4000,
-            style: { marginBottom: 50 },
-            textStyle: { padding: 0 },
-          });
-        }
-        if (error.response.data.unknown) {
-          toast.show('Server error. Please, try again', {
-            icon: <Feather name='alert-circle' size={20} color='white' />,
-            placement: 'bottom',
-            type: 'danger',
-            duration: 4000,
-            style: { marginBottom: 50 },
-            textStyle: { padding: 0 },
-          });
-        }
-      } else if (error.request) {
-        toast.show('Error connecting to the server', {
-          icon: <Feather name='alert-circle' size={20} color='white' />,
-          placement: 'bottom',
-          type: 'danger',
-          duration: 4000,
-          style: { marginBottom: 50 },
-          textStyle: { padding: 0 },
-        });
-      } else {
-        toast.show('Unknown Error. Please, try again', {
-          icon: <Feather name='alert-circle' size={20} color='white' />,
-          placement: 'bottom',
-          type: 'danger',
-          duration: 4000,
-          style: { marginBottom: 50 },
-          textStyle: { padding: 0 },
-        });
-      }
-    },
+  const myLikesQuery = useQuery({
+    queryKey: ['likes'],
+    queryFn: () => getMyLikes(),
+  });
+  const myBookmarksQuery = useQuery({
+    queryKey: ['bookmarks'],
+    queryFn: () => getMyBookmarks(),
   });
   const tawtsQuery = useQuery({
     queryKey: ['tawts'],
@@ -112,9 +71,6 @@ const HomeScreen = ({ navigation }) => {
         });
       }
     },
-    onSuccess: (data) => {
-      console.log(data);
-    },
   });
   useEffect(() => {
     const scrollToTop = navigation.addListener('tabPress', (e) => {
@@ -140,7 +96,7 @@ const HomeScreen = ({ navigation }) => {
       >
         <View className='overflow-hidden rounded-full'>
           <Pressable onPress={() => navigation.openDrawer()}>
-            {data?.avatar ? (
+            {user?.avatar ? (
               <Avatar
                 image={{ uri: 'https://mui.com/static/images/avatar/1.jpg' }}
                 size={38}
@@ -176,16 +132,17 @@ const HomeScreen = ({ navigation }) => {
         alwaysBounceVertical
         refreshControl={
           <RefreshControl
-            refreshing={tawtsQuery.isRefetching}
+            refreshing={tawtsQuery.isInitialLoading}
             onRefresh={() => {
-              refetch();
               tawtsQuery.refetch();
             }}
           />
         }
       >
         {tawtsQuery.data?.length ? (
-          tawtsQuery.data.map((tawt) => <PostItem key={tawt.id} item={tawt} />)
+          tawtsQuery.data.map((tawt) => (
+            <PostItem key={tawt.id} item={tawt} likes={myLikesQuery.data} />
+          ))
         ) : (
           <View className='m-auto flex items-center justify-center mt-12'>
             <Material name='bubble-chart' color='#ece9e9' size={80} />

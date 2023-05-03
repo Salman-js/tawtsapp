@@ -58,12 +58,7 @@ const SearchScreen = ({ navigation }) => {
         className='w-full'
         contentContainerStyle={tw.style('bg-transparent p-2 pb-16')}
         showsVerticalScrollIndicator={false}
-      >
-        <PostItem />
-        <PostItem />
-        <PostItem />
-        <PostItem />
-      </ScrollView>
+      ></ScrollView>
       <Modal
         isVisible={isModalOpen}
         onSwipeComplete={() => setIsModalOpen(false)}

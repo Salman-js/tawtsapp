@@ -17,13 +17,13 @@ import { useToast } from 'react-native-toast-notifications';
 import { getProfile } from '../api/auth';
 import { useQuery } from '@tanstack/react-query';
 import { useSelector } from 'react-redux';
-import { getMyTawts } from '../api/tawts';
+import { getMyBookmarks, getMyLikes, getMyTawts } from '../api/tawts';
 
 const ProfileScreen = ({ navigation }) => {
   const scrollView = useRef(null);
   const toast = useToast(null);
   const { user } = useSelector((state) => state.auth);
-  const { data, isLoading, refetch, isRefetching } = useQuery({
+  const { data, isLoading, refetch, isInitialLoading } = useQuery({
     queryKey: ['profile'],
     queryFn: () => getProfile(),
     onError: (error) => {
@@ -125,6 +125,14 @@ const ProfileScreen = ({ navigation }) => {
       console.log(data);
     },
   });
+  const myLikesQuery = useQuery({
+    queryKey: ['likes'],
+    queryFn: () => getMyLikes(),
+  });
+  const myBookmarksQuery = useQuery({
+    queryKey: ['bookmarks'],
+    queryFn: () => getMyBookmarks(),
+  });
   useEffect(() => {
     const scrollToTop = navigation.addListener('tabPress', (e) => {
       scrollView.current.scrollTo({ x: 5, y: 5, animated: true });
@@ -155,7 +163,7 @@ const ProfileScreen = ({ navigation }) => {
         ref={scrollView}
         refreshControl={
           <RefreshControl
-            refreshing={isRefetching}
+            refreshing={isInitialLoading}
             onRefresh={() => {
               refetch();
               tawtsQuery.refetch();
@@ -170,7 +178,7 @@ const ProfileScreen = ({ navigation }) => {
           elevation={3}
         >
           <View className='w-full flex flex-row justify-start space-x-4'>
-            {user.avatar ? (
+            {user?.avatar ? (
               <Avatar
                 image={{ uri: 'https://mui.com/static/images/avatar/1.jpg' }}
                 size={60}
