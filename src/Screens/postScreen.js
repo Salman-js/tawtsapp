@@ -1,6 +1,7 @@
 import { View, Text, ScrollView } from 'react-native';
 import React from 'react';
 import Icon from '@expo/vector-icons/MaterialCommunityIcons';
+import Material from '@expo/vector-icons/MaterialIcons';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import Feather from '@expo/vector-icons/Feather';
 import tw from 'twrnc';
@@ -11,8 +12,64 @@ import {
   Surface,
 } from '@react-native-material/core';
 import CommentItem from '../Components/commentItem';
+import { useNavigation } from '@react-navigation/native';
+import ago from 's-ago';
+import { getPostLikes, getReplies } from '../api/tawts';
+import { useQuery } from '@tanstack/react-query';
+import { useToast } from 'react-native-toast-notifications';
 
-const PostScreen = ({ navigation }) => {
+const PostScreen = ({ route }) => {
+  const navigation = useNavigation();
+  const { item } = route.params;
+  const toast = useToast(null);
+  const repliesQuery = useQuery({
+    queryKey: ['replies', item.id],
+    queryFn: () => getReplies(item.id),
+    onError: (error) => {
+      console.log('Request: ', error.request);
+      console.log('Response: ', error.response);
+      if (error.response) {
+        if (error.response?.data.token) {
+          toast.show('Session expired, Login required', {
+            icon: <Feather name='alert-circle' size={20} color='white' />,
+            placement: 'bottom',
+            type: 'danger',
+            duration: 4000,
+            style: { marginBottom: 50 },
+            textStyle: { padding: 0 },
+          });
+        }
+        if (error.response.data.unknown) {
+          toast.show('Server error. Please, try again', {
+            icon: <Feather name='alert-circle' size={20} color='white' />,
+            placement: 'bottom',
+            type: 'danger',
+            duration: 4000,
+            style: { marginBottom: 50 },
+            textStyle: { padding: 0 },
+          });
+        }
+      } else if (error.request) {
+        toast.show('Error connecting to the server', {
+          icon: <Feather name='alert-circle' size={20} color='white' />,
+          placement: 'bottom',
+          type: 'danger',
+          duration: 4000,
+          style: { marginBottom: 50 },
+          textStyle: { padding: 0 },
+        });
+      } else {
+        toast.show('Unknown Error. Please, try again', {
+          icon: <Feather name='alert-circle' size={20} color='white' />,
+          placement: 'bottom',
+          type: 'danger',
+          duration: 4000,
+          style: { marginBottom: 50 },
+          textStyle: { padding: 0 },
+        });
+      }
+    },
+  });
   return (
     <View className='h-full flex justify-between items-center bg-[#271b2d] w-full'>
       <Surface
@@ -47,26 +104,35 @@ const PostScreen = ({ navigation }) => {
                 style={tw.style('flex flex-row justify-start p-1')}
                 onPress={() => navigation.navigate('User')}
               >
-                <Avatar
-                  image={{
-                    uri: 'https://mui.com/static/images/avatar/1.jpg',
-                  }}
-                  size={35}
-                />
+                {item.userAvatar ? (
+                  <Avatar
+                    image={{
+                      uri: 'https://mui.com/static/images/avatar/1.jpg',
+                    }}
+                    size={38}
+                    style={tw.style('my-auto')}
+                  />
+                ) : (
+                  <Avatar
+                    label={item.userName}
+                    size={38}
+                    style={tw.style('my-auto')}
+                  />
+                )}
                 <View className='ml-2'>
                   <View className='flex flex-row space-x-1'>
                     <Text className='text-lg font-bold text-gray-200'>
-                      Salman M.
+                      {item.userName}
                     </Text>
                     <Text
                       className='text-base text-gray-400 text-left'
                       numberOfLines={1}
                     >
-                      @theartist
+                      @{item.userHandle}
                     </Text>
                   </View>
                   <Text className='text-xs font-light text-gray-300'>
-                    1 hour ago
+                    {ago(new Date(item.createdAt))}
                   </Text>
                 </View>
               </Pressable>
@@ -80,27 +146,27 @@ const PostScreen = ({ navigation }) => {
           </View>
           <View className='w-full mt-2'>
             <Text className='text-sm text-gray-100 break-words'>
-              Lorem ipsum dolor sit, amet consectetur adipisicing elit. Fugiat
-              reiciendis architecto, fugit repudiandae cupiditate aliquid vitae
-              quisquam veniam exercitationem omnis voluptatum explicabo
-              voluptates!
+              {item.body}
             </Text>
             <View className='w-full flex flex-row justify-start space-x-2 mt-3'>
-              <Pressable style={tw.style('my-auto')}>
-                <Text className='text-base text-gray-100 break-words'>
-                  150 <Text className='font-bold'> Bookmarks</Text>
+              <Text className='my-auto text-base text-gray-100 break-words'>
+                {item.bookmarks}{' '}
+                <Text className='font-bold'>
+                  Bookmark{item.bookmarks > 1 && 's'}
                 </Text>
-              </Pressable>
+              </Text>
               <Pressable
                 style={tw.style('my-auto')}
                 onPress={() =>
                   navigation.navigate('Users', {
-                    type: 'Likes',
+                    type: 'likes',
+                    func: getPostLikes(item.id),
                   })
                 }
               >
                 <Text className='text-base text-gray-100 break-words'>
-                  150 <Text className='font-bold'> Likes</Text>
+                  {item.likes}{' '}
+                  <Text className='font-bold'>Like{item.likes > 1 && 's'}</Text>
                 </Text>
               </Pressable>
             </View>
@@ -150,9 +216,18 @@ const PostScreen = ({ navigation }) => {
           <Text className='text-xl font-bold text-gray-200 pl-4 mb-2'>
             Replies
           </Text>
-          <CommentItem />
-          <CommentItem />
-          <CommentItem />
+          {repliesQuery.data?.length ? (
+            repliesQuery.data.map((reply) => (
+              <CommentItem key={reply.id} item={reply} />
+            ))
+          ) : (
+            <View className='m-auto flex items-center justify-center mt-12'>
+              <Material name='bubble-chart' color='#ece9e9' size={80} />
+              <Text className='text-xl text-slate-200 mt-2 text-center'>
+                No replies
+              </Text>
+            </View>
+          )}
         </View>
       </ScrollView>
     </View>

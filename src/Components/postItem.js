@@ -160,7 +160,11 @@ const PostItem = ({ item }) => {
     >
       <Pressable
         style={tw.style('w-full p-4 pt-2')}
-        onPress={() => navigation.navigate('Post')}
+        onPress={() =>
+          navigation.navigate('Post', {
+            item,
+          })
+        }
       >
         <View className='w-full flex flex-row justify-between items-center'>
           <View className='overflow-hidden rounded-xl'>

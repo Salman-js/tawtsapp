@@ -98,6 +98,34 @@ export const getTawts = async () => {
   return await axios.get(`${URI}/api/post`, config).then((res) => res.data);
 };
 
+// Get reply to a tawt
+export const getReplies = async (id) => {
+  const config = {
+    headers: {
+      'Content-Type': 'application/json',
+      'x-auth-token': await AsyncStorage.getItem('token'),
+    },
+    timeout: 5000,
+  };
+  return await axios
+    .get(`${URI}/api/post/replies/${id}`, config)
+    .then((res) => res.data);
+};
+
+// Get post likes
+export const getPostLikes = async (id) => {
+  const config = {
+    headers: {
+      'Content-Type': 'application/json',
+      'x-auth-token': await AsyncStorage.getItem('token'),
+    },
+    timeout: 5000,
+  };
+  return await axios
+    .get(`${URI}/api/post/likes/${id}`, config)
+    .then((res) => res.data);
+};
+
 // Get my tawts
 export const getMyTawts = async () => {
   const config = {
