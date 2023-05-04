@@ -159,7 +159,7 @@ const ProfileScreen = ({ navigation }) => {
       </Surface>
       <ScrollView
         className='w-full'
-        contentContainerStyle={tw.style('bg-transparent p-2 pb-16')}
+        contentContainerStyle={tw.style('bg-transparent p-2 pt-0 pb-16')}
         showsVerticalScrollIndicator={false}
         ref={scrollView}
         refreshControl={
@@ -249,14 +249,9 @@ const ProfileScreen = ({ navigation }) => {
               </View>
               <Button
                 title='Edit profile'
-                buttonStyle={tw.style('rounded-full border border-slate-200', {
-                  backgroundColor: '#271b2d',
-                })}
-                titleStyle={tw.style('')}
-                containerStyle={tw.style('')}
-                disabledStyle={tw.style('', {
-                  backgroundColor: '#271b2d',
-                })}
+                buttonStyle={tw.style(
+                  'rounded-full border border-slate-200 py-1 bg-transparent'
+                )}
                 onPress={() =>
                   navigation.navigate('Edit Profile', {
                     profile: data,

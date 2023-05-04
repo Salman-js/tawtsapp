@@ -248,7 +248,7 @@ const PostItem = ({ item }) => {
                       style={tw.style('w-full p-2 flex-row')}
                       onPress={unBookmark}
                     >
-                      <Ionicons name='bookmark' color='#ece9e9' size={24} />
+                      <Ionicons name='bookmark' color='#a5acea' size={24} />
                       <Text className='text-xs text-gray-100 break-words my-auto ml-2'>
                         {item.bookmarks}
                       </Text>

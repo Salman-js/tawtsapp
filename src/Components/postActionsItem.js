@@ -184,7 +184,7 @@ const PostActionsItem = ({ item }) => {
                 <Ionicons
                   name='bookmark'
                   {...props}
-                  color='#ece9e9'
+                  color='#a5acea'
                   size={24}
                 />
               )}

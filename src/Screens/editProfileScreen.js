@@ -17,6 +17,7 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { updateProfile } from '../api/user';
 import { setUser } from '../../slices/authSlice';
 import { useToast } from 'react-native-toast-notifications';
+import { Image } from 'react-native';
 
 const EditProfileScreen = ({ route }) => {
   const navigation = useNavigation();
@@ -150,18 +151,32 @@ const EditProfileScreen = ({ route }) => {
         <View className='overflow-hidden'>
           <Pressable style={tw.style('')}>
             {user?.avatar ? (
-              <Avatar
-                image={{
-                  uri: 'https://mui.com/static/images/avatar/1.jpg',
-                }}
-                icon={(props) => <Icon name='camera-plus-outline' {...props} />}
-                size={60}
-                style={tw.style('my-auto')}
-              />
+              <>
+                <Avatar
+                  image={{
+                    uri: 'https://mui.com/static/images/avatar/1.jpg',
+                  }}
+                  icon={(props) => (
+                    <Icon name='camera-plus-outline' {...props} />
+                  )}
+                  size={60}
+                  style={tw.style('my-auto')}
+                />
+                <Avatar
+                  icon={(props) => (
+                    <Icon name='camera-plus-outline' {...props} />
+                  )}
+                  size={60}
+                  style={tw.style('absolute my-auto', {
+                    backgroundColor: '#89898942',
+                  })}
+                />
+              </>
             ) : (
               <Avatar
                 icon={(props) => <Icon name='camera-plus-outline' {...props} />}
                 size={60}
+                color='#ffffff8b'
                 style={tw.style('my-auto')}
               />
             )}
