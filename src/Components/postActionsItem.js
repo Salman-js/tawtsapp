@@ -24,7 +24,6 @@ import {
 const PostActionsItem = ({ item }) => {
   const { user } = useSelector((state) => state.auth);
   const navigation = useNavigation();
-  const route = useRoute();
   const toast = useToast(null);
   const queryClient = useQueryClient();
   const likeMutation = useMutation({
@@ -41,13 +40,11 @@ const PostActionsItem = ({ item }) => {
           },
         ];
       });
-      queryClient.setQueryData(['tawts'], (oldTawts) => {
-        let newTawts = oldTawts;
-        newTawts[newTawts.findIndex((tawt) => tawt.id === item.id)] = {
-          ...newTawts[newTawts.findIndex((tawt) => tawt.id === item.id)],
-          likes:
-            newTawts[newTawts.findIndex((tawt) => tawt.id === item.id)].likes +
-            1,
+      queryClient.setQueryData(['tawts', item.id], (oldTawt) => {
+        let newTawt = oldTawt;
+        newTawt = {
+          ...newTawt,
+          likes: newTawt.likes + 1,
         };
       });
     },
@@ -64,13 +61,11 @@ const PostActionsItem = ({ item }) => {
       queryClient.setQueryData(['likes'], (oldLikes) => {
         return oldLikes.filter((liked) => liked.postId !== item.id);
       });
-      queryClient.setQueryData(['tawts'], (oldTawts) => {
-        let newTawts = oldTawts;
-        newTawts[newTawts.findIndex((tawt) => tawt.id === item.id)] = {
-          ...newTawts[newTawts.findIndex((tawt) => tawt.id === item.id)],
-          likes:
-            newTawts[newTawts.findIndex((tawt) => tawt.id === item.id)].likes -
-            1,
+      queryClient.setQueryData(['tawts', item.id], (oldTawt) => {
+        let newTawt = oldTawt;
+        newTawt = {
+          ...newTawt,
+          likes: newTawt.likes - 1,
         };
       });
     },
@@ -98,13 +93,11 @@ const PostActionsItem = ({ item }) => {
           },
         ];
       });
-      queryClient.setQueryData(['tawts'], (oldTawts) => {
-        let newTawts = oldTawts;
-        newTawts[newTawts.findIndex((tawt) => tawt.id === item.id)] = {
-          ...newTawts[newTawts.findIndex((tawt) => tawt.id === item.id)],
-          bookmarks:
-            newTawts[newTawts.findIndex((tawt) => tawt.id === item.id)]
-              .bookmarks + 1,
+      queryClient.setQueryData(['tawts', item.id], (oldTawt) => {
+        let newTawt = oldTawt;
+        newTawt = {
+          ...newTawt,
+          bookmarks: newTawt.bookmarks + 1,
         };
       });
     },
@@ -121,13 +114,11 @@ const PostActionsItem = ({ item }) => {
       queryClient.setQueryData(['bookmarks'], (oldLikes) => {
         return oldLikes.filter((liked) => liked.postId !== item.id);
       });
-      queryClient.setQueryData(['tawts'], (oldTawts) => {
-        let newTawts = oldTawts;
-        newTawts[newTawts.findIndex((tawt) => tawt.id === item.id)] = {
-          ...newTawts[newTawts.findIndex((tawt) => tawt.id === item.id)],
-          bookmarks:
-            newTawts[newTawts.findIndex((tawt) => tawt.id === item.id)]
-              .bookmarks - 1,
+      queryClient.setQueryData(['tawts', item.id], (oldTawt) => {
+        let newTawt = oldTawt;
+        newTawt = {
+          ...newTawt,
+          bookmarks: newTawt.bookmarks - 1,
         };
       });
     },
