@@ -14,19 +14,21 @@ import {
 import CommentItem from '../Components/commentItem';
 import { useNavigation } from '@react-navigation/native';
 import ago from 's-ago';
-import { getPostLikes, getReplies } from '../api/tawts';
+import { getPostLikes, getReplies, getTawt } from '../api/tawts';
 import { useQuery } from '@tanstack/react-query';
 import { useToast } from 'react-native-toast-notifications';
 import { useSelector } from 'react-redux';
+import PostActionsItem from '../Components/postActionsItem';
+import { RefreshControl } from 'react-native';
 
 const PostScreen = ({ route }) => {
   const navigation = useNavigation();
   const { user } = useSelector((state) => state.auth);
   const { item } = route.params;
   const toast = useToast(null);
-  const repliesQuery = useQuery({
-    queryKey: ['replies', item.id],
-    queryFn: () => getReplies(item.id),
+  const { data, isLoading, refetch, isInitialLoading } = useQuery({
+    queryKey: ['tawts', item.id],
+    queryFn: () => getTawt(item.id),
     onError: (error) => {
       console.log('Request: ', error.request);
       console.log('Response: ', error.response);
@@ -72,6 +74,10 @@ const PostScreen = ({ route }) => {
       }
     },
   });
+  const repliesQuery = useQuery({
+    queryKey: ['replies', item.id],
+    queryFn: () => getReplies(item.id),
+  });
   return (
     <View className='h-full flex justify-between items-center bg-[#271b2d] w-full'>
       <Surface
@@ -93,6 +99,15 @@ const PostScreen = ({ route }) => {
         className='w-full'
         contentContainerStyle={tw.style('bg-transparent p-2')}
         showsVerticalScrollIndicator={false}
+        refreshControl={
+          <RefreshControl
+            refreshing={isInitialLoading}
+            onRefresh={() => {
+              refetch();
+              repliesQuery.refetch();
+            }}
+          />
+        }
       >
         <Surface
           style={tw.style('w-full rounded-3xl overflow-hidden mb-2 p-4 pt-2', {
@@ -110,7 +125,9 @@ const PostScreen = ({ route }) => {
                   )
                 }
               >
-                {item.userAvatar ? (
+                {!data ? (
+                  item.userAvatar
+                ) : data.userAvatar ? (
                   <Avatar
                     image={{
                       uri: 'https://mui.com/static/images/avatar/1.jpg',
@@ -128,13 +145,13 @@ const PostScreen = ({ route }) => {
                 <View className='ml-2'>
                   <View className='flex flex-row space-x-1'>
                     <Text className='text-lg font-bold text-gray-200'>
-                      {item.userName}
+                      {!data ? item.userName : data.userName}
                     </Text>
                     <Text
                       className='text-base text-gray-400 text-left'
                       numberOfLines={1}
                     >
-                      @{item.userHandle}
+                      @{!data ? item.userHandle : data.userName}
                     </Text>
                   </View>
                   <Text className='text-xs font-light text-gray-300'>
@@ -156,7 +173,7 @@ const PostScreen = ({ route }) => {
             </Text>
             <View className='w-full flex flex-row justify-start space-x-2 mt-3'>
               <Text className='my-auto text-base text-gray-100 break-words'>
-                {item.bookmarks}{' '}
+                {!data ? item.bookmarks : data.bookmarks}{' '}
                 <Text className='font-bold'>
                   Bookmark{item.bookmarks > 1 && 's'}
                 </Text>
@@ -166,57 +183,18 @@ const PostScreen = ({ route }) => {
                 onPress={() =>
                   navigation.navigate('Users', {
                     type: 'likes',
-                    item,
+                    item: !data ? item : data,
                   })
                 }
               >
                 <Text className='text-base text-gray-100 break-words'>
-                  {item.likes}{' '}
+                  {!data ? item.likes : data.likes}{' '}
                   <Text className='font-bold'>Like{item.likes > 1 && 's'}</Text>
                 </Text>
               </Pressable>
             </View>
           </View>
-          <View className='w-full flex flex-row justify-between mt-1'>
-            <View className='flex flex-row justify-start space-x-2'>
-              <View className='flex flex-row'>
-                <IconButton
-                  icon={(props) => (
-                    <Ionicons
-                      name='chatbubble-ellipses-outline'
-                      {...props}
-                      color='#ebe5e5'
-                      size={24}
-                    />
-                  )}
-                />
-              </View>
-              <View className='flex flex-row'>
-                <IconButton
-                  icon={(props) => (
-                    <Ionicons
-                      name='bookmark-outline'
-                      {...props}
-                      color='#ece9e9'
-                      size={24}
-                    />
-                  )}
-                />
-              </View>
-              <View className='flex flex-row'>
-                <IconButton
-                  icon={(props) => (
-                    <Ionicons
-                      name='heart-outline'
-                      {...props}
-                      color='#ebe5e5'
-                      size={24}
-                    />
-                  )}
-                />
-              </View>
-            </View>
-          </View>
+          <PostActionsItem item={!data ? item : data} />
         </Surface>
         <View className='w-full rounded-3xl bg-[#32283c] p-4 mt-2'>
           <Text className='text-xl font-bold text-gray-200 pl-4 mb-2'>

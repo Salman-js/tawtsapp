@@ -2,6 +2,20 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
 import { URI } from './constants';
 
+// Update profile
+export const updateProfile = async (updatedData) => {
+  const config = {
+    headers: {
+      'Content-Type': 'application/json',
+      'x-auth-token': await AsyncStorage.getItem('token'),
+    },
+    timeout: 5000,
+  };
+  return await axios
+    .post(`${URI}/api/user/update`, updatedData, config)
+    .then((res) => res.data);
+};
+
 // Get my followers
 export const getMyFollowers = async () => {
   const config = {

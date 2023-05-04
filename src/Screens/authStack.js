@@ -13,6 +13,7 @@ import SignUpScreen from './signUpScreen';
 import UsersScreen from './usersScreen';
 import IntroScreen from './intro';
 import NewReplyScreen from './newReplyScreen';
+import EditProfileScreen from './editProfileScreen';
 
 const Stack = createStackNavigator();
 export default function AuthStack({ navigation }) {
@@ -74,6 +75,13 @@ export default function AuthStack({ navigation }) {
         options={{
           headerShown: false,
           ...TransitionPresets.ModalPresentationIOS,
+        }}
+      />
+      <Stack.Screen
+        name='Edit Profile'
+        component={EditProfileScreen}
+        options={{
+          headerShown: false,
         }}
       />
     </Stack.Navigator>

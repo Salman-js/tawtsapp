@@ -18,6 +18,7 @@ import { getProfile } from '../api/auth';
 import { useQuery } from '@tanstack/react-query';
 import { useSelector } from 'react-redux';
 import { getMyBookmarks, getMyLikes, getMyTawts } from '../api/tawts';
+import { Button } from '@rneui/themed';
 
 const ProfileScreen = ({ navigation }) => {
   const scrollView = useRef(null);
@@ -237,10 +238,32 @@ const ProfileScreen = ({ navigation }) => {
             </View>
           </View>
           <View className='w-full flex justify-start pt-3'>
-            <Text className='font-bold text-lg text-white'>{user?.name}</Text>
-            <Text className='text-sm text-gray-400 text-left'>
-              @{user?.handle}
-            </Text>
+            <View className='w-full flex flex-row justify-between pr-2'>
+              <View className='w-3/4'>
+                <Text className='font-bold text-lg text-white'>
+                  {user?.name}
+                </Text>
+                <Text className='text-sm text-gray-400 text-left'>
+                  @{user?.handle}
+                </Text>
+              </View>
+              <Button
+                title='Edit profile'
+                buttonStyle={tw.style('rounded-full border border-slate-200', {
+                  backgroundColor: '#271b2d',
+                })}
+                titleStyle={tw.style('')}
+                containerStyle={tw.style('')}
+                disabledStyle={tw.style('', {
+                  backgroundColor: '#271b2d',
+                })}
+                onPress={() =>
+                  navigation.navigate('Edit Profile', {
+                    profile: data,
+                  })
+                }
+              />
+            </View>
             {data.bio && (
               <Text className='text-sm text-gray-300 break-words text-left mt-3'>
                 {data.bio}
