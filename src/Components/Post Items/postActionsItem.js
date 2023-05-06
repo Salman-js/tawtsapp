@@ -19,7 +19,7 @@ import {
   likeTawt,
   removeBookmark,
   unlikeTawt,
-} from '../api/tawts';
+} from '../../api/tawts';
 
 const PostActionsItem = ({ item }) => {
   const { user } = useSelector((state) => state.auth);
@@ -52,7 +52,6 @@ const PostActionsItem = ({ item }) => {
       queryClient.invalidateQueries(['tawts', item.id], { exact: true });
       queryClient.invalidateQueries(['likes'], { exact: true });
       queryClient.invalidateQueries(['tawts'], { exact: true });
-      queryClient.invalidateQueries(['tawts', 'my'], { exact: true });
     },
   });
   const unlikeMutation = useMutation({
@@ -76,7 +75,6 @@ const PostActionsItem = ({ item }) => {
       queryClient.invalidateQueries(['tawts', item.id], { exact: true });
       queryClient.invalidateQueries(['likes'], { exact: true });
       queryClient.invalidateQueries(['tawts'], { exact: true });
-      queryClient.invalidateQueries(['tawts', 'my'], { exact: true });
     },
   });
   const bookmarkMutation = useMutation({
@@ -105,7 +103,6 @@ const PostActionsItem = ({ item }) => {
       queryClient.invalidateQueries(['tawts', item.id], { exact: true });
       queryClient.invalidateQueries(['bookmarks'], { exact: true });
       queryClient.invalidateQueries(['tawts'], { exact: true });
-      queryClient.invalidateQueries(['tawts', 'my'], { exact: true });
     },
   });
   const unbookmarkMutation = useMutation({
@@ -129,7 +126,6 @@ const PostActionsItem = ({ item }) => {
       queryClient.invalidateQueries(['tawts', item.id], { exact: true });
       queryClient.invalidateQueries(['bookmarks'], { exact: true });
       queryClient.invalidateQueries(['tawts'], { exact: true });
-      queryClient.invalidateQueries(['tawts', 'my'], { exact: true });
     },
   });
   function onLike() {

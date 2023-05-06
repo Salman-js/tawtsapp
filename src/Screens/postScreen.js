@@ -18,7 +18,7 @@ import { getPostLikes, getReplies, getTawt } from '../api/tawts';
 import { useQuery } from '@tanstack/react-query';
 import { useToast } from 'react-native-toast-notifications';
 import { useSelector } from 'react-redux';
-import PostActionsItem from '../Components/postActionsItem';
+import PostActionsItem from '../Components/Post Items/postActionsItem';
 import { RefreshControl } from 'react-native';
 
 const PostScreen = ({ route }) => {
