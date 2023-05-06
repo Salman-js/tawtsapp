@@ -19,6 +19,7 @@ import { getMyBookmarks, getUserTawts } from '../api/tawts';
 import { getUserProfile } from '../api/user';
 import { useToast } from 'react-native-toast-notifications';
 import { RefreshControl } from 'react-native';
+import UserPostItem from '../Components/Post Items/userPostItem';
 
 const UserScreen = ({ navigation }) => {
   const scrollView = useRef(null);
@@ -272,7 +273,9 @@ const UserScreen = ({ navigation }) => {
           </View>
         </Surface>
         {tawtsQuery.data?.length ? (
-          tawtsQuery.data.map((tawt) => <PostItem key={tawt.id} item={tawt} />)
+          tawtsQuery.data.map((tawt) => (
+            <UserPostItem key={tawt.id} item={tawt} />
+          ))
         ) : (
           <View className='m-auto flex items-center justify-center mt-12'>
             <Material name='bubble-chart' color='#ece9e9' size={80} />

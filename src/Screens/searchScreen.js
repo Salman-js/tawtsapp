@@ -19,6 +19,7 @@ import { useNavigation, useRoute } from '@react-navigation/native';
 import { useQuery } from '@tanstack/react-query';
 import { useToast } from 'react-native-toast-notifications';
 import { RefreshControl } from 'react-native';
+import SearchPostItem from '../Components/Post Items/searchPostItem';
 
 const SearchScreen = () => {
   const navigation = useNavigation();
@@ -162,7 +163,15 @@ const SearchScreen = () => {
       >
         {searchedTawtsQuery.data?.length ? (
           searchedTawtsQuery.data.map((tawt) => (
-            <PostItem key={tawt.id} item={tawt} />
+            <SearchPostItem
+              key={tawt.id}
+              item={tawt}
+              searchString={
+                route.params && route.params.searchString
+                  ? route.params.searchString
+                  : ''
+              }
+            />
           ))
         ) : (
           <View className='m-auto flex items-center justify-center mt-12'>

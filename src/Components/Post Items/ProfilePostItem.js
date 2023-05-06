@@ -13,7 +13,6 @@ import { useNavigation, useRoute } from '@react-navigation/native';
 import ago from 's-ago';
 import { useSelector } from 'react-redux';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { useToast } from 'react-native-toast-notifications';
 import {
   bookmarkTawt,
   likeTawt,
@@ -21,11 +20,10 @@ import {
   unlikeTawt,
 } from '../api/tawts';
 
-const PostItem = ({ item }) => {
+const ProfilePostItem = ({ item }) => {
   const { user } = useSelector((state) => state.auth);
   const navigation = useNavigation();
   const route = useRoute();
-  const toast = useToast(null);
   const queryClient = useQueryClient();
   const likeMutation = useMutation({
     mutationFn: likeTawt,
@@ -41,7 +39,7 @@ const PostItem = ({ item }) => {
           },
         ];
       });
-      queryClient.setQueryData(['tawts'], (oldTawts) => {
+      queryClient.setQueryData(['tawts', 'my'], (oldTawts) => {
         let newTawts = oldTawts;
         newTawts[newTawts.findIndex((tawt) => tawt.id === item.id)] = {
           ...newTawts[newTawts.findIndex((tawt) => tawt.id === item.id)],
@@ -53,8 +51,8 @@ const PostItem = ({ item }) => {
     },
     onSuccess: () => {
       queryClient.invalidateQueries(['likes'], { exact: true });
-      queryClient.invalidateQueries(['tawts'], { exact: true });
       queryClient.invalidateQueries(['tawts', 'my'], { exact: true });
+      queryClient.invalidateQueries(['tawts'], { exact: true });
     },
   });
   const unlikeMutation = useMutation({
@@ -63,7 +61,7 @@ const PostItem = ({ item }) => {
       queryClient.setQueryData(['likes'], (oldLikes) => {
         return oldLikes.filter((liked) => liked.postId !== id);
       });
-      queryClient.setQueryData(['tawts'], (oldTawts) => {
+      queryClient.setQueryData(['tawts', 'my'], (oldTawts) => {
         let newTawts = oldTawts;
         newTawts[newTawts.findIndex((tawt) => tawt.id === item.id)] = {
           ...newTawts[newTawts.findIndex((tawt) => tawt.id === item.id)],
@@ -78,8 +76,8 @@ const PostItem = ({ item }) => {
     },
     onSuccess: () => {
       queryClient.invalidateQueries(['likes'], { exact: true });
-      queryClient.invalidateQueries(['tawts'], { exact: true });
       queryClient.invalidateQueries(['tawts', 'my'], { exact: true });
+      queryClient.invalidateQueries(['tawts'], { exact: true });
     },
   });
   const bookmarkMutation = useMutation({
@@ -96,7 +94,7 @@ const PostItem = ({ item }) => {
           },
         ];
       });
-      queryClient.setQueryData(['tawts'], (oldTawts) => {
+      queryClient.setQueryData(['tawts', 'my'], (oldTawts) => {
         let newTawts = oldTawts;
         newTawts[newTawts.findIndex((tawt) => tawt.id === item.id)] = {
           ...newTawts[newTawts.findIndex((tawt) => tawt.id === item.id)],
@@ -108,8 +106,8 @@ const PostItem = ({ item }) => {
     },
     onSuccess: () => {
       queryClient.invalidateQueries(['bookmarks'], { exact: true });
-      queryClient.invalidateQueries(['tawts'], { exact: true });
       queryClient.invalidateQueries(['tawts', 'my'], { exact: true });
+      queryClient.invalidateQueries(['tawts'], { exact: true });
     },
   });
   const unbookmarkMutation = useMutation({
@@ -118,7 +116,7 @@ const PostItem = ({ item }) => {
       queryClient.setQueryData(['bookmarks'], (oldLikes) => {
         return oldLikes.filter((liked) => liked.postId !== id);
       });
-      queryClient.setQueryData(['tawts'], (oldTawts) => {
+      queryClient.setQueryData(['tawts', 'my'], (oldTawts) => {
         let newTawts = oldTawts;
         newTawts[newTawts.findIndex((tawt) => tawt.id === item.id)] = {
           ...newTawts[newTawts.findIndex((tawt) => tawt.id === item.id)],
@@ -133,8 +131,8 @@ const PostItem = ({ item }) => {
     },
     onSuccess: () => {
       queryClient.invalidateQueries(['bookmarks'], { exact: true });
-      queryClient.invalidateQueries(['tawts'], { exact: true });
       queryClient.invalidateQueries(['tawts', 'my'], { exact: true });
+      queryClient.invalidateQueries(['tawts'], { exact: true });
     },
   });
   function onLike() {
@@ -168,22 +166,7 @@ const PostItem = ({ item }) => {
       >
         <View className='w-full flex flex-row justify-between items-center'>
           <View className='overflow-hidden rounded-xl'>
-            <Pressable
-              style={tw.style('flex flex-row justify-start p-1')}
-              onPress={() =>
-                navigation.navigate(
-                  parseInt(item.userId) === user?.id ? 'Profile' : 'User',
-                  {
-                    userItem: {
-                      id: item.userId,
-                      userName: item.userName,
-                      userAvatar: item.userAvatar,
-                      userHandle: item.userhandle,
-                    },
-                  }
-                )
-              }
-            >
+            <Pressable style={tw.style('flex flex-row justify-start p-1')}>
               {item.userAvatar ? (
                 <Avatar
                   image={{ uri: 'https://mui.com/static/images/avatar/1.jpg' }}
@@ -317,4 +300,4 @@ const PostItem = ({ item }) => {
   );
 };
 
-export default PostItem;
+export default ProfilePostItem;

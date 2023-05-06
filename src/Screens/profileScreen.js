@@ -19,6 +19,7 @@ import { useQuery } from '@tanstack/react-query';
 import { useSelector } from 'react-redux';
 import { getMyBookmarks, getMyLikes, getMyTawts } from '../api/tawts';
 import { Button } from '@rneui/themed';
+import ProfilePostItem from '../Components/Post Items/ProfilePostItem';
 
 const ProfileScreen = ({ navigation }) => {
   const scrollView = useRef(null);
@@ -295,7 +296,9 @@ const ProfileScreen = ({ navigation }) => {
           </View>
         </Surface>
         {tawtsQuery.data?.length ? (
-          tawtsQuery.data.map((tawt) => <PostItem key={tawt.id} item={tawt} />)
+          tawtsQuery.data.map((tawt) => (
+            <ProfilePostItem key={tawt.id} item={tawt} />
+          ))
         ) : (
           <View className='m-auto flex items-center justify-center mt-12'>
             <Material name='bubble-chart' color='#ece9e9' size={80} />
