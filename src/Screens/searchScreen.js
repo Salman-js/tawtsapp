@@ -2,6 +2,8 @@ import { View, Text, ScrollView } from 'react-native';
 import tw from 'twrnc';
 import React, { useState } from 'react';
 import Icon from '@expo/vector-icons/MaterialCommunityIcons';
+import Feather from '@expo/vector-icons/Feather';
+import Material from '@expo/vector-icons/MaterialIcons';
 import {
   Avatar,
   IconButton,
@@ -12,11 +14,74 @@ import { SearchBar } from '@rneui/themed';
 import PostItem from '../Components/postItem';
 import Modal from 'react-native-modal';
 import { useSelector } from 'react-redux';
+import { getTawtsBySearch } from '../api/tawts';
+import { useNavigation, useRoute } from '@react-navigation/native';
+import { useQuery } from '@tanstack/react-query';
+import { useToast } from 'react-native-toast-notifications';
+import { RefreshControl } from 'react-native';
 
-const SearchScreen = ({ navigation }) => {
-  const [searchString, setSearchString] = useState('');
+const SearchScreen = () => {
+  const navigation = useNavigation();
+  const route = useRoute();
+  const toast = useToast(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const { user } = useSelector((state) => state.auth);
+  const searchedTawtsQuery = useQuery({
+    queryKey: ['tawts', 'search', route.params && route.params.searchString],
+    queryFn: () =>
+      route.params && route.params.searchString
+        ? getTawtsBySearch(route.params.searchString)
+        : console.log(''),
+    enabled:
+      route.params && route.params.searchString.trim().length ? true : false,
+    onError: (error) => {
+      console.log('Request: ', error.request);
+      console.log('Response: ', error.response);
+      if (error.response) {
+        if (error.response?.data.token) {
+          toast.show('Session expired, Login required', {
+            icon: <Feather name='alert-circle' size={20} color='white' />,
+            placement: 'bottom',
+            type: 'danger',
+            duration: 4000,
+            style: { marginBottom: 50 },
+            textStyle: { padding: 0 },
+          });
+        }
+        if (error.response.data.unknown) {
+          toast.show('Server error. Please, try again', {
+            icon: <Feather name='alert-circle' size={20} color='white' />,
+            placement: 'bottom',
+            type: 'danger',
+            duration: 4000,
+            style: { marginBottom: 50 },
+            textStyle: { padding: 0 },
+          });
+        }
+      } else if (error.request) {
+        toast.show('Error connecting to the server', {
+          icon: <Feather name='alert-circle' size={20} color='white' />,
+          placement: 'bottom',
+          type: 'danger',
+          duration: 4000,
+          style: { marginBottom: 50 },
+          textStyle: { padding: 0 },
+        });
+      } else {
+        toast.show('Unknown Error. Please, try again', {
+          icon: <Feather name='alert-circle' size={20} color='white' />,
+          placement: 'bottom',
+          type: 'danger',
+          duration: 4000,
+          style: { marginBottom: 50 },
+          textStyle: { padding: 0 },
+        });
+      }
+    },
+    onSuccess: (data) => {
+      console.log(data);
+    },
+  });
   return (
     <View className='h-full flex justify-between items-center bg-[#271b2d] w-full'>
       <Surface
@@ -42,20 +107,36 @@ const SearchScreen = ({ navigation }) => {
             )}
           </Pressable>
         </View>
-        <SearchBar
-          placeholder='Search'
-          platform='ios'
-          containerStyle={tw.style('p-0 bg-transparent', {
+        <Pressable
+          style={tw.style('p-0', {
             width: '75%',
           })}
-          showCancel={false}
-          lightTheme={false}
-          inputContainerStyle={tw.style('p-0 rounded-full pl-2 bg-slate-700')}
-          inputStyle={tw.style('text-gray-300 h-12')}
-          cancelButtonProps={{ style: tw.style('text-gray-300') }}
-          onChangeText={(e) => setSearchString(e)}
-          value={searchString}
-        />
+          onPress={() =>
+            navigation.navigate('Search Input', {
+              searchString:
+                route.params && route.params.searchString
+                  ? route.params.searchString
+                  : '',
+            })
+          }
+        >
+          <SearchBar
+            placeholder='Search'
+            platform='ios'
+            containerStyle={tw.style('w-full p-0 bg-transparent')}
+            showCancel={false}
+            lightTheme={false}
+            inputContainerStyle={tw.style('p-0 rounded-full pl-2 bg-slate-700')}
+            inputStyle={tw.style('text-gray-300 h-12')}
+            cancelButtonProps={{ style: tw.style('text-gray-300') }}
+            disabled
+            value={
+              route.params && route.params.searchString
+                ? route.params.searchString
+                : ''
+            }
+          />
+        </Pressable>
         <IconButton
           icon={(props) => (
             <Icon name='tune-variant' {...props} color='#ece9e9' />
@@ -68,7 +149,30 @@ const SearchScreen = ({ navigation }) => {
         className='w-full'
         contentContainerStyle={tw.style('bg-transparent p-2 pb-16')}
         showsVerticalScrollIndicator={false}
-      ></ScrollView>
+        refreshControl={
+          <RefreshControl
+            progressBackgroundColor='#271b2d'
+            colors={['white']}
+            refreshing={searchedTawtsQuery.isInitialLoading}
+            onRefresh={() => {
+              searchedTawtsQuery.refetch();
+            }}
+          />
+        }
+      >
+        {searchedTawtsQuery.data?.length ? (
+          searchedTawtsQuery.data.map((tawt) => (
+            <PostItem key={tawt.id} item={tawt} />
+          ))
+        ) : (
+          <View className='m-auto flex items-center justify-center mt-12'>
+            <Material name='bubble-chart' color='#ece9e9' size={80} />
+            <Text className='text-xl text-slate-200 mt-2 text-center'>
+              Nothing found
+            </Text>
+          </View>
+        )}
+      </ScrollView>
       <Modal
         isVisible={isModalOpen}
         onSwipeComplete={() => setIsModalOpen(false)}

@@ -14,6 +14,7 @@ import UsersScreen from './usersScreen';
 import IntroScreen from './intro';
 import NewReplyScreen from './newReplyScreen';
 import EditProfileScreen from './editProfileScreen';
+import SearchInputScreen from './searchInputScreen';
 
 const Stack = createStackNavigator();
 export default function AuthStack({ navigation }) {
@@ -82,6 +83,14 @@ export default function AuthStack({ navigation }) {
         component={EditProfileScreen}
         options={{
           headerShown: false,
+        }}
+      />
+      <Stack.Screen
+        name='Search Input'
+        component={SearchInputScreen}
+        options={{
+          headerShown: false,
+          ...TransitionPresets.ModalTransition,
         }}
       />
     </Stack.Navigator>

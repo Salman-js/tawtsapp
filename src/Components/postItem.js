@@ -43,12 +43,36 @@ const PostItem = ({ item }) => {
       });
       queryClient.setQueryData(['tawts'], (oldTawts) => {
         let newTawts = oldTawts;
-        newTawts[newTawts.findIndex((tawt) => tawt.id === item.id)] = {
-          ...newTawts[newTawts.findIndex((tawt) => tawt.id === item.id)],
-          likes:
-            newTawts[newTawts.findIndex((tawt) => tawt.id === item.id)].likes +
-            1,
-        };
+        if (newTawts.findIndex((tawt) => tawt.id === item.id) !== -1) {
+          newTawts[newTawts.findIndex((tawt) => tawt.id === item.id)] = {
+            ...newTawts[newTawts.findIndex((tawt) => tawt.id === item.id)],
+            likes:
+              newTawts[newTawts.findIndex((tawt) => tawt.id === item.id)]
+                .likes + 1,
+          };
+        }
+      });
+      queryClient.setQueryData(['tawts', 'my'], (oldTawts) => {
+        let newTawts = oldTawts;
+        if (newTawts.findIndex((tawt) => tawt.id === item.id) !== -1) {
+          newTawts[newTawts.findIndex((tawt) => tawt.id === item.id)] = {
+            ...newTawts[newTawts.findIndex((tawt) => tawt.id === item.id)],
+            likes:
+              newTawts[newTawts.findIndex((tawt) => tawt.id === item.id)]
+                .likes + 1,
+          };
+        }
+      });
+      queryClient.setQueryData(['tawts', 'user', item.userId], (oldTawts) => {
+        let newTawts = oldTawts;
+        if (newTawts.findIndex((tawt) => tawt.id === item.id) !== -1) {
+          newTawts[newTawts.findIndex((tawt) => tawt.id === item.id)] = {
+            ...newTawts[newTawts.findIndex((tawt) => tawt.id === item.id)],
+            likes:
+              newTawts[newTawts.findIndex((tawt) => tawt.id === item.id)]
+                .likes + 1,
+          };
+        }
       });
     },
     onSuccess: () => {
@@ -65,12 +89,36 @@ const PostItem = ({ item }) => {
       });
       queryClient.setQueryData(['tawts'], (oldTawts) => {
         let newTawts = oldTawts;
-        newTawts[newTawts.findIndex((tawt) => tawt.id === item.id)] = {
-          ...newTawts[newTawts.findIndex((tawt) => tawt.id === item.id)],
-          likes:
-            newTawts[newTawts.findIndex((tawt) => tawt.id === item.id)].likes -
-            1,
-        };
+        if (newTawts.findIndex((tawt) => tawt.id === item.id) !== -1) {
+          newTawts[newTawts.findIndex((tawt) => tawt.id === item.id)] = {
+            ...newTawts[newTawts.findIndex((tawt) => tawt.id === item.id)],
+            likes:
+              newTawts[newTawts.findIndex((tawt) => tawt.id === item.id)]
+                .likes - 1,
+          };
+        }
+      });
+      queryClient.setQueryData(['tawts', 'my'], (oldTawts) => {
+        let newTawts = oldTawts;
+        if (newTawts.findIndex((tawt) => tawt.id === item.id) !== -1) {
+          newTawts[newTawts.findIndex((tawt) => tawt.id === item.id)] = {
+            ...newTawts[newTawts.findIndex((tawt) => tawt.id === item.id)],
+            likes:
+              newTawts[newTawts.findIndex((tawt) => tawt.id === item.id)]
+                .likes - 1,
+          };
+        }
+      });
+      queryClient.setQueryData(['tawts', 'user', item.userId], (oldTawts) => {
+        let newTawts = oldTawts;
+        if (newTawts.findIndex((tawt) => tawt.id === item.id) !== -1) {
+          newTawts[newTawts.findIndex((tawt) => tawt.id === item.id)] = {
+            ...newTawts[newTawts.findIndex((tawt) => tawt.id === item.id)],
+            likes:
+              newTawts[newTawts.findIndex((tawt) => tawt.id === item.id)]
+                .likes - 1,
+          };
+        }
       });
     },
     onError: (err) => {
@@ -98,12 +146,36 @@ const PostItem = ({ item }) => {
       });
       queryClient.setQueryData(['tawts'], (oldTawts) => {
         let newTawts = oldTawts;
-        newTawts[newTawts.findIndex((tawt) => tawt.id === item.id)] = {
-          ...newTawts[newTawts.findIndex((tawt) => tawt.id === item.id)],
-          bookmarks:
-            newTawts[newTawts.findIndex((tawt) => tawt.id === item.id)]
-              .bookmarks + 1,
-        };
+        if (newTawts.findIndex((tawt) => tawt.id === item.id) !== -1) {
+          newTawts[newTawts.findIndex((tawt) => tawt.id === item.id)] = {
+            ...newTawts[newTawts.findIndex((tawt) => tawt.id === item.id)],
+            bookmarks:
+              newTawts[newTawts.findIndex((tawt) => tawt.id === item.id)]
+                .bookmarks + 1,
+          };
+        }
+      });
+      queryClient.setQueryData(['tawts', 'my'], (oldTawts) => {
+        let newTawts = oldTawts;
+        if (newTawts.findIndex((tawt) => tawt.id === item.id) !== -1) {
+          newTawts[newTawts.findIndex((tawt) => tawt.id === item.id)] = {
+            ...newTawts[newTawts.findIndex((tawt) => tawt.id === item.id)],
+            bookmarks:
+              newTawts[newTawts.findIndex((tawt) => tawt.id === item.id)]
+                .bookmarks + 1,
+          };
+        }
+      });
+      queryClient.setQueryData(['tawts', 'user', item.userId], (oldTawts) => {
+        let newTawts = oldTawts;
+        if (newTawts.findIndex((tawt) => tawt.id === item.id) !== -1) {
+          newTawts[newTawts.findIndex((tawt) => tawt.id === item.id)] = {
+            ...newTawts[newTawts.findIndex((tawt) => tawt.id === item.id)],
+            bookmarks:
+              newTawts[newTawts.findIndex((tawt) => tawt.id === item.id)]
+                .bookmarks + 1,
+          };
+        }
       });
     },
     onSuccess: () => {
@@ -120,12 +192,34 @@ const PostItem = ({ item }) => {
       });
       queryClient.setQueryData(['tawts'], (oldTawts) => {
         let newTawts = oldTawts;
+        if (newTawts.findIndex((tawt) => tawt.id === item.id) !== -1) {
+          newTawts[newTawts.findIndex((tawt) => tawt.id === item.id)] = {
+            ...newTawts[newTawts.findIndex((tawt) => tawt.id === item.id)],
+            bookmarks:
+              newTawts[newTawts.findIndex((tawt) => tawt.id === item.id)]
+                .bookmarks - 1,
+          };
+        }
+      });
+      queryClient.setQueryData(['tawts', 'my'], (oldTawts) => {
+        let newTawts = oldTawts;
         newTawts[newTawts.findIndex((tawt) => tawt.id === item.id)] = {
           ...newTawts[newTawts.findIndex((tawt) => tawt.id === item.id)],
           bookmarks:
             newTawts[newTawts.findIndex((tawt) => tawt.id === item.id)]
               .bookmarks - 1,
         };
+      });
+      queryClient.setQueryData(['tawts', 'user', item.userId], (oldTawts) => {
+        let newTawts = oldTawts;
+        if (newTawts.findIndex((tawt) => tawt.id === item.id) !== -1) {
+          newTawts[newTawts.findIndex((tawt) => tawt.id === item.id)] = {
+            ...newTawts[newTawts.findIndex((tawt) => tawt.id === item.id)],
+            bookmarks:
+              newTawts[newTawts.findIndex((tawt) => tawt.id === item.id)]
+                .bookmarks - 1,
+          };
+        }
       });
     },
     onError: (err) => {
@@ -172,7 +266,15 @@ const PostItem = ({ item }) => {
               style={tw.style('flex flex-row justify-start p-1')}
               onPress={() =>
                 navigation.navigate(
-                  item.userHandle === user?.handle ? 'Profile' : 'User'
+                  parseInt(item.userId) === user?.id ? 'Profile' : 'User',
+                  {
+                    userItem: {
+                      id: item.userId,
+                      userName: item.userName,
+                      userAvatar: item.userAvatar,
+                      userHandle: item.userhandle,
+                    },
+                  }
                 )
               }
             >

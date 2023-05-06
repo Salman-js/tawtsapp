@@ -2,6 +2,7 @@ import { View, Text, ScrollView } from 'react-native';
 import tw from 'twrnc';
 import React, { useEffect, useRef, useState } from 'react';
 import {
+  ActivityIndicator,
   Avatar,
   Divider,
   IconButton,
@@ -21,6 +22,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import { register } from '../api/auth';
 import { emptyErrors } from '../../slices/errorSlice';
 import { useToast } from 'react-native-toast-notifications';
+import { checkHandle } from '../api/user';
+import { useMutation } from '@tanstack/react-query';
 
 const SignUpScreen = ({ navigation }) => {
   const scrollView = useRef(null);
@@ -28,14 +31,37 @@ const SignUpScreen = ({ navigation }) => {
   const { user, loading } = useSelector((state) => state.auth);
   const toast = useToast(null);
   const errors = useSelector((state) => state.errors);
+  const [handleSuccess, setHandleSuccess] = useState(false);
+  const [handleError, setHandleError] = useState(null);
   const [signupData, setSignupData] = useState({
     name: '',
     handle: '',
     password: '',
   });
+  const checkHandleMutation = useMutation({
+    mutationFn: checkHandle,
+    onError: (err) => {
+      if (err.response) {
+        setHandleError(err.response.data);
+      }
+    },
+    onSuccess: () => {
+      setHandleError(null);
+      setHandleSuccess(true);
+    },
+  });
   function onSubmit() {
     dispatch(register(signupData));
   }
+  const onCheckHandle = (e) => {
+    setSignupData({
+      ...signupData,
+      handle: e,
+    });
+    if (signupData.handle.trim().length >= 5) {
+      checkHandleMutation.mutate(e);
+    }
+  };
   useEffect(() => {
     if (Object.keys(errors).length !== 0) {
       if (errors.checkhandle) {
@@ -130,17 +156,18 @@ const SignUpScreen = ({ navigation }) => {
                 backgroundColor: '#271b2d',
               })}
               rightIcon={
-                (errors.user || errors.password) && (
+                checkHandleMutation.isLoading ? (
+                  <ActivityIndicator />
+                ) : handleError ||
+                  errors.checkhandle ||
+                  signupData.handle.trim().length < 5 ? (
                   <Icon name='alert-circle' size={24} color='#ea900a' />
+                ) : (
+                  <Icon name='check' size={24} color='#5982db' />
                 )
               }
               value={signupData.handle}
-              onChangeText={(e) =>
-                setSignupData({
-                  ...signupData,
-                  handle: e,
-                })
-              }
+              onChangeText={(e) => onCheckHandle(e)}
               errorStyle={tw.style('hidden')}
               containerStyle={tw.style('mt-3')}
             />
@@ -174,7 +201,9 @@ const SignUpScreen = ({ navigation }) => {
               })}
               disabled={
                 !signupData.name.trim().length ||
-                !signupData.handle.trim().length ||
+                !signupData.handle.trim().length >= 5 ||
+                handleError ||
+                !handleSuccess ||
                 !signupData.password.trim().length
               }
               titleStyle={tw.style('font-bold text-xl')}

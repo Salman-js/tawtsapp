@@ -98,6 +98,20 @@ export const getTawts = async () => {
   return await axios.get(`${URI}/api/post`, config).then((res) => res.data);
 };
 
+// Get tawts by search
+export const getTawtsBySearch = async (searchQuery) => {
+  const config = {
+    headers: {
+      'Content-Type': 'application/json',
+      'x-auth-token': await AsyncStorage.getItem('token'),
+    },
+    timeout: 5000,
+  };
+  return await axios
+    .get(`${URI}/api/post/search/${searchQuery}`, config)
+    .then((res) => res.data);
+};
+
 // Get single tawt
 export const getTawt = async (id) => {
   const config = {
@@ -137,6 +151,20 @@ export const getPostLikes = async (id) => {
   };
   return await axios
     .get(`${URI}/api/post/likes/${id}`, config)
+    .then((res) => res.data);
+};
+
+// Get user tawts
+export const getUserTawts = async (id) => {
+  const config = {
+    headers: {
+      'Content-Type': 'application/json',
+      'x-auth-token': await AsyncStorage.getItem('token'),
+    },
+    timeout: 5000,
+  };
+  return await axios
+    .get(`${URI}/api/post/user/${id}`, config)
     .then((res) => res.data);
 };
 

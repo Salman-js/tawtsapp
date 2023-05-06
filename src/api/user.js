@@ -16,6 +16,34 @@ export const updateProfile = async (updatedData) => {
     .then((res) => res.data);
 };
 
+// get user profile
+export const getUserProfile = async (id) => {
+  const config = {
+    headers: {
+      'Content-Type': 'application/json',
+      'x-auth-token': await AsyncStorage.getItem('token'),
+    },
+    timeout: 5000,
+  };
+  return await axios
+    .get(`${URI}/api/user/profile/${id}`, config)
+    .then((res) => res.data[0]);
+};
+
+// Check handle
+export const checkHandle = async (e) => {
+  const config = {
+    headers: {
+      'Content-Type': 'application/json',
+      'x-auth-token': await AsyncStorage.getItem('token'),
+    },
+    timeout: 5000,
+  };
+  return await axios
+    .get(`${URI}/api/user/check-handle/${e}`, config)
+    .then((res) => res.data);
+};
+
 // Get my followers
 export const getMyFollowers = async () => {
   const config = {
