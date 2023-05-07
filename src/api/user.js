@@ -127,3 +127,17 @@ export const getFollowings = async (id) => {
     .get(`${URI}/api/user/followings/${id}`, config)
     .then((res) => res.data);
 };
+
+// Get users by search
+export const getUsersBySearch = async (searchQuery) => {
+  const config = {
+    headers: {
+      'Content-Type': 'application/json',
+      'x-auth-token': await AsyncStorage.getItem('token'),
+    },
+    timeout: 5000,
+  };
+  return await axios
+    .get(`${URI}/api/user/search/${searchQuery}`, config)
+    .then((res) => res.data);
+};
