@@ -4,6 +4,7 @@ const initialState = {
   user: null,
   loading: false,
   isAuthenticated: null,
+  searchString: '',
 };
 
 export const authSlice = createSlice({
@@ -23,6 +24,9 @@ export const authSlice = createSlice({
     setAuthenticated: (state, action) => {
       state.isAuthenticated = true;
     },
+    setSearch: (state, action) => {
+      state.searchString = action.payload;
+    },
     setLogout: (state, action) => {
       state.isAuthenticated = false;
       state.user = null;
@@ -36,6 +40,7 @@ export const {
   setLoadingFalse,
   setUser,
   setAuthenticated,
+  setSearch,
   setLogout,
 } = authSlice.actions;
 

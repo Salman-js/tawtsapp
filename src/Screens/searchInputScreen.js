@@ -11,12 +11,14 @@ import {
 import { SearchBar } from '@rneui/themed';
 import PostItem from '../Components/postItem';
 import Modal from 'react-native-modal';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { getTawtsBySearch } from '../api/tawts';
 import { useRoute } from '@react-navigation/native';
+import { setSearch } from '../../slices/authSlice';
 
 const SearchInputScreen = ({ navigation }) => {
   const route = useRoute();
+  const dispatch = useDispatch();
   const [searchString, setSearchString] = useState(
     route.params && route.params.searchString ? route.params.searchString : ''
   );
@@ -48,11 +50,10 @@ const SearchInputScreen = ({ navigation }) => {
             showCancel={false}
             lightTheme={false}
             autoFocus
-            onSubmitEditing={() =>
-              navigation.navigate('Search', {
-                searchString,
-              })
-            }
+            onSubmitEditing={() => {
+              dispatch(setSearch(searchString));
+              navigation.navigate('Search');
+            }}
             inputContainerStyle={tw.style('p-0 pl-2 bg-transparent')}
             inputStyle={tw.style('text-gray-300 h-12')}
             cancelButtonProps={{ style: tw.style('hidden') }}

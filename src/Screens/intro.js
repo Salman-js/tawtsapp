@@ -38,10 +38,10 @@ const IntroScreen = ({ navigation }) => {
         >
           <View className='w-5/6 flex flex-col space-y-2 pb-8'>
             <Text className='text-3xl font-bold text-center text-slate-200'>
-              Meet your people
+              Feel the void
             </Text>
             <Text className='text-xl text-center text-slate-300 mb-6'>
-              Just another social media app
+              Just Another Social Media App
             </Text>
             <Button
               title='Get started'

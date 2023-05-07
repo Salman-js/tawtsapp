@@ -9,6 +9,7 @@ import HomeScreen from './homeScreen';
 import SearchScreen from './searchScreen';
 import NotificationsScreen from './notificationsScreen';
 import ProfileScreen from './profileScreen';
+import SearchTabs from './searchNavigator';
 
 const Tab = createBottomTabNavigator();
 
@@ -38,7 +39,7 @@ export default function BottomTab() {
       />
       <Tab.Screen
         name='Search'
-        component={SearchScreen}
+        component={SearchTabs}
         options={{
           tabBarIcon: (props) => (
             <Ionicons name='search-outline' {...props} size={27} />
