@@ -25,6 +25,10 @@ const UsersScreen = ({ route }) => {
   const scrollView = useRef(null);
   const navigation = useNavigation();
   const { type, item } = route.params;
+  const myFollowingsQuery = useQuery({
+    queryKey: ['followings'],
+    queryFn: () => getMyFollowings(),
+  });
   const { data, isLoading, refetch, isInitialLoading } = useQuery({
     queryKey: ['users', type, item.id],
     queryFn: () =>

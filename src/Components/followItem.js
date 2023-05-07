@@ -13,10 +13,6 @@ const FollowItem = ({ id, name }) => {
   const queryClient = useQueryClient();
   const { user } = useSelector((state) => state.auth);
   const [modalVisible, setModalVisible] = useState(false);
-  const myFollowingsQuery = useQuery({
-    queryKey: ['followings'],
-    queryFn: () => getMyFollowings(),
-  });
   const followMutation = useMutation({
     mutationFn: followUser,
     onMutate: () => {
@@ -62,30 +58,38 @@ const FollowItem = ({ id, name }) => {
   }
   return (
     <>
-      {myFollowingsQuery.data.find(
-        (relation) => parseInt(relation.followedId) === parseInt(id)
-      ) ? (
-        <View className='w-1/4 overflow-hidden rounded-full my-auto bg-slate-200'>
-          <Pressable
-            style={tw.style(
-              'w-full py-1 px-2 flex justify-center items-center'
-            )}
-            onPress={() => setModalVisible(true)}
-          >
-            <Text className='text-sm text-[#271b2d] text-left'>Following</Text>
-          </Pressable>
-        </View>
-      ) : (
-        <View className='w-1/4 overflow-hidden border border-slate-200 rounded-full my-auto'>
-          <Pressable
-            style={tw.style(
-              'w-full py-1 px-2 flex justify-center items-center'
-            )}
-            onPress={onFollow}
-          >
-            <Text className='text-sm text-slate-200 text-left'>Follow</Text>
-          </Pressable>
-        </View>
+      {parseInt(id) !== user.id && (
+        <>
+          {queryClient
+            .getQueryData(['followings'])
+            .find(
+              (relation) => parseInt(relation.followedId) === parseInt(id)
+            ) ? (
+            <View className='w-1/4 overflow-hidden rounded-full my-auto bg-slate-200'>
+              <Pressable
+                style={tw.style(
+                  'w-full py-1 px-2 flex justify-center items-center'
+                )}
+                onPress={() => setModalVisible(true)}
+              >
+                <Text className='text-sm text-[#271b2d] text-left'>
+                  Following
+                </Text>
+              </Pressable>
+            </View>
+          ) : (
+            <View className='w-1/4 overflow-hidden border border-slate-200 rounded-full my-auto'>
+              <Pressable
+                style={tw.style(
+                  'w-full py-1 px-2 flex justify-center items-center'
+                )}
+                onPress={onFollow}
+              >
+                <Text className='text-sm text-slate-200 text-left'>Follow</Text>
+              </Pressable>
+            </View>
+          )}
+        </>
       )}
       <Modal
         isVisible={modalVisible}

@@ -12,6 +12,7 @@ import Ionicons from '@expo/vector-icons/Ionicons';
 import AntDesign from '@expo/vector-icons/AntDesign';
 import { useNavigation } from '@react-navigation/native';
 import { useSelector } from 'react-redux';
+import FollowItem from './followItem';
 
 const UserItem = ({ item }) => {
   const { user } = useSelector((state) => state.auth);
@@ -46,19 +47,7 @@ const UserItem = ({ item }) => {
                   @{item.userHandle}
                 </Text>
               </View>
-              {parseInt(item.userId) !== user.id && (
-                <View className='w-1/4 overflow-hidden border border-slate-200 rounded-full my-auto'>
-                  <Pressable
-                    style={tw.style(
-                      'w-full py-1 px-2 flex justify-center items-center'
-                    )}
-                  >
-                    <Text className='text-sm text-slate-200 text-left'>
-                      Follow
-                    </Text>
-                  </Pressable>
-                </View>
-              )}
+              <FollowItem id={item.userId} name={item.userName} />
             </View>
             {item.userBio && (
               <Text className='text-sm text-gray-300 break-words text-left mt-2'>

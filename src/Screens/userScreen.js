@@ -16,7 +16,7 @@ import PostItem from '../Components/postItem';
 import { useRoute } from '@react-navigation/native';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { getMyBookmarks, getUserTawts } from '../api/tawts';
-import { getUserProfile } from '../api/user';
+import { getMyFollowings, getUserProfile } from '../api/user';
 import { useToast } from 'react-native-toast-notifications';
 import { RefreshControl } from 'react-native';
 import UserPostItem from '../Components/Post Items/userPostItem';
@@ -27,6 +27,10 @@ const UserScreen = ({ navigation }) => {
   const route = useRoute();
   const { userItem } = route.params;
   const toast = useToast(null);
+  const myFollowingsQuery = useQuery({
+    queryKey: ['followings'],
+    queryFn: () => getMyFollowings(),
+  });
   const { data, isLoading, refetch, isInitialLoading } = useQuery({
     queryKey: ['user', userItem.id],
     queryFn: () => getUserProfile(userItem.id),
