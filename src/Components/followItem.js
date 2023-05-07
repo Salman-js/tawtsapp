@@ -58,7 +58,7 @@ const FollowItem = ({ id, name }) => {
   }
   return (
     <>
-      {parseInt(id) !== user.id && (
+      {parseInt(id) !== user?.id && (
         <>
           {queryClient
             .getQueryData(['followings'])

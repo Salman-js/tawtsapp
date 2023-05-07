@@ -1,4 +1,4 @@
-import { View, Text, Dimensions, Image, ScrollView } from 'react-native';
+import { View, Text, Image, ScrollView } from 'react-native';
 import React, { useEffect, useRef, useState } from 'react';
 import tw from 'twrnc';
 import { Avatar, Pressable, Surface } from '@react-native-material/core';

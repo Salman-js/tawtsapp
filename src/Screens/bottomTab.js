@@ -6,7 +6,6 @@ import Ionicons from '@expo/vector-icons/Ionicons';
 import SimpleLineIcons from '@expo/vector-icons/SimpleLineIcons';
 import AntDesign from '@expo/vector-icons/AntDesign';
 import HomeScreen from './homeScreen';
-import SearchScreen from './searchScreen';
 import NotificationsScreen from './notificationsScreen';
 import ProfileScreen from './profileScreen';
 import SearchTabs from './searchNavigator';
