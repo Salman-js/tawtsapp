@@ -14,12 +14,13 @@ import AntDesign from '@expo/vector-icons/AntDesign';
 import Feather from '@expo/vector-icons/Feather';
 import PostItem from '../Components/postItem';
 import { useRoute } from '@react-navigation/native';
-import { useQuery } from '@tanstack/react-query';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { getMyBookmarks, getUserTawts } from '../api/tawts';
 import { getUserProfile } from '../api/user';
 import { useToast } from 'react-native-toast-notifications';
 import { RefreshControl } from 'react-native';
 import UserPostItem from '../Components/Post Items/userPostItem';
+import FollowItem from '../Components/followItem';
 
 const UserScreen = ({ navigation }) => {
   const scrollView = useRef(null);
@@ -229,17 +230,10 @@ const UserScreen = ({ navigation }) => {
                   @{!data ? userItem.userHandle : data.userHandle}
                 </Text>
               </View>
-              <View className='w-1/4 overflow-hidden border border-slate-200 rounded-full my-auto'>
-                <Pressable
-                  style={tw.style(
-                    'w-full py-1 px-2 flex justify-center items-center'
-                  )}
-                >
-                  <Text className='text-sm text-slate-200 text-left'>
-                    Follow
-                  </Text>
-                </Pressable>
-              </View>
+              <FollowItem
+                id={userItem.id}
+                name={!data ? userItem.userName : data.userName}
+              />
             </View>
             <Text className='text-sm text-gray-300 break-words text-left mt-3'>
               {data?.bio}

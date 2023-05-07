@@ -11,6 +11,7 @@ import { useQuery } from '@tanstack/react-query';
 import { getMyBookmarks, getMyLikes, getTawts } from '../api/tawts';
 import { RefreshControl } from 'react-native';
 import { useToast } from 'react-native-toast-notifications';
+import { getMyFollowers, getMyFollowings } from '../api/user';
 
 const HomeScreen = ({ navigation }) => {
   const scrollView = useRef(null);
@@ -23,6 +24,14 @@ const HomeScreen = ({ navigation }) => {
   const myBookmarksQuery = useQuery({
     queryKey: ['bookmarks'],
     queryFn: () => getMyBookmarks(),
+  });
+  const myFollowersQuery = useQuery({
+    queryKey: ['followers'],
+    queryFn: () => getMyFollowers(),
+  });
+  const myFollowingsQuery = useQuery({
+    queryKey: ['followings'],
+    queryFn: () => getMyFollowings(),
   });
   const tawtsQuery = useQuery({
     queryKey: ['tawts'],

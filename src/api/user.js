@@ -44,6 +44,34 @@ export const checkHandle = async (e) => {
     .then((res) => res.data);
 };
 
+// Follow user
+export const followUser = async (id) => {
+  const config = {
+    headers: {
+      'Content-Type': 'application/json',
+      'x-auth-token': await AsyncStorage.getItem('token'),
+    },
+    timeout: 5000,
+  };
+  return await axios
+    .post(`${URI}/api/user/follow/${id}`, config)
+    .then((res) => res.data);
+};
+
+// Follow user
+export const unfollowUser = async (id) => {
+  const config = {
+    headers: {
+      'Content-Type': 'application/json',
+      'x-auth-token': await AsyncStorage.getItem('token'),
+    },
+    timeout: 5000,
+  };
+  return await axios
+    .post(`${URI}/api/user/unfollow/${id}`, config)
+    .then((res) => res.data);
+};
+
 // Get my followers
 export const getMyFollowers = async () => {
   const config = {
