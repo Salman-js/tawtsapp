@@ -44,7 +44,7 @@ const PostActionsItem = ({ item }) => {
         let newTawt = oldTawt;
         newTawt = {
           ...newTawt,
-          likes: newTawt.likes + 1,
+          ...(newTawt.likes + 1),
         };
       });
     },
@@ -58,13 +58,15 @@ const PostActionsItem = ({ item }) => {
     mutationFn: unlikeTawt,
     onMutate: (id) => {
       queryClient.setQueryData(['likes'], (oldLikes) => {
-        return oldLikes.filter((liked) => liked.postId !== item.id);
+        return oldLikes.filter(
+          (liked) => parseInt(liked.postId) !== parseInt(item.id)
+        );
       });
       queryClient.setQueryData(['tawts', item.id], (oldTawt) => {
         let newTawt = oldTawt;
         newTawt = {
           ...newTawt,
-          likes: newTawt.likes - 1,
+          ...(newTawt.likes - 1),
         };
       });
     },
@@ -95,7 +97,7 @@ const PostActionsItem = ({ item }) => {
         let newTawt = oldTawt;
         newTawt = {
           ...newTawt,
-          bookmarks: newTawt.bookmarks + 1,
+          ...(newTawt.bookmarks + 1),
         };
       });
     },
@@ -109,13 +111,15 @@ const PostActionsItem = ({ item }) => {
     mutationFn: removeBookmark,
     onMutate: (id) => {
       queryClient.setQueryData(['bookmarks'], (oldLikes) => {
-        return oldLikes.filter((liked) => liked.postId !== item.id);
+        return oldLikes.filter(
+          (liked) => parseInt(liked.postId) !== parseInt(item.id)
+        );
       });
       queryClient.setQueryData(['tawts', item.id], (oldTawt) => {
         let newTawt = oldTawt;
         newTawt = {
           ...newTawt,
-          bookmarks: newTawt.bookmarks - 1,
+          ...(newTawt.bookmarks - 1),
         };
       });
     },

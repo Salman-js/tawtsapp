@@ -124,9 +124,7 @@ const UserScreen = ({ navigation }) => {
         });
       }
     },
-    onSuccess: (data) => {
-      console.log(data);
-    },
+    onSuccess: (data) => {},
   });
   useEffect(() => {
     const scrollToTop = navigation.addListener('tabPress', (e) => {

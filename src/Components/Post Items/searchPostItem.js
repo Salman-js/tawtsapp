@@ -18,7 +18,7 @@ import {
   likeTawt,
   removeBookmark,
   unlikeTawt,
-} from '../api/tawts';
+} from '../../api/tawts';
 
 const SearchPostItem = ({ item, searchString }) => {
   const { user } = useSelector((state) => state.auth);
@@ -34,7 +34,7 @@ const SearchPostItem = ({ item, searchString }) => {
           {
             userId: user.id,
             id: new Date().getTime(),
-            postId: id,
+            postId: item.id,
             createdAt: new Date().getTime(),
           },
         ];
@@ -45,9 +45,8 @@ const SearchPostItem = ({ item, searchString }) => {
           let newTawts = oldTawts;
           newTawts[newTawts.findIndex((tawt) => tawt.id === item.id)] = {
             ...newTawts[newTawts.findIndex((tawt) => tawt.id === item.id)],
-            likes:
-              newTawts[newTawts.findIndex((tawt) => tawt.id === item.id)]
-                .likes + 1,
+            ...(newTawts[newTawts.findIndex((tawt) => tawt.id === item.id)]
+              .likes + 1),
           };
         }
       );
@@ -64,7 +63,9 @@ const SearchPostItem = ({ item, searchString }) => {
     mutationFn: unlikeTawt,
     onMutate: (id) => {
       queryClient.setQueryData(['likes'], (oldLikes) => {
-        return oldLikes.filter((liked) => liked.postId !== id);
+        return oldLikes.filter(
+          (liked) => parseInt(liked.postId) !== parseInt(item.id)
+        );
       });
       queryClient.setQueryData(
         ['tawts', 'search', searchString],
@@ -72,9 +73,8 @@ const SearchPostItem = ({ item, searchString }) => {
           let newTawts = oldTawts;
           newTawts[newTawts.findIndex((tawt) => tawt.id === item.id)] = {
             ...newTawts[newTawts.findIndex((tawt) => tawt.id === item.id)],
-            likes:
-              newTawts[newTawts.findIndex((tawt) => tawt.id === item.id)]
-                .likes - 1,
+            ...(newTawts[newTawts.findIndex((tawt) => tawt.id === item.id)]
+              .likes - 1),
           };
         }
       );
@@ -100,7 +100,7 @@ const SearchPostItem = ({ item, searchString }) => {
           {
             userId: user.id,
             id: new Date().getTime(),
-            postId: id,
+            postId: item.id,
             createdAt: new Date().getTime(),
           },
         ];
@@ -111,9 +111,8 @@ const SearchPostItem = ({ item, searchString }) => {
           let newTawts = oldTawts;
           newTawts[newTawts.findIndex((tawt) => tawt.id === item.id)] = {
             ...newTawts[newTawts.findIndex((tawt) => tawt.id === item.id)],
-            bookmarks:
-              newTawts[newTawts.findIndex((tawt) => tawt.id === item.id)]
-                .bookmarks + 1,
+            ...(newTawts[newTawts.findIndex((tawt) => tawt.id === item.id)]
+              .bookmarks + 1),
           };
         }
       );
@@ -131,7 +130,9 @@ const SearchPostItem = ({ item, searchString }) => {
     mutationFn: removeBookmark,
     onMutate: (id) => {
       queryClient.setQueryData(['bookmarks'], (oldLikes) => {
-        return oldLikes.filter((liked) => liked.postId !== id);
+        return oldLikes.filter(
+          (liked) => parseInt(liked.postId) !== parseInt(item.id)
+        );
       });
       queryClient.setQueryData(
         ['tawts', 'search', searchString],
@@ -139,9 +140,8 @@ const SearchPostItem = ({ item, searchString }) => {
           let newTawts = oldTawts;
           newTawts[newTawts.findIndex((tawt) => tawt.id === item.id)] = {
             ...newTawts[newTawts.findIndex((tawt) => tawt.id === item.id)],
-            bookmarks:
-              newTawts[newTawts.findIndex((tawt) => tawt.id === item.id)]
-                .bookmarks - 1,
+            ...(newTawts[newTawts.findIndex((tawt) => tawt.id === item.id)]
+              .bookmarks - 1),
           };
         }
       );
@@ -189,7 +189,22 @@ const SearchPostItem = ({ item, searchString }) => {
       >
         <View className='w-full flex flex-row justify-between items-center'>
           <View className='overflow-hidden rounded-xl'>
-            <Pressable style={tw.style('flex flex-row justify-start p-1')}>
+            <Pressable
+              style={tw.style('flex flex-row justify-start p-1')}
+              onPress={() =>
+                navigation.navigate(
+                  parseInt(item.userId) === user?.id ? 'Profile' : 'User',
+                  {
+                    userItem: {
+                      id: item.userId,
+                      userName: item.userName,
+                      userAvatar: item.userAvatar,
+                      userHandle: item.userhandle,
+                    },
+                  }
+                )
+              }
+            >
               {item.userAvatar ? (
                 <Avatar
                   image={{ uri: 'https://mui.com/static/images/avatar/1.jpg' }}
