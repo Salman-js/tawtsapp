@@ -2,8 +2,10 @@ import { View, Text, ScrollView } from 'react-native';
 import tw from 'twrnc';
 import React, { useEffect, useRef } from 'react';
 import { Avatar, Pressable, Surface } from '@react-native-material/core';
-import NotificationItem from '../Components/notificationItem';
+import LikeNotificationItem from '../Components/likeNotificationItem';
 import { useSelector } from 'react-redux';
+import ReplyNotificationItem from '../Components/replyNotificationItem';
+import FollowNotificationItem from '../Components/followNotificationItem';
 
 const NotificationsScreen = ({ navigation }) => {
   const scrollView = useRef(null);
@@ -51,32 +53,22 @@ const NotificationsScreen = ({ navigation }) => {
         <Text className='text-2xl font-bold text-slate-200 my-auto mb-3 pl-3'>
           Today
         </Text>
-        <NotificationItem type='like' />
-        <NotificationItem type='follow' />
-        <NotificationItem type='comment' />
-        <NotificationItem type='retweet' />
+        <LikeNotificationItem type='like' />
+        <LikeNotificationItem type='follow' />
+        <ReplyNotificationItem type='comment' />
+        <FollowNotificationItem type='retweet' />
         <Text className='text-2xl font-bold text-slate-200 my-auto mb-3 pl-3'>
           Yesterday
         </Text>
-        <NotificationItem type='like' />
-        <NotificationItem type='follow' />
-        <NotificationItem type='comment' />
-        <NotificationItem type='retweet' />
+        <LikeNotificationItem type='comment' />
+        <LikeNotificationItem type='retweet' />
         <Text className='text-2xl font-bold text-slate-200 my-auto mb-3 pl-3'>
           Older
         </Text>
-        <NotificationItem type='like' />
-        <NotificationItem type='follow' />
-        <NotificationItem type='comment' />
-        <NotificationItem type='retweet' />
-        <NotificationItem type='follow' />
-        <NotificationItem type='comment' />
-        <NotificationItem type='follow' />
-        <NotificationItem type='comment' />
-        <NotificationItem type='follow' />
-        <NotificationItem type='comment' />
-        <NotificationItem type='follow' />
-        <NotificationItem type='comment' />
+        <LikeNotificationItem type='comment' />
+        <LikeNotificationItem type='retweet' />
+        <LikeNotificationItem type='comment' />
+        <LikeNotificationItem type='retweet' />
       </ScrollView>
     </View>
   );
