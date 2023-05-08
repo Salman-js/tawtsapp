@@ -2,10 +2,10 @@ import { View, Text, ScrollView } from 'react-native';
 import tw from 'twrnc';
 import React, { useEffect, useRef } from 'react';
 import { Avatar, Pressable, Surface } from '@react-native-material/core';
-import LikeNotificationItem from '../Components/likeNotificationItem';
+import LikeNotificationItem from '../Components/Notification Components/likeNotificationItem';
 import { useSelector } from 'react-redux';
-import ReplyNotificationItem from '../Components/replyNotificationItem';
-import FollowNotificationItem from '../Components/followNotificationItem';
+import ReplyNotificationItem from '../Components/Notification Components/replyNotificationItem';
+import FollowNotificationItem from '../Components/Notification Components/followNotificationItem';
 
 const NotificationsScreen = ({ navigation }) => {
   const scrollView = useRef(null);

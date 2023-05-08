@@ -2,7 +2,7 @@ import { View, Text } from 'react-native';
 import tw from 'twrnc';
 import React from 'react';
 import { Avatar, Pressable, Surface } from '@react-native-material/core';
-import FollowItem from './followItem';
+import FollowItem from '../followItem';
 
 const FollowNotificationItem = ({ item }) => {
   return (
