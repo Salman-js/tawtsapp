@@ -6,10 +6,16 @@ import LikeNotificationItem from '../Components/Notification Components/likeNoti
 import { useSelector } from 'react-redux';
 import ReplyNotificationItem from '../Components/Notification Components/replyNotificationItem';
 import FollowNotificationItem from '../Components/Notification Components/followNotificationItem';
+import { useQuery } from '@tanstack/react-query';
+import { getMyFollowings } from '../api/user';
 
 const NotificationsScreen = ({ navigation }) => {
   const scrollView = useRef(null);
   const { user } = useSelector((state) => state.auth);
+  const myFollowingsQuery = useQuery({
+    queryKey: ['followings'],
+    queryFn: () => getMyFollowings(),
+  });
   useEffect(() => {
     const scrollToTop = navigation.addListener('tabPress', (e) => {
       scrollView.current.scrollTo({ x: 5, y: 5, animated: true });
