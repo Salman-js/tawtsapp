@@ -14,13 +14,13 @@ const ReplyNotificationItem = ({ item }) => {
         />
         <View className='ml-2'>
           <Text className='text-base text-gray-100 break-words'>
-            <Text className='font-bold'>Jhon Doe </Text>
+            <Text className='font-bold'>{item.userName}</Text>
             replied to your tawt.
           </Text>
           <Text className='text-xs font-light text-gray-300'>1 hour ago</Text>
           <View className='mt-4 w-5/6'>
             <Text className='text-sm text-slate-200 w-full break-words'>
-              This is the first reply
+              {item.reply}
             </Text>
           </View>
         </View>

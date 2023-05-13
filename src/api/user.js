@@ -141,3 +141,44 @@ export const getUsersBySearch = async (searchQuery) => {
     .get(`${URI}/api/user/search/${searchQuery}`, config)
     .then((res) => res.data);
 };
+
+// Get Notifications
+export const getNotifications = async () => {
+  const config = {
+    headers: {
+      'Content-Type': 'application/json',
+      'x-auth-token': await AsyncStorage.getItem('token'),
+    },
+    timeout: 5000,
+  };
+  return await axios
+    .get(`${URI}/api/user/notifications`, config)
+    .then((res) => res.data);
+};
+
+export function isToday(date) {
+  const now = new Date();
+  return (
+    date.getDate() === now.getDate() &&
+    date.getMonth() === now.getMonth() &&
+    date.getFullYear() === now.getFullYear()
+  );
+}
+
+export function isYesterday(date) {
+  const now = new Date();
+  return (
+    date.getDate() === now.getDate() - 1 &&
+    date.getMonth() === now.getMonth() &&
+    date.getFullYear() === now.getFullYear()
+  );
+}
+
+export function isOlder(date) {
+  const now = new Date();
+  return (
+    date.getDate() < now.getDate() - 1 &&
+    date.getMonth() === now.getMonth() &&
+    date.getFullYear() === now.getFullYear()
+  );
+}

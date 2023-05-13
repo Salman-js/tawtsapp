@@ -1,20 +1,81 @@
-import { View, Text, ScrollView } from 'react-native';
+import { View, Text, ScrollView, RefreshControl } from 'react-native';
 import tw from 'twrnc';
 import React, { useEffect, useRef } from 'react';
 import { Avatar, Pressable, Surface } from '@react-native-material/core';
 import LikeNotificationItem from '../Components/Notification Components/likeNotificationItem';
+import Material from '@expo/vector-icons/MaterialIcons';
+import Feather from '@expo/vector-icons/Feather';
 import { useSelector } from 'react-redux';
 import ReplyNotificationItem from '../Components/Notification Components/replyNotificationItem';
 import FollowNotificationItem from '../Components/Notification Components/followNotificationItem';
 import { useQuery } from '@tanstack/react-query';
-import { getMyFollowings } from '../api/user';
+import {
+  getMyFollowings,
+  getNotifications,
+  isOlder,
+  isToday,
+  isYesterday,
+} from '../api/user';
+import { useToast } from 'react-native-toast-notifications';
 
 const NotificationsScreen = ({ navigation }) => {
   const scrollView = useRef(null);
   const { user } = useSelector((state) => state.auth);
+  const toast = useToast(null);
   const myFollowingsQuery = useQuery({
     queryKey: ['followings'],
     queryFn: () => getMyFollowings(),
+  });
+  const { data, isLoading, refetch, isInitialLoading } = useQuery({
+    queryKey: ['notifications'],
+    queryFn: () => getNotifications(),
+    onError: (error) => {
+      console.log('Request: ', error.request);
+      console.log('Response: ', error.response);
+      if (error.response) {
+        if (error.response?.data.token) {
+          toast.show('Session expired, Login required', {
+            icon: <Feather name='alert-circle' size={20} color='white' />,
+            placement: 'bottom',
+            type: 'danger',
+            duration: 4000,
+            style: { marginBottom: 50 },
+            textStyle: { padding: 0 },
+          });
+        }
+        if (error.response.data.unknown) {
+          toast.show('Server error. Please, try again', {
+            icon: <Feather name='alert-circle' size={20} color='white' />,
+            placement: 'bottom',
+            type: 'danger',
+            duration: 4000,
+            style: { marginBottom: 50 },
+            textStyle: { padding: 0 },
+          });
+        }
+      } else if (error.request) {
+        toast.show('Error connecting to the server', {
+          icon: <Feather name='alert-circle' size={20} color='white' />,
+          placement: 'bottom',
+          type: 'danger',
+          duration: 4000,
+          style: { marginBottom: 50 },
+          textStyle: { padding: 0 },
+        });
+      } else {
+        toast.show('Unknown Error. Please, try again', {
+          icon: <Feather name='alert-circle' size={20} color='white' />,
+          placement: 'bottom',
+          type: 'danger',
+          duration: 4000,
+          style: { marginBottom: 50 },
+          textStyle: { padding: 0 },
+        });
+      }
+    },
+    onSuccess: (data) => {
+      console.log(data);
+    },
   });
   useEffect(() => {
     const scrollToTop = navigation.addListener('tabPress', (e) => {
@@ -55,26 +116,72 @@ const NotificationsScreen = ({ navigation }) => {
         contentContainerStyle={tw.style('bg-transparent p-2 pb-16')}
         showsVerticalScrollIndicator={false}
         ref={scrollView}
+        refreshControl={
+          <RefreshControl
+            refreshing={isInitialLoading}
+            onRefresh={() => {
+              refetch();
+            }}
+          />
+        }
       >
-        <Text className='text-2xl font-bold text-slate-200 my-auto mb-3 pl-3'>
-          Today
-        </Text>
-        <LikeNotificationItem type='like' />
-        <LikeNotificationItem type='follow' />
-        <ReplyNotificationItem type='comment' />
-        <FollowNotificationItem type='retweet' />
-        <Text className='text-2xl font-bold text-slate-200 my-auto mb-3 pl-3'>
-          Yesterday
-        </Text>
-        <LikeNotificationItem type='comment' />
-        <LikeNotificationItem type='retweet' />
-        <Text className='text-2xl font-bold text-slate-200 my-auto mb-3 pl-3'>
-          Older
-        </Text>
-        <LikeNotificationItem type='comment' />
-        <LikeNotificationItem type='retweet' />
-        <LikeNotificationItem type='comment' />
-        <LikeNotificationItem type='retweet' />
+        {data &&
+        data.filter((item) => isToday(new Date(item.createdAt))).length ? (
+          <View className='w-full'>
+            <Text className='text-2xl font-bold text-slate-200 my-auto mb-3 pl-3'>
+              Today
+            </Text>
+            {data
+              .filter((item) => isToday(new Date(item.createdAt)))
+              .map((item) => {
+                if (item.actionType === 'like') {
+                  return <LikeNotificationItem item={item} key={item.id} />;
+                } else if (item.actionType === 'follow') {
+                  return <FollowNotificationItem item={item} key={item.id} />;
+                } else {
+                  return <ReplyNotificationItem item={item} key={item.id} />;
+                }
+              })}
+          </View>
+        ) : null}
+        {data &&
+        data.filter((item) => isYesterday(new Date(item.createdAt))).length ? (
+          <View className='w-full'>
+            <Text className='text-2xl font-bold text-slate-200 my-auto mb-3 pl-3'>
+              Yesterday
+            </Text>
+            {data
+              .filter((item) => isYesterday(new Date(item.createdAt)))
+              .map((item) => {
+                if (item.actionType === 'like') {
+                  return <LikeNotificationItem item={item} key={item.id} />;
+                } else if (item.actionType === 'follow') {
+                  return <FollowNotificationItem item={item} key={item.id} />;
+                } else {
+                  return <ReplyNotificationItem item={item} key={item.id} />;
+                }
+              })}
+          </View>
+        ) : null}
+        {data &&
+        data.filter((item) => isOlder(new Date(item.createdAt))).length ? (
+          <View className='w-full'>
+            <Text className='text-2xl font-bold text-slate-200 my-auto mb-3 pl-3'>
+              Older
+            </Text>
+            {data
+              .filter((item) => isOlder(new Date(item.createdAt)))
+              .map((item) => {
+                if (item.actionType === 'like') {
+                  return <LikeNotificationItem item={item} key={item.id} />;
+                } else if (item.actionType === 'follow') {
+                  return <FollowNotificationItem item={item} key={item.id} />;
+                } else {
+                  return <ReplyNotificationItem item={item} key={item.id} />;
+                }
+              })}
+          </View>
+        ) : null}
       </ScrollView>
     </View>
   );

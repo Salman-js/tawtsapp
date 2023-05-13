@@ -15,7 +15,7 @@ const FollowNotificationItem = ({ item }) => {
         />
         <View className='w-11/12 pr-3 ml-2'>
           <Text className='text-base text-gray-100 break-words'>
-            <Text className='font-bold'>Jhon Doe </Text>
+            <Text className='font-bold'>{item.userName}</Text>
             started following you.
           </Text>
           <Text className='text-xs font-light text-gray-300'>1 hour ago</Text>
@@ -34,19 +34,18 @@ const FollowNotificationItem = ({ item }) => {
                 <View className='flex flex-row justify-between pr-3'>
                   <View>
                     <Text className='text-base text-gray-100 font-bold'>
-                      Salman M.
+                      {item.userName}.
                     </Text>
                     <Text className='text-sm text-gray-400 text-left'>
-                      @handle
+                      @{item.handle}
                     </Text>
                   </View>
                 </View>
               </View>
-              <FollowItem id={2} name='Salman M.' />
+              <FollowItem id={item.userId} name={item.userName} />
             </View>
             <Text className='text-sm text-gray-300 break-words text-left mt-3'>
-              Lorem ipsum, dolor sit amet consectetur adipisicing elit. Illo,
-              nesciunt!
+              {item.userBio}
             </Text>
           </Surface>
         </View>
