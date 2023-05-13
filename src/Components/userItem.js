@@ -14,7 +14,7 @@ import { useNavigation } from '@react-navigation/native';
 import { useSelector } from 'react-redux';
 import FollowItem from './followItem';
 
-const UserItem = ({ item }) => {
+const UserItem = ({ item, type }) => {
   const { user } = useSelector((state) => state.auth);
   const navigation = useNavigation();
   return (
@@ -26,7 +26,21 @@ const UserItem = ({ item }) => {
     >
       <Pressable
         style={tw.style('w-full p-4 pt-2')}
-        onPress={() => navigation.navigate('User')}
+        onPress={() =>
+          navigation.navigate('User', {
+            userItem: {
+              id:
+                type === 'likes'
+                  ? item.userId
+                  : type === 'followers' || type === 'Followers'
+                  ? item.followerId
+                  : item.followingId,
+              userName: item.userName,
+              userHandle: item.userHandle,
+              bio: item.userBio,
+            },
+          })
+        }
       >
         <View className='w-full flex flex-row space-x-1'>
           {item.userAvatar ? (

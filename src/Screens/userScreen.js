@@ -26,6 +26,7 @@ const UserScreen = ({ navigation }) => {
   const scrollView = useRef(null);
   const route = useRoute();
   const { userItem } = route.params;
+  console.log(userItem);
   const toast = useToast(null);
   const myFollowingsQuery = useQuery({
     queryKey: ['followings'],
@@ -243,28 +244,32 @@ const UserScreen = ({ navigation }) => {
               {data?.bio}
             </Text>
             <View className='w-full flex flex-row justify-start space-x-10 mt-3'>
-              <View className='flex flex-row space-x-1'>
-                <Ionicons
-                  name='location-outline'
-                  color='#6d829f'
-                  size={15}
-                  style={tw.style('my-auto')}
-                />
-                <Text className='text-sm text-gray-300 break-words text-left'>
-                  {data?.location}
-                </Text>
-              </View>
-              <View className='flex flex-row space-x-1'>
-                <AntDesign
-                  name='link'
-                  color='#6d829f'
-                  size={15}
-                  style={tw.style('my-auto')}
-                />
-                <Text className='text-sm text-blue-300 break-words text-left'>
-                  {data?.website}
-                </Text>
-              </View>
+              {data?.location && (
+                <View className='flex flex-row space-x-1'>
+                  <Ionicons
+                    name='location-outline'
+                    color='#6d829f'
+                    size={15}
+                    style={tw.style('my-auto')}
+                  />
+                  <Text className='text-sm text-gray-300 break-words text-left'>
+                    {data?.location}
+                  </Text>
+                </View>
+              )}
+              {data?.website && (
+                <View className='flex flex-row space-x-1'>
+                  <AntDesign
+                    name='link'
+                    color='#6d829f'
+                    size={15}
+                    style={tw.style('my-auto')}
+                  />
+                  <Text className='text-sm text-blue-300 break-words text-left'>
+                    {data?.website}
+                  </Text>
+                </View>
+              )}
             </View>
           </View>
         </Surface>

@@ -15,8 +15,6 @@ const LikeNotificationItem = ({ item }) => {
           navigation.navigate('Post', {
             item: {
               id: item.postId,
-              userId: item.userId,
-              body: item.postBody,
             },
           })
         }

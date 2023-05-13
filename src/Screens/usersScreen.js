@@ -85,6 +85,9 @@ const UsersScreen = ({ route }) => {
         });
       }
     },
+    onSuccess: (data) => {
+      console.log(data);
+    },
   });
   useEffect(() => {
     const scrollToTop = navigation.addListener('tabPress', (e) => {
@@ -116,7 +119,7 @@ const UsersScreen = ({ route }) => {
         ref={scrollView}
       >
         {data?.length ? (
-          data.map((user) => <UserItem key={user.id} item={user} />)
+          data.map((user) => <UserItem key={user.id} item={user} type={type} />)
         ) : (
           <View className='m-auto flex items-center justify-center mt-12'>
             <Material name='bubble-chart' color='#ece9e9' size={80} />

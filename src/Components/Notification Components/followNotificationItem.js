@@ -3,11 +3,23 @@ import tw from 'twrnc';
 import React from 'react';
 import { Avatar, Pressable, Surface } from '@react-native-material/core';
 import FollowItem from '../followItem';
+import { useNavigation } from '@react-navigation/native';
 
 const FollowNotificationItem = ({ item }) => {
+  const navigation = useNavigation();
   return (
     <View className='rounded-2xl w-full overflow-hidden bg-[#32283c] mb-2'>
-      <Pressable style={tw.style('w-full p-4 flex flex-row')}>
+      <Pressable
+        style={tw.style('w-full p-4 flex flex-row')}
+        onPress={() =>
+          navigation.navigate('User', {
+            userItem: {
+              ...item,
+              id: item.userId,
+            },
+          })
+        }
+      >
         <Avatar
           image={{ uri: 'https://mui.com/static/images/avatar/1.jpg' }}
           size={33}
@@ -37,7 +49,7 @@ const FollowNotificationItem = ({ item }) => {
                       {item.userName}.
                     </Text>
                     <Text className='text-sm text-gray-400 text-left'>
-                      @{item.handle}
+                      @{item.userHandle}
                     </Text>
                   </View>
                 </View>

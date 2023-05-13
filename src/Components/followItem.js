@@ -30,6 +30,7 @@ const FollowItem = ({ id, name }) => {
     },
     onSuccess: () => {
       queryClient.invalidateQueries(['followings'], { exact: true });
+      queryClient.invalidateQueries(['user', id], { exact: true });
     },
   });
   const unfollowMutation = useMutation({
@@ -46,6 +47,7 @@ const FollowItem = ({ id, name }) => {
     },
     onSuccess: () => {
       queryClient.invalidateQueries(['followings'], { exact: true });
+      queryClient.invalidateQueries(['user', id], { exact: true });
     },
   });
   function onFollow() {

@@ -25,6 +25,7 @@ const PostScreen = ({ route }) => {
   const navigation = useNavigation();
   const { user } = useSelector((state) => state.auth);
   const { item } = route.params;
+  console.log(item);
   const toast = useToast(null);
   const { data, isLoading, refetch, isInitialLoading } = useQuery({
     queryKey: ['tawts', item.id],
@@ -72,6 +73,9 @@ const PostScreen = ({ route }) => {
           textStyle: { padding: 0 },
         });
       }
+    },
+    onSuccess: (data) => {
+      console.log(data);
     },
   });
   const repliesQuery = useQuery({
@@ -121,7 +125,9 @@ const PostScreen = ({ route }) => {
                 style={tw.style('flex flex-row justify-start p-1')}
                 onPress={() =>
                   navigation.navigate(
-                    item.userHandle === user?.handle ? 'Profile' : 'User'
+                    parseint(item.userId) === parseInt(user?.id)
+                      ? 'Profile'
+                      : 'User'
                   )
                 }
               >
@@ -137,7 +143,7 @@ const PostScreen = ({ route }) => {
                   />
                 ) : (
                   <Avatar
-                    label={item.userName}
+                    label={data.userName}
                     size={38}
                     style={tw.style('my-auto')}
                   />
@@ -155,7 +161,7 @@ const PostScreen = ({ route }) => {
                     </Text>
                   </View>
                   <Text className='text-xs font-light text-gray-300'>
-                    {ago(new Date(item.createdAt))}
+                    {data && ago(new Date(data.createdAt))}
                   </Text>
                 </View>
               </Pressable>
@@ -169,13 +175,13 @@ const PostScreen = ({ route }) => {
           </View>
           <View className='w-full mt-2'>
             <Text className='text-sm text-gray-100 break-words'>
-              {item.body}
+              {data && data.body}
             </Text>
             <View className='w-full flex flex-row justify-start space-x-2 mt-3'>
               <Text className='my-auto text-base text-gray-100 break-words'>
                 {!data ? item.bookmarks : data.bookmarks}{' '}
                 <Text className='font-bold'>
-                  Bookmark{item.bookmarks > 1 && 's'}
+                  Bookmark{data && data.bookmarks > 1 && 's'}
                 </Text>
               </Text>
               <Pressable
@@ -189,7 +195,9 @@ const PostScreen = ({ route }) => {
               >
                 <Text className='text-base text-gray-100 break-words'>
                   {!data ? item.likes : data.likes}{' '}
-                  <Text className='font-bold'>Like{item.likes > 1 && 's'}</Text>
+                  <Text className='font-bold'>
+                    Like{data && data.likes > 1 && 's'}
+                  </Text>
                 </Text>
               </Pressable>
             </View>
