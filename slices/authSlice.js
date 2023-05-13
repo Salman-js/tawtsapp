@@ -30,6 +30,7 @@ export const authSlice = createSlice({
     setLogout: (state, action) => {
       state.isAuthenticated = false;
       state.user = null;
+      state.searchString = '';
       state.loading = false;
     },
   },

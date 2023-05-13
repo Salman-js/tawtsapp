@@ -26,21 +26,29 @@ const UserItem = ({ item, type }) => {
     >
       <Pressable
         style={tw.style('w-full p-4 pt-2')}
-        onPress={() =>
-          navigation.navigate('User', {
-            userItem: {
-              id:
-                type === 'likes'
-                  ? item.userId
-                  : type === 'followers' || type === 'Followers'
-                  ? item.followerId
-                  : item.followingId,
-              userName: item.userName,
-              userHandle: item.userHandle,
-              bio: item.userBio,
-            },
-          })
-        }
+        onPress={() => {
+          if (
+            parseInt(item.userId) === user.id ||
+            parseInt(item.followerId) === user.id ||
+            parseInt(item.followedId) === user.id
+          ) {
+            navigation.navigate('Profile');
+          } else {
+            navigation.navigate('User', {
+              userItem: {
+                id:
+                  type === 'likes'
+                    ? item.userId
+                    : type === 'followers' || type === 'Followers'
+                    ? item.followerId
+                    : item.followedId,
+                userName: item.userName,
+                userHandle: item.userHandle,
+                bio: item.userBio,
+              },
+            });
+          }
+        }}
       >
         <View className='w-full flex flex-row space-x-1'>
           {item.userAvatar ? (
@@ -61,7 +69,16 @@ const UserItem = ({ item, type }) => {
                   @{item.userHandle}
                 </Text>
               </View>
-              <FollowItem id={item.userId} name={item.userName} />
+              <FollowItem
+                id={
+                  type === 'likes'
+                    ? item.userId
+                    : type === 'followers' || type === 'Followers'
+                    ? item.followerId
+                    : item.followedId
+                }
+                name={item.userName}
+              />
             </View>
             {item.userBio && (
               <Text className='text-sm text-gray-300 break-words text-left mt-2'>

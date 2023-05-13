@@ -110,7 +110,7 @@ export const getFollowers = async (id) => {
     timeout: 5000,
   };
   return await axios
-    .get(`${URI}/api/user/followers/:id`, config)
+    .get(`${URI}/api/user/followers/${id}`, config)
     .then((res) => res.data);
 };
 

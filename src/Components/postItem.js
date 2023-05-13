@@ -198,7 +198,9 @@ const PostItem = ({ item }) => {
               )}
               <View className='ml-2'>
                 <View className='flex flex-row space-x-1'>
-                  <Text className='font-bold text-gray-200'>Salman M.</Text>
+                  <Text className='font-bold text-gray-200'>
+                    {item.userName}
+                  </Text>
                   <Text
                     className='text-sm text-gray-400 text-left'
                     numberOfLines={1}

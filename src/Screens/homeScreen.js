@@ -6,16 +6,18 @@ import PostItem from '../Components/postItem';
 import { FAB } from 'react-native-paper';
 import Material from '@expo/vector-icons/MaterialIcons';
 import Feather from '@expo/vector-icons/Feather';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useQuery } from '@tanstack/react-query';
 import { getMyBookmarks, getMyLikes, getTawts } from '../api/tawts';
 import { RefreshControl } from 'react-native';
 import { useToast } from 'react-native-toast-notifications';
 import { getMyFollowers, getMyFollowings } from '../api/user';
+import { setSearch } from '../../slices/authSlice';
 
 const HomeScreen = ({ navigation }) => {
   const scrollView = useRef(null);
   const { user } = useSelector((state) => state.auth);
+  const dispatch = useDispatch();
   const toast = useToast(null);
   const myLikesQuery = useQuery({
     queryKey: ['likes'],
@@ -83,7 +85,8 @@ const HomeScreen = ({ navigation }) => {
   });
   useEffect(() => {
     const scrollToTop = navigation.addListener('tabPress', (e) => {
-      scrollView.current.scrollTo({ x: 5, y: 5, animated: true });
+      scrollView.current?.scrollTo({ x: 5, y: 5, animated: true });
+      dispatch(setSearch(''));
     });
   }, []);
   useEffect(() => {
