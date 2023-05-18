@@ -19,6 +19,7 @@ import {
 } from '../api/user';
 import { useToast } from 'react-native-toast-notifications';
 import { setUser } from '../../slices/authSlice';
+import { useLayoutEffect } from 'react';
 
 const NotificationsScreen = ({ navigation }) => {
   const scrollView = useRef(null);
@@ -77,23 +78,29 @@ const NotificationsScreen = ({ navigation }) => {
         });
       }
     },
-    onSuccess: (data) => {
-      updateNotificationCheckTime.mutate();
-    },
+    onSuccess: (data) => {},
   });
   const updateNotificationCheckTime = useMutation({
     mutationFn: updateNotifCheckTime,
     onSuccess: () => {
       queryClient.invalidateQueries(['notifications'], { exact: true });
       let updatedUser = user;
-      user.lastNotificationCheckTime = new Date().getTime();
-      dispatch(setUser(updatedUser));
+      if (updatedUser) {
+        updatedUser.lastNotificationCheckTime = new Date().getTime();
+        dispatch(setUser(updatedUser));
+        console.log(user);
+      }
     },
   });
   useEffect(() => {
     const scrollToTop = navigation.addListener('tabPress', (e) => {
       scrollView.current.scrollTo({ x: 5, y: 5, animated: true });
     });
+  }, []);
+  useLayoutEffect(() => {
+    setTimeout(() => {
+      updateNotificationCheckTime.mutate();
+    }, 5000);
   }, []);
   return (
     <View className='h-full flex justify-between items-center bg-[#271b2d] w-full'>
