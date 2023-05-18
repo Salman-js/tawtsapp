@@ -5,23 +5,27 @@ import { Avatar, Pressable, Surface } from '@react-native-material/core';
 import LikeNotificationItem from '../Components/Notification Components/likeNotificationItem';
 import Material from '@expo/vector-icons/MaterialIcons';
 import Feather from '@expo/vector-icons/Feather';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import ReplyNotificationItem from '../Components/Notification Components/replyNotificationItem';
 import FollowNotificationItem from '../Components/Notification Components/followNotificationItem';
-import { useQuery } from '@tanstack/react-query';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import {
   getMyFollowings,
   getNotifications,
   isOlder,
   isToday,
   isYesterday,
+  updateNotifCheckTime,
 } from '../api/user';
 import { useToast } from 'react-native-toast-notifications';
+import { setUser } from '../../slices/authSlice';
 
 const NotificationsScreen = ({ navigation }) => {
   const scrollView = useRef(null);
   const { user } = useSelector((state) => state.auth);
   const toast = useToast(null);
+  const dispatch = useDispatch();
+  const queryClient = useQueryClient();
   const myFollowingsQuery = useQuery({
     queryKey: ['followings'],
     queryFn: () => getMyFollowings(),
@@ -74,7 +78,16 @@ const NotificationsScreen = ({ navigation }) => {
       }
     },
     onSuccess: (data) => {
-      console.log(data);
+      updateNotificationCheckTime.mutate();
+    },
+  });
+  const updateNotificationCheckTime = useMutation({
+    mutationFn: updateNotifCheckTime,
+    onSuccess: () => {
+      queryClient.invalidateQueries(['notifications'], { exact: true });
+      let updatedUser = user;
+      user.lastNotificationCheckTime = new Date().getTime();
+      dispatch(setUser(updatedUser));
     },
   });
   useEffect(() => {

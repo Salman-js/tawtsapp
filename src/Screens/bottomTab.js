@@ -10,11 +10,13 @@ import NotificationsScreen from './notificationsScreen';
 import ProfileScreen from './profileScreen';
 import SearchTabs from './searchNavigator';
 import { useQueryClient } from '@tanstack/react-query';
+import { useSelector } from 'react-redux';
 
 const Tab = createBottomTabNavigator();
 
 export default function BottomTab() {
   const queryClient = useQueryClient();
+  const { user } = useSelector((state) => state.auth);
   return (
     <Tab.Navigator
       screenOptions={{
@@ -61,7 +63,16 @@ export default function BottomTab() {
           tabBarIcon: (props) => (
             <SimpleLineIcons name='bell' {...props} size={25} />
           ),
-          tabBarBadge: queryClient.getQueryData(['notifications']).length,
+          tabBarBadge: queryClient
+            .getQueryData(['notifications'])
+            .filter((notif) => notif.createdAt > user.lastNotificationCheckTime)
+            .length
+            ? queryClient
+                .getQueryData(['notifications'])
+                .filter(
+                  (notif) => notif.createdAt > user.lastNotificationCheckTime
+                ).length
+            : null,
         }}
       />
       <Tab.Screen

@@ -44,6 +44,20 @@ export const checkHandle = async (e) => {
     .then((res) => res.data);
 };
 
+// Update notif check time
+export const updateNotifCheckTime = async () => {
+  const config = {
+    headers: {
+      'Content-Type': 'application/json',
+      'x-auth-token': await AsyncStorage.getItem('token'),
+    },
+    timeout: 5000,
+  };
+  return await axios
+    .post(`${URI}/api/user/notif`, config)
+    .then((res) => res.data);
+};
+
 // Follow user
 export const followUser = async (id) => {
   const config = {
