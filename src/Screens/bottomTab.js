@@ -9,10 +9,12 @@ import HomeScreen from './homeScreen';
 import NotificationsScreen from './notificationsScreen';
 import ProfileScreen from './profileScreen';
 import SearchTabs from './searchNavigator';
+import { useQueryClient } from '@tanstack/react-query';
 
 const Tab = createBottomTabNavigator();
 
 export default function BottomTab() {
+  const queryClient = useQueryClient();
   return (
     <Tab.Navigator
       screenOptions={{
@@ -25,6 +27,13 @@ export default function BottomTab() {
         }),
         tabBarHideOnKeyboard: true,
         tabBarShowLabel: false,
+        tabBarBadgeStyle: tw.style(
+          'mt-2 -ml-1 text-xs flex justify-center items-center bg-slate-200 font-semibold border-2',
+          {
+            paddingTop: 2,
+            borderColor: '#32283c',
+          }
+        ),
         headerShown: false,
         ...TransitionPresets.SlideFromRightIOS,
       }}
@@ -52,6 +61,7 @@ export default function BottomTab() {
           tabBarIcon: (props) => (
             <SimpleLineIcons name='bell' {...props} size={25} />
           ),
+          tabBarBadge: queryClient.getQueryData(['notifications']).length,
         }}
       />
       <Tab.Screen
