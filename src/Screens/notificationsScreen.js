@@ -88,7 +88,6 @@ const NotificationsScreen = ({ navigation }) => {
       if (updatedUser) {
         updatedUser.lastNotificationCheckTime = new Date().getTime();
         dispatch(setUser(updatedUser));
-        console.log(user);
       }
     },
   });

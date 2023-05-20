@@ -209,3 +209,49 @@ export const getMyBookmarks = async () => {
     .get(`${URI}/api/user/bookmarks`, config)
     .then((res) => res.data);
 };
+
+// Post a reply to a reply
+export const replyToReply = async (replyData) => {
+  const config = {
+    headers: {
+      'Content-Type': 'application/json',
+      'x-auth-token': await AsyncStorage.getItem('token'),
+    },
+    timeout: 5000,
+  };
+  return await axios
+    .post(
+      `${URI}/api/post/reply/reply/${replyData.postId}/${replyData.replyId}`,
+      replyData,
+      config
+    )
+    .then((res) => res.data);
+};
+
+// Like reply
+export const likeReply = async (id) => {
+  const config = {
+    headers: {
+      'Content-Type': 'application/json',
+      'x-auth-token': await AsyncStorage.getItem('token'),
+    },
+    timeout: 5000,
+  };
+  return await axios
+    .post(`${URI}/api/post/like/reply/${id}`, config)
+    .then((res) => res.data);
+};
+
+// Unike reply
+export const unlikeReply = async (id) => {
+  const config = {
+    headers: {
+      'Content-Type': 'application/json',
+      'x-auth-token': await AsyncStorage.getItem('token'),
+    },
+    timeout: 5000,
+  };
+  return await axios
+    .post(`${URI}/api/post/unlike/reply/${id}`, config)
+    .then((res) => res.data);
+};

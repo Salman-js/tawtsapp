@@ -15,6 +15,7 @@ import IntroScreen from './intro';
 import NewReplyScreen from './newReplyScreen';
 import EditProfileScreen from './editProfileScreen';
 import SearchInputScreen from './searchInputScreen';
+import ReplyToReplyScreen from './replyToReplyScreen';
 
 const Stack = createStackNavigator();
 export default function AuthStack({ navigation }) {
@@ -65,6 +66,14 @@ export default function AuthStack({ navigation }) {
       <Stack.Screen
         name='New Reply'
         component={NewReplyScreen}
+        options={{
+          headerShown: false,
+          ...TransitionPresets.ModalPresentationIOS,
+        }}
+      />
+      <Stack.Screen
+        name='Reply To Reply'
+        component={ReplyToReplyScreen}
         options={{
           headerShown: false,
           ...TransitionPresets.ModalPresentationIOS,

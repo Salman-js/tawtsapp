@@ -67,13 +67,15 @@ export default function BottomTab() {
           tabBarIcon: (props) => (
             <SimpleLineIcons name='bell' {...props} size={25} />
           ),
-          tabBarBadge: data.filter(
-            (notif) => notif.createdAt > user?.lastNotificationCheckTime
-          ).length
-            ? data.filter(
-                (notif) => notif.createdAt > user?.lastNotificationCheckTime
-              ).length
-            : null,
+          tabBarBadge:
+            data &&
+            data.filter(
+              (notif) => notif.createdAt > user?.lastNotificationCheckTime
+            ).length
+              ? data.filter(
+                  (notif) => notif.createdAt > user?.lastNotificationCheckTime
+                ).length
+              : null,
         }}
       />
       <Tab.Screen

@@ -25,7 +25,6 @@ const PostScreen = ({ route }) => {
   const navigation = useNavigation();
   const { user } = useSelector((state) => state.auth);
   const { item } = route.params;
-  console.log(item);
   const toast = useToast(null);
   const { data, isLoading, refetch, isInitialLoading } = useQuery({
     queryKey: ['tawts', item.id],
@@ -74,13 +73,13 @@ const PostScreen = ({ route }) => {
         });
       }
     },
-    onSuccess: (data) => {
-      console.log(data);
-    },
   });
   const repliesQuery = useQuery({
     queryKey: ['replies', item.id],
     queryFn: () => getReplies(item.id),
+    onSuccess: (data) => {
+      console.log('Replies: ', data);
+    },
   });
   return (
     <View className='h-full flex justify-between items-center bg-[#271b2d] w-full'>
@@ -210,7 +209,7 @@ const PostScreen = ({ route }) => {
           </Text>
           {repliesQuery.data?.length ? (
             repliesQuery.data.map((reply) => (
-              <CommentItem key={reply.id} item={reply} />
+              <CommentItem key={reply.id} item={reply} postId={item.id} />
             ))
           ) : (
             <View className='m-auto flex items-center justify-center mt-12'>
