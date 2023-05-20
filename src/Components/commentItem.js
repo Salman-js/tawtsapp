@@ -68,8 +68,7 @@ const CommentItem = ({ item, postId }) => {
     },
     onSuccess: () => {
       queryClient.invalidateQueries(['likes'], { exact: true });
-      queryClient.invalidateQueries(['tawts'], { exact: true });
-      queryClient.invalidateQueries(['tawts', 'my'], { exact: true });
+      queryClient.invalidateQueries(['replies', postId], { exact: true });
     },
   });
   function onLike() {
