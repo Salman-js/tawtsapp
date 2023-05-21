@@ -141,8 +141,7 @@ const ReplyScreen = ({ route }) => {
               <Pressable
                 style={tw.style('my-auto')}
                 onPress={() =>
-                  navigation.navigate('Users', {
-                    type: 'likes',
+                  navigation.navigate('Reply Likes', {
                     item,
                   })
                 }

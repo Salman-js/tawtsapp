@@ -18,6 +18,7 @@ import SearchInputScreen from './searchInputScreen';
 import ReplyToReplyScreen from './replyToReplyScreen';
 import ReplyScreen from './replyScreen';
 import ReplyReplyScreen from './replyReplyScreen';
+import ReplyLikesScreen from './replyLikesScreen';
 
 const Stack = createStackNavigator();
 export default function AuthStack({ navigation }) {
@@ -94,6 +95,14 @@ export default function AuthStack({ navigation }) {
       <Stack.Screen
         name='Users'
         component={UsersScreen}
+        options={{
+          headerShown: false,
+          ...TransitionPresets.ModalPresentationIOS,
+        }}
+      />
+      <Stack.Screen
+        name='Reply Likes'
+        component={ReplyLikesScreen}
         options={{
           headerShown: false,
           ...TransitionPresets.ModalPresentationIOS,
