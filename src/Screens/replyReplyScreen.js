@@ -14,69 +14,30 @@ import {
 import CommentItem from '../Components/commentItem';
 import { useNavigation } from '@react-navigation/native';
 import ago from 's-ago';
-import { getPostLikes, getReplies, getTawt } from '../api/tawts';
-import { useQuery } from '@tanstack/react-query';
+import {
+  getPostLikes,
+  getReplies,
+  getReplyReplies,
+  getTawt,
+} from '../api/tawts';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { useToast } from 'react-native-toast-notifications';
 import { useSelector } from 'react-redux';
 import PostActionsItem from '../Components/Post Items/postActionsItem';
 import { RefreshControl } from 'react-native';
+import ReplyActionsItem from '../Components/Post Items/replyActionItems';
+import PostItem from '../Components/postItem';
+import ReplyReplyItem from '../Components/replyReplyItem';
+import ReplyReplyActionsItem from '../Components/Post Items/replyReplyActionsItem';
 
-const PostScreen = ({ route }) => {
+const ReplyReplyScreen = ({ route }) => {
   const navigation = useNavigation();
   const { user } = useSelector((state) => state.auth);
-  const { item } = route.params;
+  const { item, reply } = route.params;
   const toast = useToast(null);
-  const { data, isLoading, refetch, isInitialLoading } = useQuery({
-    queryKey: ['tawts', item.id],
-    queryFn: () => getTawt(item.id),
-    onError: (error) => {
-      console.log('Request: ', error.request);
-      console.log('Response: ', error.response);
-      if (error.response) {
-        if (error.response?.data.token) {
-          toast.show('Session expired, Login required', {
-            icon: <Feather name='alert-circle' size={20} color='white' />,
-            placement: 'bottom',
-            type: 'danger',
-            duration: 4000,
-            style: { marginBottom: 50 },
-            textStyle: { padding: 0 },
-          });
-        }
-        if (error.response.data.unknown) {
-          toast.show('Server error. Please, try again', {
-            icon: <Feather name='alert-circle' size={20} color='white' />,
-            placement: 'bottom',
-            type: 'danger',
-            duration: 4000,
-            style: { marginBottom: 50 },
-            textStyle: { padding: 0 },
-          });
-        }
-      } else if (error.request) {
-        toast.show('Error connecting to the server', {
-          icon: <Feather name='alert-circle' size={20} color='white' />,
-          placement: 'bottom',
-          type: 'danger',
-          duration: 4000,
-          style: { marginBottom: 50 },
-          textStyle: { padding: 0 },
-        });
-      } else {
-        toast.show('Unknown Error. Please, try again', {
-          icon: <Feather name='alert-circle' size={20} color='white' />,
-          placement: 'bottom',
-          type: 'danger',
-          duration: 4000,
-          style: { marginBottom: 50 },
-          textStyle: { padding: 0 },
-        });
-      }
-    },
-  });
   const repliesQuery = useQuery({
-    queryKey: ['replies', item.id],
-    queryFn: () => getReplies(item.id),
+    queryKey: ['reply', 'replies', item.id],
+    queryFn: () => getReplyReplies(item.id),
     onSuccess: (data) => {
       console.log('Replies: ', data);
     },
@@ -95,7 +56,7 @@ const PostScreen = ({ route }) => {
           onPress={() => navigation.goBack()}
         />
         <Text className='text-2xl font-semibold text-slate-200 my-auto ml-3'>
-          Tawt.
+          Reply.
         </Text>
       </Surface>
       <ScrollView
@@ -104,63 +65,58 @@ const PostScreen = ({ route }) => {
         showsVerticalScrollIndicator={false}
         refreshControl={
           <RefreshControl
-            refreshing={isInitialLoading}
+            refreshing={repliesQuery.isInitialLoading}
             onRefresh={() => {
-              refetch();
               repliesQuery.refetch();
             }}
           />
         }
       >
         <Surface
-          style={tw.style('w-full rounded-3xl overflow-hidden mb-2 p-4 pt-2', {
+          style={tw.style('rounded-3xl overflow-hidden mb-2 w-full p-4 pt-2', {
             backgroundColor: '#32283c',
           })}
-          elevation={3}
         >
+          <ReplyReplyItem item={reply} reply={item} />
           <View className='w-full flex flex-row justify-between items-center'>
             <View className='overflow-hidden rounded-xl'>
               <Pressable
                 style={tw.style('flex flex-row justify-start p-1')}
                 onPress={() =>
                   navigation.navigate(
-                    parseint(item.userId) === parseInt(user?.id)
-                      ? 'Profile'
-                      : 'User'
+                    item.userHandle === user?.handle ? 'Profile' : 'User'
                   )
                 }
               >
-                {!data ? (
-                  item.userAvatar
-                ) : data.userAvatar ? (
+                {item.userAvatar ? (
                   <Avatar
                     image={{
                       uri: 'https://mui.com/static/images/avatar/1.jpg',
                     }}
-                    size={38}
+                    size={24}
                     style={tw.style('my-auto')}
                   />
                 ) : (
                   <Avatar
-                    label={data.userName}
-                    size={38}
+                    label={item.userName}
+                    size={24}
                     style={tw.style('my-auto')}
                   />
                 )}
                 <View className='ml-2'>
                   <View className='flex flex-row space-x-1'>
-                    <Text className='text-lg font-bold text-gray-200'>
-                      {!data ? item.userName : data.userName}
+                    <Text className='text-sm font-bold text-gray-200'>
+                      {item.userName}
                     </Text>
                     <Text
-                      className='text-base text-gray-400 text-left'
+                      className='text-xs text-gray-400 text-left'
                       numberOfLines={1}
                     >
-                      @{!data ? item.userHandle : data.userName}
+                      @{item.userHandle}
                     </Text>
                   </View>
                   <Text className='text-xs font-light text-gray-300'>
-                    {data && ago(new Date(data.createdAt))}
+                    {ago(new Date(item.createdAt))}
                   </Text>
                 </View>
               </Pressable>
@@ -172,15 +128,15 @@ const PostScreen = ({ route }) => {
               style={tw.style('')}
             />
           </View>
-          <View className='w-full mt-2'>
-            <Text className='text-sm text-gray-100 break-words'>
-              {data && data.body}
+          <View className='w-full'>
+            <Text className='text-xs text-gray-100 break-words'>
+              {item.body}
             </Text>
             <View className='w-full flex flex-row justify-start space-x-2 mt-3'>
               <Text className='my-auto text-base text-gray-100 break-words'>
-                {!data ? item.bookmarks : data.bookmarks}{' '}
+                {item.bookmarks}
                 <Text className='font-bold'>
-                  Bookmark{data && data.bookmarks > 1 && 's'}
+                  Bookmark{item.bookmarks > 1 && 's'}
                 </Text>
               </Text>
               <Pressable
@@ -188,20 +144,18 @@ const PostScreen = ({ route }) => {
                 onPress={() =>
                   navigation.navigate('Users', {
                     type: 'likes',
-                    item: !data ? item : data,
+                    item,
                   })
                 }
               >
                 <Text className='text-base text-gray-100 break-words'>
-                  {!data ? item.likes : data.likes}{' '}
-                  <Text className='font-bold'>
-                    Like{data && data.likes > 1 && 's'}
-                  </Text>
+                  {item.likes}{' '}
+                  <Text className='font-bold'>Like{item.likes > 1 && 's'}</Text>
                 </Text>
               </Pressable>
             </View>
           </View>
-          <PostActionsItem item={!data ? item : data} />
+          <ReplyReplyActionsItem item={item} reply={reply} />
         </Surface>
         <View className='w-full rounded-3xl bg-[#32283c] p-4 mt-2'>
           <Text className='text-xl font-bold text-gray-200 pl-4 mb-2'>
@@ -209,7 +163,7 @@ const PostScreen = ({ route }) => {
           </Text>
           {repliesQuery.data?.length ? (
             repliesQuery.data.map((reply) => (
-              <CommentItem key={reply.id} item={reply} post={data && data} />
+              <CommentItem key={reply.id} item={reply} post={item.id} />
             ))
           ) : (
             <View className='m-auto flex items-center justify-center mt-12'>
@@ -225,4 +179,4 @@ const PostScreen = ({ route }) => {
   );
 };
 
-export default PostScreen;
+export default ReplyReplyScreen;

@@ -87,7 +87,6 @@ const ReplyToReplyScreen = ({ route }) => {
     const replyData = {
       body,
       replyId: item.id,
-      postId,
     };
     replyMutation.mutate(replyData);
   }

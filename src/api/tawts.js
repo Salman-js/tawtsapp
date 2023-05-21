@@ -220,11 +220,7 @@ export const replyToReply = async (replyData) => {
     timeout: 5000,
   };
   return await axios
-    .post(
-      `${URI}/api/post/reply/reply/${replyData.postId}/${replyData.replyId}`,
-      replyData,
-      config
-    )
+    .post(`${URI}/api/post/reply/reply/${replyData.replyId}`, replyData, config)
     .then((res) => res.data);
 };
 
@@ -253,5 +249,19 @@ export const unlikeReply = async (id) => {
   };
   return await axios
     .post(`${URI}/api/post/unlike/reply/${id}`, config)
+    .then((res) => res.data);
+};
+
+// Get replies to a reply
+export const getReplyReplies = async (id) => {
+  const config = {
+    headers: {
+      'Content-Type': 'application/json',
+      'x-auth-token': await AsyncStorage.getItem('token'),
+    },
+    timeout: 5000,
+  };
+  return await axios
+    .get(`${URI}/api/post/replies/reply/${id}`, config)
     .then((res) => res.data);
 };
