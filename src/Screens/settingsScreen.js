@@ -9,6 +9,7 @@ import { Avatar, Pressable, Surface } from '@react-native-material/core';
 import Modal from 'react-native-modal';
 import { Button } from 'react-native-paper';
 import { useDispatch } from 'react-redux';
+import { setLogout } from '../../slices/authSlice';
 
 const SettingsScreen = ({ navigation }) => {
   const scrollView = useRef(null);
@@ -120,7 +121,7 @@ const SettingsScreen = ({ navigation }) => {
               mode='text'
               onPress={() => {
                 setModalVisible(false);
-                dispatch(logout());
+                dispatch(setLogout());
               }}
               labelStyle={tw.style('text-slate-200')}
             >
