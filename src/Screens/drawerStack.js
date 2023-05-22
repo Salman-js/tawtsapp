@@ -8,8 +8,9 @@ import { useWindowDimensions } from 'react-native';
 import BottomTab from './bottomTab';
 import BookmarksScreen from './bookmarksScreen';
 import CustomDrawer from '../Components/Navigation Components/drawer';
-import GroupsScreen from './groupsScreen';
 import AnalyticsScreen from './analyticsScreen';
+import TopicsScreen from './topicsScreen';
+import SettingsScreen from './settingsScreen';
 
 const Drawer = createDrawerNavigator();
 
@@ -44,6 +45,15 @@ export default function DrawerStack() {
         style={tw.style('h-0 bg-gray-600')}
       />
       <Drawer.Screen
+        name='Topics'
+        component={TopicsScreen}
+        options={{
+          drawerIcon: (props) => (
+            <Ionicons name='chatbubbles-outline' size={24} {...props} />
+          ),
+        }}
+      />
+      <Drawer.Screen
         name='Bookmarks'
         component={BookmarksScreen}
         options={{
@@ -53,20 +63,20 @@ export default function DrawerStack() {
         }}
       />
       <Drawer.Screen
-        name='Groups'
-        component={GroupsScreen}
-        options={{
-          drawerIcon: (props) => (
-            <Icons name='account-group-outline' size={24} {...props} />
-          ),
-        }}
-      />
-      <Drawer.Screen
         name='Analytics'
         component={AnalyticsScreen}
         options={{
           drawerIcon: (props) => (
             <AntDesign name='barschart' size={24} {...props} />
+          ),
+        }}
+      />
+      <Drawer.Screen
+        name='Settings'
+        component={SettingsScreen}
+        options={{
+          drawerIcon: (props) => (
+            <Ionicons name='settings-outline' size={24} {...props} />
           ),
         }}
       />

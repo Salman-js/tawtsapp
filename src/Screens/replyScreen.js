@@ -132,12 +132,6 @@ const ReplyScreen = ({ route }) => {
               {item.body}
             </Text>
             <View className='w-full flex flex-row justify-start space-x-2 mt-3'>
-              <Text className='my-auto text-base text-gray-100 break-words'>
-                {item.bookmarks}
-                <Text className='font-bold'>
-                  Bookmark{item.bookmarks > 1 && 's'}
-                </Text>
-              </Text>
               <Pressable
                 style={tw.style('my-auto')}
                 onPress={() =>

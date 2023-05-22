@@ -5,7 +5,7 @@ import { Avatar, Pressable, Surface } from '@react-native-material/core';
 import PostItem from '../Components/postItem';
 import GroupItem from '../Components/groupItem';
 
-const GroupsScreen = ({ navigation }) => {
+const TopicsScreen = ({ navigation }) => {
   const scrollView = useRef(null);
   useEffect(() => {
     const scrollToTop = navigation.addListener('tabPress', (e) => {
@@ -21,7 +21,7 @@ const GroupsScreen = ({ navigation }) => {
         elevation={1}
       >
         <Text className='text-3xl font-bold text-slate-200 my-auto'>
-          Groups
+          Topics
         </Text>
       </Surface>
       <View className='w-full'>
@@ -29,7 +29,7 @@ const GroupsScreen = ({ navigation }) => {
           className='text-2xl font-bold text-gray-200 break-words p-4 pb-5'
           numberOfLines={2}
         >
-          Groups you've joined
+          Following
         </Text>
         <ScrollView
           className='w-full'
@@ -37,10 +37,7 @@ const GroupsScreen = ({ navigation }) => {
           horizontal
           alwaysBounceHorizontal
           ref={scrollView}
-        >
-          <GroupItem />
-          <GroupItem />
-        </ScrollView>
+        ></ScrollView>
       </View>
       <View className='w-full'>
         <Text
@@ -55,13 +52,10 @@ const GroupsScreen = ({ navigation }) => {
           horizontal
           alwaysBounceHorizontal
           ref={scrollView}
-        >
-          <GroupItem type='suggested' />
-          <GroupItem type='suggested' />
-        </ScrollView>
+        ></ScrollView>
       </View>
     </View>
   );
 };
 
-export default GroupsScreen;
+export default TopicsScreen;
