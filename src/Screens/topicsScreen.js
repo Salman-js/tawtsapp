@@ -1,7 +1,14 @@
-import { View, Text, Dimensions, Image, ScrollView } from 'react-native';
+import { View, Text, Dimensions, FlatList, ScrollView } from 'react-native';
 import React, { useEffect, useRef, useState } from 'react';
 import tw from 'twrnc';
-import { Avatar, Pressable, Surface } from '@react-native-material/core';
+import Icon from '@expo/vector-icons/MaterialCommunityIcons';
+import {
+  Avatar,
+  Chip,
+  IconButton,
+  Pressable,
+  Surface,
+} from '@react-native-material/core';
 import PostItem from '../Components/postItem';
 import GroupItem from '../Components/groupItem';
 
@@ -47,12 +54,52 @@ const TopicsScreen = ({ navigation }) => {
           Suggested
         </Text>
         <ScrollView
-          className='w-full'
-          showsHorizontalScrollIndicator={false}
           horizontal
-          alwaysBounceHorizontal
-          ref={scrollView}
-        ></ScrollView>
+          showsHorizontalScrollIndicator={false}
+          directionalLockEnabled={true}
+          alwaysBounceVertical={false}
+        >
+          <FlatList
+            data={[...Array(60).keys()]}
+            renderItem={({ item, index }) => (
+              <Chip
+                label='Salman'
+                style={tw.style('m-1 bg-transparent border border-slate-500')}
+                labelStyle={tw.style('text-slate-300 text-base my-auto')}
+                contentContainerStyle={tw.style(
+                  'my-auto flex items-center justify-center'
+                )}
+                trailing={(props) => (
+                  <Pressable
+                    style={tw.style('', {
+                      marginTop: -3,
+                    })}
+                  >
+                    <Icon
+                      name='plus'
+                      {...props}
+                      color='#c3bcbc'
+                      size={23}
+                      style={tw.style('my-auto')}
+                    />
+                  </Pressable>
+                )}
+                trailingContainerStyle={tw.style(
+                  'border-l border-slate-500 pl-1 my-2'
+                )}
+              />
+            )}
+            keyExtractor={(item, index) => index}
+            ref={scrollView}
+            contentContainerStyle={tw.style('self-start')}
+            scrollEnabled
+            numColumns={20}
+            showsVerticalScrollIndicator={false}
+            showsHorizontalScrollIndicator={false}
+            directionalLockEnabled
+            alwaysBounceHorizontal={false}
+          />
+        </ScrollView>
       </View>
     </View>
   );
