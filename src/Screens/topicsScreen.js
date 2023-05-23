@@ -93,20 +93,20 @@ const TopicsScreen = ({ navigation }) => {
           Topics
         </Text>
       </Surface>
-      <View className='w-full'>
-        <Text
-          className='text-2xl font-bold text-gray-200 break-words p-4 pb-5'
-          numberOfLines={2}
-        >
-          Following
-        </Text>
-        <ScrollView
-          horizontal
-          showsHorizontalScrollIndicator={false}
-          directionalLockEnabled={true}
-          alwaysBounceVertical={false}
-        >
-          {followingTopics.data && (
+      {followingTopics.data.length && (
+        <View className='w-full'>
+          <Text
+            className='text-2xl font-bold text-gray-200 break-words p-4 pb-5'
+            numberOfLines={2}
+          >
+            Following
+          </Text>
+          <ScrollView
+            horizontal
+            showsHorizontalScrollIndicator={false}
+            directionalLockEnabled={true}
+            alwaysBounceVertical={false}
+          >
             <FlatList
               data={followingTopics.data}
               renderItem={({ item, index }) => (
@@ -148,9 +148,9 @@ const TopicsScreen = ({ navigation }) => {
               directionalLockEnabled
               alwaysBounceHorizontal={false}
             />
-          )}
-        </ScrollView>
-      </View>
+          </ScrollView>
+        </View>
+      )}
       <View className='w-full'>
         <Text
           className='text-2xl font-bold text-gray-200 break-words p-4 mt-2 pb-5'

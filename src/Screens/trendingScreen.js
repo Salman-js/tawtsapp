@@ -9,7 +9,12 @@ import Octicons from '@expo/vector-icons/Octicons';
 import Feather from '@expo/vector-icons/Feather';
 import { useDispatch, useSelector } from 'react-redux';
 import { useQuery } from '@tanstack/react-query';
-import { getMyBookmarks, getMyLikes, getTawts } from '../api/tawts';
+import {
+  getMyBookmarks,
+  getMyLikes,
+  getTawts,
+  getTrendingTawts,
+} from '../api/tawts';
 import { RefreshControl } from 'react-native';
 import { useToast } from 'react-native-toast-notifications';
 import { getMyFollowers, getMyFollowings, getNotifications } from '../api/user';
@@ -29,21 +34,13 @@ const TrendingScreen = ({ navigation }) => {
     queryKey: ['bookmarks'],
     queryFn: () => getMyBookmarks(),
   });
-  const myFollowersQuery = useQuery({
-    queryKey: ['followers'],
-    queryFn: () => getMyFollowers(),
-  });
   const myFollowingsQuery = useQuery({
     queryKey: ['followings'],
     queryFn: () => getMyFollowings(),
   });
-  const notificationsQuery = useQuery({
-    queryKey: ['notifications'],
-    queryFn: () => getNotifications(),
-  });
   const tawtsQuery = useQuery({
-    queryKey: ['tawts'],
-    queryFn: () => getTawts(),
+    queryKey: ['tawts', 'trending'],
+    queryFn: () => getTrendingTawts(),
     onError: (error) => {
       console.log('Request: ', error.request);
       console.log('Response: ', error.response);
