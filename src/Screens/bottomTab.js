@@ -12,6 +12,7 @@ import SearchTabs from './searchNavigator';
 import { useQuery } from '@tanstack/react-query';
 import { useSelector } from 'react-redux';
 import { getNotifications } from '../api/user';
+import TrendingScreen from './trendingScreen';
 
 const Tab = createBottomTabNavigator();
 
@@ -52,6 +53,13 @@ export default function BottomTab() {
         }}
       />
       <Tab.Screen
+        name='Trending'
+        component={TrendingScreen}
+        options={{
+          tabBarIcon: (props) => <Octicons name='hash' {...props} size={27} />,
+        }}
+      />
+      <Tab.Screen
         name='Search'
         component={SearchTabs}
         options={{
@@ -76,13 +84,6 @@ export default function BottomTab() {
                   (notif) => notif.createdAt > user?.lastNotificationCheckTime
                 ).length
               : null,
-        }}
-      />
-      <Tab.Screen
-        name='Profile'
-        component={ProfileScreen}
-        options={{
-          tabBarIcon: (props) => <AntDesign name='user' {...props} size={27} />,
         }}
       />
     </Tab.Navigator>

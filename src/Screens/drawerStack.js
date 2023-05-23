@@ -11,6 +11,7 @@ import CustomDrawer from '../Components/Navigation Components/drawer';
 import AnalyticsScreen from './analyticsScreen';
 import TopicsScreen from './topicsScreen';
 import SettingsScreen from './settingsScreen';
+import ProfileScreen from './profileScreen';
 
 const Drawer = createDrawerNavigator();
 
@@ -43,6 +44,13 @@ export default function DrawerStack() {
           },
         }}
         style={tw.style('h-0 bg-gray-600')}
+      />
+      <Drawer.Screen
+        name='Profile'
+        component={ProfileScreen}
+        options={{
+          drawerIcon: (props) => <AntDesign name='user' size={24} {...props} />,
+        }}
       />
       <Drawer.Screen
         name='Topics'

@@ -279,3 +279,31 @@ export const getReplyLikes = async (id) => {
     .get(`${URI}/api/post/reply/likes/${id}`, config)
     .then((res) => res.data);
 };
+
+// Get topics
+export const getUserTopics = async () => {
+  const config = {
+    headers: {
+      'Content-Type': 'application/json',
+      'x-auth-token': await AsyncStorage.getItem('token'),
+    },
+    timeout: 5000,
+  };
+  return await axios
+    .get(`${URI}/api/user/topics`, config)
+    .then((res) => res.data);
+};
+
+// Get topic suggestions
+export const getTopicSuggestions = async () => {
+  const config = {
+    headers: {
+      'Content-Type': 'application/json',
+      'x-auth-token': await AsyncStorage.getItem('token'),
+    },
+    timeout: 5000,
+  };
+  return await axios
+    .get(`${URI}/api/user/topic/suggestions`, config)
+    .then((res) => res.data);
+};
