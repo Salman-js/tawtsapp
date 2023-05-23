@@ -164,46 +164,49 @@ const TopicsScreen = ({ navigation }) => {
           directionalLockEnabled={true}
           alwaysBounceVertical={false}
         >
-          <FlatList
-            data={[...Array(60).keys()]}
-            renderItem={({ item, index }) => (
-              <Chip
-                label='Salman'
-                style={tw.style('m-1 bg-transparent border border-slate-500')}
-                labelStyle={tw.style('text-slate-300 text-base my-auto')}
-                contentContainerStyle={tw.style(
-                  'my-auto flex items-center justify-center'
-                )}
-                trailing={(props) => (
-                  <Pressable
-                    style={tw.style('', {
-                      marginTop: -3,
-                    })}
-                  >
-                    <Icon
-                      name='plus'
-                      {...props}
-                      color='#c3bcbc'
-                      size={23}
-                      style={tw.style('my-auto')}
-                    />
-                  </Pressable>
-                )}
-                trailingContainerStyle={tw.style(
-                  'border-l border-slate-500 pl-1 my-2'
-                )}
-              />
-            )}
-            keyExtractor={(item, index) => index}
-            ref={scrollView}
-            contentContainerStyle={tw.style('self-start')}
-            scrollEnabled
-            numColumns={20}
-            showsVerticalScrollIndicator={false}
-            showsHorizontalScrollIndicator={false}
-            directionalLockEnabled
-            alwaysBounceHorizontal={false}
-          />
+          {suggestedTopics.data && (
+            <FlatList
+              data={suggestedTopics.data}
+              renderItem={({ item, index }) => (
+                <Chip
+                  label={item.name.charAt(0).toUpperCase() + item.name.slice(1)}
+                  style={tw.style('m-1 bg-transparent border border-slate-500')}
+                  labelStyle={tw.style('text-slate-300 text-base my-auto')}
+                  contentContainerStyle={tw.style(
+                    'my-auto flex items-center justify-center'
+                  )}
+                  trailing={(props) => (
+                    <Pressable
+                      style={tw.style('', {
+                        marginTop: -3,
+                      })}
+                    >
+                      <Icon
+                        name='plus'
+                        {...props}
+                        color='#c3bcbc'
+                        size={23}
+                        style={tw.style('my-auto')}
+                      />
+                    </Pressable>
+                  )}
+                  trailingContainerStyle={tw.style(
+                    'border-l border-slate-500 pl-1 my-2'
+                  )}
+                />
+              )}
+              keyExtractor={(item, index) => index}
+              ref={scrollView}
+              contentContainerStyle={tw.style('self-start')}
+              scrollEnabled
+              key={suggestedTopics.data.length}
+              numColumns={suggestedTopics.data.length / 3}
+              showsVerticalScrollIndicator={false}
+              showsHorizontalScrollIndicator={false}
+              directionalLockEnabled
+              alwaysBounceHorizontal={false}
+            />
+          )}
         </ScrollView>
       </View>
     </View>
