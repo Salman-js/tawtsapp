@@ -12,8 +12,13 @@ import {
 } from '@react-native-material/core';
 import PostItem from '../Components/postItem';
 import GroupItem from '../Components/groupItem';
-import { getAllTopics, getTopicSuggestions, getUserTopics } from '../api/tawts';
-import { useQuery } from '@tanstack/react-query';
+import {
+  getAllTopics,
+  getTopicSuggestions,
+  getTopicsFromInterest,
+  getUserTopics,
+} from '../api/tawts';
+import { useMutation, useQuery } from '@tanstack/react-query';
 import { useToast } from 'react-native-toast-notifications';
 import { Button } from '@rneui/themed';
 import { useSelector } from 'react-redux';
@@ -35,6 +40,74 @@ const SelectInterestsScreen = ({ navigation }) => {
     ],
   };
   const [selectedInterests, setSelectedInterests] = useState([]);
+  const interestMutation = useMutation({
+    mutationFn: getTopicsFromInterest,
+    onSuccess: (data) => {
+      const groupedTopics = data.reduce((result, topic) => {
+        const { interest, id, name } = topic;
+        const foundInterest = result.find((item) => item.interest === interest);
+
+        if (foundInterest) {
+          foundInterest.topics.push({ id, name });
+        } else {
+          result.push({ interest, topics: [{ id, name }] });
+        }
+        return result;
+      }, []);
+      navigation.navigate('Select Topics', {
+        data: groupedTopics,
+      });
+      console.log(groupedTopics);
+    },
+    onError: (error) => {
+      if (error.response) {
+        if (error.response.data.token) {
+          toast.show('Session expired, Login required', {
+            icon: <Feather name='alert-circle' size={20} color='white' />,
+            placement: 'bottom',
+            type: 'danger',
+            duration: 4000,
+            style: { marginBottom: 50 },
+            textStyle: { padding: 0 },
+          });
+        }
+        if (error.response.data.unknown) {
+          toast.show('Server error. Please, try again', {
+            icon: <Feather name='alert-circle' size={20} color='white' />,
+            placement: 'bottom',
+            type: 'danger',
+            duration: 4000,
+            style: { marginBottom: 50 },
+            textStyle: { padding: 0 },
+          });
+        }
+      } else if (error.request) {
+        toast.show('Error connecting to the server', {
+          icon: <Feather name='alert-circle' size={20} color='white' />,
+          placement: 'bottom',
+          type: 'danger',
+          duration: 4000,
+          style: { marginBottom: 50 },
+          textStyle: { padding: 0 },
+        });
+      } else {
+        toast.show('Unknown Error. Please, try again', {
+          icon: <Feather name='alert-circle' size={20} color='white' />,
+          placement: 'bottom',
+          type: 'danger',
+          duration: 4000,
+          style: { marginBottom: 50 },
+          textStyle: { padding: 0 },
+        });
+      }
+    },
+  });
+  function onSubmit() {
+    const interestsData = {
+      names: selectedInterests,
+    };
+    interestMutation.mutate(interestsData);
+  }
   useEffect(() => {
     if (!user) {
       navigation.navigate('Intro');
@@ -120,6 +193,7 @@ const SelectInterestsScreen = ({ navigation }) => {
       >
         <Button
           title='Next'
+          loading={interestMutation.isLoading}
           buttonStyle={tw.style('rounded-full overflow-hidden px-4', {
             backgroundColor: '#4b3c59',
           })}
@@ -128,6 +202,7 @@ const SelectInterestsScreen = ({ navigation }) => {
           })}
           disabled={!selectedInterests.length}
           titleStyle={tw.style('font-bold text-xl')}
+          onPress={onSubmit}
         />
       </Surface>
     </View>

@@ -294,8 +294,8 @@ export const getReplyLikes = async (id) => {
     .then((res) => res.data);
 };
 
-// Get all topics
-export const getAllTopics = async (interests) => {
+// Get topics from interest
+export const getTopicsFromInterest = async (interestsData) => {
   const config = {
     headers: {
       'Content-Type': 'application/json',
@@ -304,7 +304,21 @@ export const getAllTopics = async (interests) => {
     timeout: 5000,
   };
   return await axios
-    .post(`${URI}/api/user/topics/all`, interests, config)
+    .post(`${URI}/api/user/interest/topics`, interestsData, config)
+    .then((res) => res.data);
+};
+
+// Follow topics
+export const followTopics = async (topicsData) => {
+  const config = {
+    headers: {
+      'Content-Type': 'application/json',
+      'x-auth-token': await AsyncStorage.getItem('token'),
+    },
+    timeout: 5000,
+  };
+  return await axios
+    .post(`${URI}/api/user/topics`, topicsData, config)
     .then((res) => res.data);
 };
 
