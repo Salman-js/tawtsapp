@@ -19,6 +19,7 @@ import ReplyToReplyScreen from './replyToReplyScreen';
 import ReplyScreen from './replyScreen';
 import ReplyReplyScreen from './replyReplyScreen';
 import ReplyLikesScreen from './replyLikesScreen';
+import SelectInterestsScreen from './selectInterestsScreen';
 
 const Stack = createStackNavigator();
 export default function AuthStack({ navigation }) {
@@ -46,6 +47,11 @@ export default function AuthStack({ navigation }) {
       <Stack.Screen
         name='Main'
         component={DrawerStack}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name='Interests'
+        component={SelectInterestsScreen}
         options={{ headerShown: false }}
       />
       <Stack.Screen

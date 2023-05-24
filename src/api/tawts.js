@@ -294,6 +294,20 @@ export const getReplyLikes = async (id) => {
     .then((res) => res.data);
 };
 
+// Get all topics
+export const getAllTopics = async (interests) => {
+  const config = {
+    headers: {
+      'Content-Type': 'application/json',
+      'x-auth-token': await AsyncStorage.getItem('token'),
+    },
+    timeout: 5000,
+  };
+  return await axios
+    .post(`${URI}/api/user/topics/all`, interests, config)
+    .then((res) => res.data);
+};
+
 // Get topics
 export const getUserTopics = async () => {
   const config = {

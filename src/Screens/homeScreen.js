@@ -8,7 +8,12 @@ import Material from '@expo/vector-icons/MaterialIcons';
 import Feather from '@expo/vector-icons/Feather';
 import { useDispatch, useSelector } from 'react-redux';
 import { useQuery } from '@tanstack/react-query';
-import { getMyBookmarks, getMyLikes, getTawts } from '../api/tawts';
+import {
+  getMyBookmarks,
+  getMyLikes,
+  getTawts,
+  getUserTopics,
+} from '../api/tawts';
 import { RefreshControl } from 'react-native';
 import { useToast } from 'react-native-toast-notifications';
 import { getMyFollowers, getMyFollowings, getNotifications } from '../api/user';
@@ -38,6 +43,10 @@ const HomeScreen = ({ navigation }) => {
   const notificationsQuery = useQuery({
     queryKey: ['notifications'],
     queryFn: () => getNotifications(),
+  });
+  const followingTopics = useQuery({
+    queryKey: ['topics'],
+    queryFn: () => getUserTopics(),
   });
   const tawtsQuery = useQuery({
     queryKey: ['tawts'],
@@ -102,6 +111,16 @@ const HomeScreen = ({ navigation }) => {
       });
     }
   }, [user]);
+  useEffect(() => {
+    if (
+      !followingTopics.isLoading &&
+      !followingTopics.data.length &&
+      !myFollowingsQuery.isLoading &&
+      !myFollowingsQuery.data.length
+    ) {
+      navigation.navigate('Interests');
+    }
+  }, [followingTopics, myFollowingsQuery]);
   return (
     <View className='h-full flex justify-between items-center bg-[#271b2d] w-full'>
       <Surface

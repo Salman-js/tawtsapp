@@ -8,12 +8,13 @@ import Feather from '@expo/vector-icons/Feather';
 import { Avatar, Pressable, Surface } from '@react-native-material/core';
 import Modal from 'react-native-modal';
 import { Button } from 'react-native-paper';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { setLogout } from '../../slices/authSlice';
 
 const SettingsScreen = ({ navigation }) => {
   const scrollView = useRef(null);
   const dispatch = useDispatch();
+  const { user } = useSelector((state) => state.auth);
   const [modalVisible, setModalVisible] = useState(false);
   const buttons = [
     {
@@ -36,6 +37,15 @@ const SettingsScreen = ({ navigation }) => {
       scrollView.current.scrollTo({ x: 5, y: 5, animated: true });
     });
   }, []);
+  useEffect(() => {
+    if (!user) {
+      navigation.navigate('Intro');
+      navigation.reset({
+        index: 0,
+        routes: [{ name: 'Intro' }],
+      });
+    }
+  }, [user]);
   return (
     <View className='h-full flex items-center bg-[#271b2d] w-full'>
       <Surface
