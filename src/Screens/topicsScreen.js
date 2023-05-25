@@ -16,7 +16,6 @@ import { useQuery } from '@tanstack/react-query';
 import { useToast } from 'react-native-toast-notifications';
 
 const TopicsScreen = ({ navigation }) => {
-  const scrollView = useRef(null);
   const toast = useToast(null);
   const followingTopics = useQuery({
     queryKey: ['topics'],
@@ -76,11 +75,6 @@ const TopicsScreen = ({ navigation }) => {
       console.log(data);
     },
   });
-  useEffect(() => {
-    const scrollToTop = navigation.addListener('tabPress', (e) => {
-      scrollView.current.scrollTo({ x: 5, y: 5, animated: true });
-    });
-  }, []);
   return (
     <View className='h-full flex items-center bg-[#271b2d] w-full'>
       <Surface
@@ -137,12 +131,9 @@ const TopicsScreen = ({ navigation }) => {
                   )}
                 />
               )}
-              keyExtractor={(item, index) => index}
-              ref={scrollView}
-              contentContainerStyle={tw.style('self-start')}
+              keyExtractor={(item) => item.id}
               scrollEnabled
-              key={followingTopics.data.length}
-              numColumns={followingTopics.data.length / 3}
+              numColumns={parseInt(followingTopics.data.length / 3)}
               showsVerticalScrollIndicator={false}
               showsHorizontalScrollIndicator={false}
               directionalLockEnabled
@@ -195,12 +186,9 @@ const TopicsScreen = ({ navigation }) => {
                   )}
                 />
               )}
-              keyExtractor={(item, index) => index}
-              ref={scrollView}
-              contentContainerStyle={tw.style('self-start')}
+              keyExtractor={(item) => item.id}
               scrollEnabled
-              key={suggestedTopics.data.length}
-              numColumns={suggestedTopics.data.length / 3}
+              numColumns={parseInt(suggestedTopics.data.length / 3)}
               showsVerticalScrollIndicator={false}
               showsHorizontalScrollIndicator={false}
               directionalLockEnabled
