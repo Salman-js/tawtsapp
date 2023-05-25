@@ -35,18 +35,18 @@ const ReplyActionsItem = ({ item, post }) => {
           },
         ];
       });
-      queryClient.setQueryData(['replies', post?.id], (oldTawts) => {
-        let newTawts = oldTawts;
-        newTawts[newTawts.findIndex((tawt) => tawt.id === item.id)] = {
-          ...newTawts[newTawts.findIndex((tawt) => tawt.id === item.id)],
-          ...([newTawts.findIndex((tawt) => tawt.id === item.id)].likes + 1),
+      queryClient.setQueryData(['replies', item.id], (oldTawt) => {
+        let newTawt = oldTawt;
+        newTawt = {
+          ...newTawt,
+          ...(newTawt.likes + 1),
         };
       });
     },
     onSuccess: () => {
       queryClient.invalidateQueries(['likes'], { exact: true });
-      queryClient.invalidateQueries(['replies', post?.id], { exact: true });
-      queryClient.invalidateQueries(['replies', item?.id], { exact: true });
+      queryClient.invalidateQueries(['replies', item.id], { exact: true });
+      queryClient.invalidateQueries(['post','replies', post?.id], { exact: true });
     },
   });
   const unlikeMutation = useMutation({
@@ -57,11 +57,11 @@ const ReplyActionsItem = ({ item, post }) => {
           (liked) => parseInt(liked.replyId) !== parseInt(item.id)
         );
       });
-      queryClient.setQueryData(['replies', post?.id], (oldTawts) => {
-        let newTawts = oldTawts;
-        newTawts[newTawts.findIndex((tawt) => tawt.id === item.id)] = {
-          ...newTawts[newTawts.findIndex((tawt) => tawt.id === item.id)],
-          ...([newTawts.findIndex((tawt) => tawt.id === item.id)].likes - 1),
+      queryClient.setQueryData(['replies', item.id], (oldTawt) => {
+        let newTawt = oldTawt;
+        newTawt = {
+          ...newTawt,
+          ...(newTawt.likes - 1),
         };
       });
     },
@@ -70,8 +70,8 @@ const ReplyActionsItem = ({ item, post }) => {
     },
     onSuccess: () => {
       queryClient.invalidateQueries(['likes'], { exact: true });
-      queryClient.invalidateQueries(['replies', post.id], { exact: true });
-      queryClient.invalidateQueries(['replies', item?.id], { exact: true });
+      queryClient.invalidateQueries(['replies', item.id], { exact: true });
+      queryClient.invalidateQueries(['post','replies', post?.id], { exact: true });
     },
   });
   function onLike() {

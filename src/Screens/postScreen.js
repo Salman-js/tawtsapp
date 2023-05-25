@@ -75,7 +75,7 @@ const PostScreen = ({ route }) => {
     },
   });
   const repliesQuery = useQuery({
-    queryKey: ['replies', item.id],
+    queryKey: ['post','replies', item.id],
     queryFn: () => getReplies(item.id),
     onSuccess: (data) => {
       console.log('Replies: ', data);

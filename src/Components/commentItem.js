@@ -34,7 +34,7 @@ const CommentItem = ({ item, post }) => {
           },
         ];
       });
-      queryClient.setQueryData(['replies', post?.id], (oldTawts) => {
+      queryClient.setQueryData(['post','replies', post?.id], (oldTawts) => {
         let newTawts = oldTawts;
         newTawts[newTawts.findIndex((tawt) => tawt.id === item.id)] = {
           ...newTawts[newTawts.findIndex((tawt) => tawt.id === item.id)],
@@ -44,7 +44,7 @@ const CommentItem = ({ item, post }) => {
     },
     onSuccess: () => {
       queryClient.invalidateQueries(['likes'], { exact: true });
-      queryClient.invalidateQueries(['replies', post?.id], { exact: true });
+      queryClient.invalidateQueries(['post','replies', post?.id], { exact: true });
     },
   });
   const unlikeMutation = useMutation({
@@ -55,7 +55,7 @@ const CommentItem = ({ item, post }) => {
           (liked) => parseInt(liked.replyId) !== parseInt(item.id)
         );
       });
-      queryClient.setQueryData(['replies', post?.id], (oldTawts) => {
+      queryClient.setQueryData(['post','replies', post?.id], (oldTawts) => {
         let newTawts = oldTawts;
         newTawts[newTawts.findIndex((tawt) => tawt.id === item.id)] = {
           ...newTawts[newTawts.findIndex((tawt) => tawt.id === item.id)],
@@ -68,7 +68,7 @@ const CommentItem = ({ item, post }) => {
     },
     onSuccess: () => {
       queryClient.invalidateQueries(['likes'], { exact: true });
-      queryClient.invalidateQueries(['replies', post?.id], { exact: true });
+      queryClient.invalidateQueries(['post','replies', post?.id], { exact: true });
     },
   });
   function onLike() {

@@ -35,11 +35,11 @@ const ReplyReplyActionsItem = ({ item, reply }) => {
           },
         ];
       });
-      queryClient.setQueryData(['reply', 'replies', reply?.id], (oldTawts) => {
-        let newTawts = oldTawts;
-        newTawts[newTawts.findIndex((tawt) => tawt.id === item.id)] = {
-          ...newTawts[newTawts.findIndex((tawt) => tawt.id === item.id)],
-          ...([newTawts.findIndex((tawt) => tawt.id === item.id)].likes + 1),
+      queryClient.setQueryData(['replies', item.id], (oldTawt) => {
+        let newTawt = oldTawt;
+        newTawt = {
+          ...newTawt,
+          ...(newTawt.likes + 1),
         };
       });
     },
@@ -59,11 +59,11 @@ const ReplyReplyActionsItem = ({ item, reply }) => {
           (liked) => parseInt(liked.replyId) !== parseInt(item.id)
         );
       });
-      queryClient.setQueryData(['reply', 'replies', reply?.id], (oldTawts) => {
-        let newTawts = oldTawts;
-        newTawts[newTawts.findIndex((tawt) => tawt.id === item.id)] = {
-          ...newTawts[newTawts.findIndex((tawt) => tawt.id === item.id)],
-          ...([newTawts.findIndex((tawt) => tawt.id === item.id)].likes - 1),
+      queryClient.setQueryData(['replies', item.id], (oldTawt) => {
+        let newTawt = oldTawt;
+        newTawt = {
+          ...newTawt,
+          ...(newTawt.likes - 1),
         };
       });
     },
@@ -72,7 +72,7 @@ const ReplyReplyActionsItem = ({ item, reply }) => {
     },
     onSuccess: () => {
       queryClient.invalidateQueries(['likes'], { exact: true });
-      queryClient.invalidateQueries(['replies', item?.id], { exact: true });
+      queryClient.invalidateQueries(['replies', item.id], { exact: true });
       queryClient.invalidateQueries(['reply', 'replies', reply?.id], {
         exact: true,
       });
