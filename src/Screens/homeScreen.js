@@ -95,9 +95,6 @@ const HomeScreen = ({ navigation }) => {
         });
       }
     },
-    onSuccess: (data) => {
-      console.log(data);
-    },
   });
   useEffect(() => {
     const scrollToTop = navigation.addListener('tabPress', (e) => {

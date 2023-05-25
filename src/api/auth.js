@@ -57,14 +57,12 @@ export const login = (handle, password) => async (dispatch) => {
 export const loadUser = () => async (dispatch) => {
   try {
     const token = await AsyncStorage.getItem('token');
-    console.log('Token: ', token);
     setAuthToken(token);
   } catch (err) {
     console.log(err);
   }
   try {
     const res = await axios.get(`${URI}/api/auth`);
-    console.log(res.data);
     dispatch(setUser(res.data));
   } catch (err) {
     if (err.response) {
@@ -134,7 +132,7 @@ export const getProfile = async () => {
   const config = {
     headers: {
       'Content-Type': 'application/json',
-      'x-auth-token': await AsyncStorage.getItem('token'),
+      'Authorization': await AsyncStorage.getItem('token'),
     },
     timeout: 5000,
   };

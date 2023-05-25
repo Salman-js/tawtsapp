@@ -7,7 +7,7 @@ export const postTawt = async (postData) => {
   const config = {
     headers: {
       'Content-Type': 'application/json',
-      'x-auth-token': await AsyncStorage.getItem('token'),
+      'Authorization': await AsyncStorage.getItem('token'),
     },
     timeout: 5000,
   };
@@ -21,7 +21,7 @@ export const replyToTawt = async (replyData) => {
   const config = {
     headers: {
       'Content-Type': 'application/json',
-      'x-auth-token': await AsyncStorage.getItem('token'),
+      'Authorization': await AsyncStorage.getItem('token'),
     },
     timeout: 5000,
   };
@@ -35,7 +35,7 @@ export const likeTawt = async (id) => {
   const config = {
     headers: {
       'Content-Type': 'application/json',
-      'x-auth-token': await AsyncStorage.getItem('token'),
+      'Authorization': await AsyncStorage.getItem('token'),
     },
     timeout: 5000,
   };
@@ -49,7 +49,7 @@ export const unlikeTawt = async (id) => {
   const config = {
     headers: {
       'Content-Type': 'application/json',
-      'x-auth-token': await AsyncStorage.getItem('token'),
+      'Authorization': await AsyncStorage.getItem('token'),
     },
     timeout: 5000,
   };
@@ -63,7 +63,7 @@ export const bookmarkTawt = async (id) => {
   const config = {
     headers: {
       'Content-Type': 'application/json',
-      'x-auth-token': await AsyncStorage.getItem('token'),
+      'Authorization': await AsyncStorage.getItem('token'),
     },
     timeout: 5000,
   };
@@ -77,7 +77,7 @@ export const removeBookmark = async (id) => {
   const config = {
     headers: {
       'Content-Type': 'application/json',
-      'x-auth-token': await AsyncStorage.getItem('token'),
+      'Authorization': await AsyncStorage.getItem('token'),
     },
     timeout: 5000,
   };
@@ -91,7 +91,7 @@ export const getTawts = async () => {
   const config = {
     headers: {
       'Content-Type': 'application/json',
-      'x-auth-token': await AsyncStorage.getItem('token'),
+      'Authorization': await AsyncStorage.getItem('token'),
     },
     timeout: 5000,
   };
@@ -103,7 +103,7 @@ export const getTrendingTawts = async () => {
   const config = {
     headers: {
       'Content-Type': 'application/json',
-      'x-auth-token': await AsyncStorage.getItem('token'),
+      'Authorization': await AsyncStorage.getItem('token'),
     },
     timeout: 5000,
   };
@@ -117,7 +117,7 @@ export const getTawtsBySearch = async (searchQuery) => {
   const config = {
     headers: {
       'Content-Type': 'application/json',
-      'x-auth-token': await AsyncStorage.getItem('token'),
+      'Authorization': await AsyncStorage.getItem('token'),
     },
     timeout: 5000,
   };
@@ -131,7 +131,7 @@ export const getTawt = async (id) => {
   const config = {
     headers: {
       'Content-Type': 'application/json',
-      'x-auth-token': await AsyncStorage.getItem('token'),
+      'Authorization': await AsyncStorage.getItem('token'),
     },
     timeout: 5000,
   };
@@ -145,7 +145,7 @@ export const getReplies = async (id) => {
   const config = {
     headers: {
       'Content-Type': 'application/json',
-      'x-auth-token': await AsyncStorage.getItem('token'),
+      'Authorization': await AsyncStorage.getItem('token'),
     },
     timeout: 5000,
   };
@@ -159,7 +159,7 @@ export const getPostLikes = async (id) => {
   const config = {
     headers: {
       'Content-Type': 'application/json',
-      'x-auth-token': await AsyncStorage.getItem('token'),
+      'Authorization': await AsyncStorage.getItem('token'),
     },
     timeout: 5000,
   };
@@ -173,7 +173,7 @@ export const getUserTawts = async (id) => {
   const config = {
     headers: {
       'Content-Type': 'application/json',
-      'x-auth-token': await AsyncStorage.getItem('token'),
+      'Authorization': await AsyncStorage.getItem('token'),
     },
     timeout: 5000,
   };
@@ -187,7 +187,7 @@ export const getMyTawts = async () => {
   const config = {
     headers: {
       'Content-Type': 'application/json',
-      'x-auth-token': await AsyncStorage.getItem('token'),
+      'Authorization': await AsyncStorage.getItem('token'),
     },
     timeout: 5000,
   };
@@ -201,7 +201,7 @@ export const getMyLikes = async () => {
   const config = {
     headers: {
       'Content-Type': 'application/json',
-      'x-auth-token': await AsyncStorage.getItem('token'),
+      'Authorization': await AsyncStorage.getItem('token'),
     },
     timeout: 5000,
   };
@@ -215,7 +215,7 @@ export const getMyBookmarks = async () => {
   const config = {
     headers: {
       'Content-Type': 'application/json',
-      'x-auth-token': await AsyncStorage.getItem('token'),
+      'Authorization': await AsyncStorage.getItem('token'),
     },
     timeout: 5000,
   };
@@ -229,7 +229,7 @@ export const replyToReply = async (replyData) => {
   const config = {
     headers: {
       'Content-Type': 'application/json',
-      'x-auth-token': await AsyncStorage.getItem('token'),
+      'Authorization': await AsyncStorage.getItem('token'),
     },
     timeout: 5000,
   };
@@ -243,7 +243,7 @@ export const likeReply = async (id) => {
   const config = {
     headers: {
       'Content-Type': 'application/json',
-      'x-auth-token': await AsyncStorage.getItem('token'),
+      'Authorization': await AsyncStorage.getItem('token'),
     },
     timeout: 5000,
   };
@@ -257,7 +257,7 @@ export const unlikeReply = async (id) => {
   const config = {
     headers: {
       'Content-Type': 'application/json',
-      'x-auth-token': await AsyncStorage.getItem('token'),
+      'Authorization': await AsyncStorage.getItem('token'),
     },
     timeout: 5000,
   };
@@ -271,7 +271,7 @@ export const getReply = async (id) => {
   const config = {
     headers: {
       'Content-Type': 'application/json',
-      'x-auth-token': await AsyncStorage.getItem('token'),
+      'Authorization': await AsyncStorage.getItem('token'),
     },
     timeout: 5000,
   };
@@ -285,7 +285,7 @@ export const getReplyReplies = async (id) => {
   const config = {
     headers: {
       'Content-Type': 'application/json',
-      'x-auth-token': await AsyncStorage.getItem('token'),
+      'Authorization': await AsyncStorage.getItem('token'),
     },
     timeout: 5000,
   };
@@ -299,7 +299,7 @@ export const getReplyLikes = async (id) => {
   const config = {
     headers: {
       'Content-Type': 'application/json',
-      'x-auth-token': await AsyncStorage.getItem('token'),
+      'Authorization': await AsyncStorage.getItem('token'),
     },
     timeout: 5000,
   };
@@ -313,7 +313,7 @@ export const getTopicsFromInterest = async (interestsData) => {
   const config = {
     headers: {
       'Content-Type': 'application/json',
-      'x-auth-token': await AsyncStorage.getItem('token'),
+      'Authorization': await AsyncStorage.getItem('token'),
     },
     timeout: 5000,
   };
@@ -327,7 +327,7 @@ export const followTopics = async (topicsData) => {
   const config = {
     headers: {
       'Content-Type': 'application/json',
-      'x-auth-token': await AsyncStorage.getItem('token'),
+      'Authorization': await AsyncStorage.getItem('token'),
     },
     timeout: 5000,
   };
@@ -341,7 +341,7 @@ export const getUserTopics = async () => {
   const config = {
     headers: {
       'Content-Type': 'application/json',
-      'x-auth-token': await AsyncStorage.getItem('token'),
+      'Authorization': await AsyncStorage.getItem('token'),
     },
     timeout: 5000,
   };
@@ -355,7 +355,7 @@ export const getTopicSuggestions = async () => {
   const config = {
     headers: {
       'Content-Type': 'application/json',
-      'x-auth-token': await AsyncStorage.getItem('token'),
+      'Authorization': await AsyncStorage.getItem('token'),
     },
     timeout: 5000,
   };
@@ -369,7 +369,7 @@ export const getUserSuggestions = async () => {
   const config = {
     headers: {
       'Content-Type': 'application/json',
-      'x-auth-token': await AsyncStorage.getItem('token'),
+      'Authorization': await AsyncStorage.getItem('token'),
     },
     timeout: 5000,
   };
