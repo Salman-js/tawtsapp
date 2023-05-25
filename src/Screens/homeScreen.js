@@ -1,5 +1,5 @@
 import { View, Text, Image, ScrollView } from 'react-native';
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef } from 'react';
 import tw from 'twrnc';
 import { Avatar, Pressable, Surface } from '@react-native-material/core';
 import PostItem from '../Components/postItem';

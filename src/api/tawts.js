@@ -266,6 +266,20 @@ export const unlikeReply = async (id) => {
     .then((res) => res.data);
 };
 
+// Get reply
+export const getReply = async (id) => {
+  const config = {
+    headers: {
+      'Content-Type': 'application/json',
+      'x-auth-token': await AsyncStorage.getItem('token'),
+    },
+    timeout: 5000,
+  };
+  return await axios
+    .get(`${URI}/api/post/reply/single/${id}`, config)
+    .then((res) => res.data[0]);
+};
+
 // Get replies to a reply
 export const getReplyReplies = async (id) => {
   const config = {

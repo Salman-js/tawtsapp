@@ -45,6 +45,7 @@ const ReplyReplyActionsItem = ({ item, reply }) => {
     },
     onSuccess: () => {
       queryClient.invalidateQueries(['likes'], { exact: true });
+      queryClient.invalidateQueries(['replies', item?.id], { exact: true });
       queryClient.invalidateQueries(['reply', 'replies', reply?.id], {
         exact: true,
       });
@@ -71,6 +72,7 @@ const ReplyReplyActionsItem = ({ item, reply }) => {
     },
     onSuccess: () => {
       queryClient.invalidateQueries(['likes'], { exact: true });
+      queryClient.invalidateQueries(['replies', item?.id], { exact: true });
       queryClient.invalidateQueries(['reply', 'replies', reply?.id], {
         exact: true,
       });

@@ -2,24 +2,19 @@ import { View, Text, Image, ScrollView } from 'react-native';
 import React, { useEffect, useRef, useState } from 'react';
 import tw from 'twrnc';
 import { Avatar, Pressable, Surface } from '@react-native-material/core';
-import PostItem from '../Components/postItem';
 import { FAB } from 'react-native-paper';
 import Material from '@expo/vector-icons/MaterialIcons';
 import Octicons from '@expo/vector-icons/Octicons';
 import Feather from '@expo/vector-icons/Feather';
 import { useDispatch, useSelector } from 'react-redux';
 import { useQuery } from '@tanstack/react-query';
-import {
-  getMyBookmarks,
-  getMyLikes,
-  getTawts,
-  getTrendingTawts,
-} from '../api/tawts';
+import { getMyBookmarks, getMyLikes, getTrendingTawts } from '../api/tawts';
 import { RefreshControl } from 'react-native';
 import { useToast } from 'react-native-toast-notifications';
-import { getMyFollowers, getMyFollowings, getNotifications } from '../api/user';
+import { getMyFollowings } from '../api/user';
 import { setSearch } from '../../slices/authSlice';
 import { useLayoutEffect } from 'react';
+import TrendingPostItem from '../Components/trendingPostItem';
 
 const TrendingScreen = ({ navigation }) => {
   const scrollView = useRef(null);
@@ -148,7 +143,9 @@ const TrendingScreen = ({ navigation }) => {
         }
       >
         {tawtsQuery.data?.length ? (
-          tawtsQuery.data.map((tawt) => <PostItem key={tawt.id} item={tawt} />)
+          tawtsQuery.data.map((tawt) => (
+            <TrendingPostItem key={tawt.id} item={tawt} />
+          ))
         ) : (
           <View className='m-auto flex items-center justify-center mt-12'>
             <Material name='bubble-chart' color='#ece9e9' size={80} />

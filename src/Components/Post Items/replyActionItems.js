@@ -46,6 +46,7 @@ const ReplyActionsItem = ({ item, post }) => {
     onSuccess: () => {
       queryClient.invalidateQueries(['likes'], { exact: true });
       queryClient.invalidateQueries(['replies', post?.id], { exact: true });
+      queryClient.invalidateQueries(['replies', item?.id], { exact: true });
     },
   });
   const unlikeMutation = useMutation({
@@ -70,6 +71,7 @@ const ReplyActionsItem = ({ item, post }) => {
     onSuccess: () => {
       queryClient.invalidateQueries(['likes'], { exact: true });
       queryClient.invalidateQueries(['replies', post.id], { exact: true });
+      queryClient.invalidateQueries(['replies', item?.id], { exact: true });
     },
   });
   function onLike() {

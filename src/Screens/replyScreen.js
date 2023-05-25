@@ -2,7 +2,6 @@ import { View, Text, ScrollView } from 'react-native';
 import React from 'react';
 import Icon from '@expo/vector-icons/MaterialCommunityIcons';
 import Material from '@expo/vector-icons/MaterialIcons';
-import Ionicons from '@expo/vector-icons/Ionicons';
 import Feather from '@expo/vector-icons/Feather';
 import tw from 'twrnc';
 import {
@@ -11,19 +10,12 @@ import {
   Pressable,
   Surface,
 } from '@react-native-material/core';
-import CommentItem from '../Components/commentItem';
 import { useNavigation } from '@react-navigation/native';
 import ago from 's-ago';
-import {
-  getPostLikes,
-  getReplies,
-  getReplyReplies,
-  getTawt,
-} from '../api/tawts';
-import { useQuery, useQueryClient } from '@tanstack/react-query';
+import { getReply, getReplyReplies } from '../api/tawts';
+import { useQuery } from '@tanstack/react-query';
 import { useToast } from 'react-native-toast-notifications';
 import { useSelector } from 'react-redux';
-import PostActionsItem from '../Components/Post Items/postActionsItem';
 import { RefreshControl } from 'react-native';
 import ReplyActionsItem from '../Components/Post Items/replyActionItems';
 import PostItem from '../Components/postItem';
@@ -37,8 +29,56 @@ const ReplyScreen = ({ route }) => {
   const repliesQuery = useQuery({
     queryKey: ['reply', 'replies', item.id],
     queryFn: () => getReplyReplies(item.id),
+  });
+  const { data, isLoading, refetch, isInitialLoading } = useQuery({
+    queryKey: ['replies', item.id],
+    queryFn: () => getReply(item.id),
+    onError: (error) => {
+      console.log('Request: ', error.request);
+      console.log('Response: ', error.response);
+      if (error.response) {
+        if (error.response?.data.token) {
+          toast.show('Session expired, Login required', {
+            icon: <Feather name='alert-circle' size={20} color='white' />,
+            placement: 'bottom',
+            type: 'danger',
+            duration: 4000,
+            style: { marginBottom: 50 },
+            textStyle: { padding: 0 },
+          });
+        }
+        if (error.response.data.unknown) {
+          toast.show('Server error. Please, try again', {
+            icon: <Feather name='alert-circle' size={20} color='white' />,
+            placement: 'bottom',
+            type: 'danger',
+            duration: 4000,
+            style: { marginBottom: 50 },
+            textStyle: { padding: 0 },
+          });
+        }
+      } else if (error.request) {
+        toast.show('Error connecting to the server', {
+          icon: <Feather name='alert-circle' size={20} color='white' />,
+          placement: 'bottom',
+          type: 'danger',
+          duration: 4000,
+          style: { marginBottom: 50 },
+          textStyle: { padding: 0 },
+        });
+      } else {
+        toast.show('Unknown Error. Please, try again', {
+          icon: <Feather name='alert-circle' size={20} color='white' />,
+          placement: 'bottom',
+          type: 'danger',
+          duration: 4000,
+          style: { marginBottom: 50 },
+          textStyle: { padding: 0 },
+        });
+      }
+    },
     onSuccess: (data) => {
-      console.log('Replies: ', data);
+      console.log(data);
     },
   });
   return (
@@ -66,6 +106,7 @@ const ReplyScreen = ({ route }) => {
           <RefreshControl
             refreshing={repliesQuery.isInitialLoading}
             onRefresh={() => {
+              refetch();
               repliesQuery.refetch();
             }}
           />
@@ -87,35 +128,37 @@ const ReplyScreen = ({ route }) => {
                   )
                 }
               >
-                {item.userAvatar ? (
+                {!data ? (
+                  item.userAvatar
+                ) : data.userAvatar ? (
                   <Avatar
                     image={{
                       uri: 'https://mui.com/static/images/avatar/1.jpg',
                     }}
-                    size={24}
+                    size={38}
                     style={tw.style('my-auto')}
                   />
                 ) : (
                   <Avatar
-                    label={item.userName}
-                    size={24}
+                    label={data.userName}
+                    size={38}
                     style={tw.style('my-auto')}
                   />
                 )}
                 <View className='ml-2'>
                   <View className='flex flex-row space-x-1'>
                     <Text className='text-sm font-bold text-gray-200'>
-                      {item.userName}
+                      {!data ? item.userName : data.userName}
                     </Text>
                     <Text
                       className='text-xs text-gray-400 text-left'
                       numberOfLines={1}
                     >
-                      @{item.userHandle}
+                      @{!data ? item.userHandle : data.userName}
                     </Text>
                   </View>
                   <Text className='text-xs font-light text-gray-300'>
-                    {ago(new Date(item.createdAt))}
+                    {data && ago(new Date(data.createdAt))}
                   </Text>
                 </View>
               </Pressable>
@@ -141,13 +184,15 @@ const ReplyScreen = ({ route }) => {
                 }
               >
                 <Text className='text-base text-gray-100 break-words'>
-                  {item.likes}{' '}
-                  <Text className='font-bold'>Like{item.likes > 1 && 's'}</Text>
+                  {!data ? item.likes : data.likes}{' '}
+                  <Text className='font-bold'>
+                    Like{data && data.likes > 1 && 's'}
+                  </Text>
                 </Text>
               </Pressable>
             </View>
           </View>
-          <ReplyActionsItem item={item} post={post} />
+          <ReplyActionsItem item={!data ? item : data} post={post} />
         </Surface>
         <View className='w-full rounded-3xl bg-[#32283c] p-4 mt-2'>
           <Text className='text-xl font-bold text-gray-200 pl-4 mb-2'>
