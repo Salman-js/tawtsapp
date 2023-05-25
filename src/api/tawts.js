@@ -349,3 +349,17 @@ export const getTopicSuggestions = async () => {
     .get(`${URI}/api/user/topic/suggestions`, config)
     .then((res) => res.data);
 };
+
+// Get user suggestions
+export const getUserSuggestions = async () => {
+  const config = {
+    headers: {
+      'Content-Type': 'application/json',
+      'x-auth-token': await AsyncStorage.getItem('token'),
+    },
+    timeout: 5000,
+  };
+  return await axios
+    .get(`${URI}/api/user/users/suggestions`, config)
+    .then((res) => res.data);
+};

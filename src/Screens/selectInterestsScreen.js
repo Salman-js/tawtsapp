@@ -57,7 +57,6 @@ const SelectInterestsScreen = ({ navigation }) => {
       navigation.navigate('Select Topics', {
         data: groupedTopics,
       });
-      console.log(groupedTopics);
     },
     onError: (error) => {
       if (error.response) {

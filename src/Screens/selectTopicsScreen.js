@@ -32,11 +32,7 @@ const SelectTopicsScreen = ({ navigation }) => {
         return [...oldTopics, selectedTopics];
       });
       queryClient.invalidateQueries(['topics'], { exact: true });
-      navigation.navigate('Intro');
-      navigation.reset({
-        index: 0,
-        routes: [{ name: 'Intro' }],
-      });
+      navigation.navigate('User Suggestions');
     },
     onError: (error) => {
       if (error.response) {
@@ -111,70 +107,80 @@ const SelectTopicsScreen = ({ navigation }) => {
           Topics
         </Text>
       </Surface>
-      {data.map((item, index) => (
-        <View className='w-full' key={index}>
-          <Text
-            className='text-2xl font-bold text-gray-200 break-words p-4 pb-5'
-            numberOfLines={2}
-          >
-            {item.interest.charAt(0).toUpperCase() + item.interest.slice(1)}
-          </Text>
-          <ScrollView
-            horizontal
-            showsHorizontalScrollIndicator={false}
-            directionalLockEnabled={true}
-            alwaysBounceVertical={false}
-          >
-            <FlatList
-              data={item.topics}
-              renderItem={({ item, index }) => (
-                <Chip
-                  label={item.name.charAt(0).toUpperCase() + item.name.slice(1)}
-                  style={tw.style('m-1 bg-transparent border border-slate-500')}
-                  labelStyle={tw.style('text-slate-300 text-base my-auto')}
-                  contentContainerStyle={tw.style(
-                    'my-auto flex items-center justify-center'
-                  )}
-                  trailing={(props) => (
-                    <Pressable
-                      style={tw.style('', {
-                        marginTop: -3,
-                      })}
-                      onPress={() => handleTopicPress(item.id)}
-                    >
-                      <Icon
-                        name={
-                          selectedTopics.some(
-                            (topic) => topic.topicId === item.id
-                          )
-                            ? 'close'
-                            : 'plus'
-                        }
-                        {...props}
-                        color='#c3bcbc'
-                        size={23}
-                        style={tw.style('my-auto')}
-                      />
-                    </Pressable>
-                  )}
-                  trailingContainerStyle={tw.style(
-                    'border-l border-slate-500 pl-1 my-2'
-                  )}
-                />
-              )}
-              keyExtractor={(item, index) => index}
-              contentContainerStyle={tw.style('self-start')}
-              scrollEnabled
-              key={item.topics.length}
-              numColumns={item.topics.length / 3}
-              showsVerticalScrollIndicator={false}
+      {data.map((item, index) => {
+        return (
+          <View className='w-full' key={index}>
+            <Text
+              className='text-2xl font-bold text-gray-200 break-words p-4 pb-5'
+              numberOfLines={2}
+            >
+              {item.interest.charAt(0).toUpperCase() + item.interest.slice(1)}
+            </Text>
+            <ScrollView
+              horizontal
               showsHorizontalScrollIndicator={false}
-              directionalLockEnabled
-              alwaysBounceHorizontal={false}
-            />
-          </ScrollView>
-        </View>
-      ))}
+              directionalLockEnabled={true}
+              alwaysBounceVertical={false}
+            >
+              <FlatList
+                data={item.topics}
+                renderItem={({ item }) => {
+                  return (
+                    <Chip
+                      label={
+                        item.name.charAt(0).toUpperCase() + item.name.slice(1)
+                      }
+                      style={tw.style('m-1 border border-slate-500', {
+                        backgroundColor: selectedTopics.some(
+                          (topic) => topic.topicId === item.id
+                        )
+                          ? '#373d6be0'
+                          : '#ffffff00',
+                      })}
+                      labelStyle={tw.style('text-slate-300 text-base my-auto')}
+                      contentContainerStyle={tw.style(
+                        'my-auto flex items-center justify-center'
+                      )}
+                      trailing={(props) => (
+                        <Pressable
+                          style={tw.style('', {
+                            marginTop: -3,
+                          })}
+                          onPress={() => handleTopicPress(item.id)}
+                        >
+                          <Icon
+                            name={
+                              selectedTopics.some(
+                                (topic) => topic.topicId === item.id
+                              )
+                                ? 'close'
+                                : 'plus'
+                            }
+                            {...props}
+                            color='#c3bcbc'
+                            size={23}
+                            style={tw.style('my-auto')}
+                          />
+                        </Pressable>
+                      )}
+                      trailingContainerStyle={tw.style(
+                        'border-l border-slate-500 pl-1 my-2'
+                      )}
+                    />
+                  );
+                }}
+                keyExtractor={(item) => item.id}
+                scrollEnabled
+                numColumns={parseInt(item.topics.length / 3)}
+                showsVerticalScrollIndicator={false}
+                showsHorizontalScrollIndicator={false}
+                directionalLockEnabled
+                alwaysBounceHorizontal={false}
+              />
+            </ScrollView>
+          </View>
+        );
+      })}
       <Surface
         style={tw.style(
           'w-full absolute bottom-0 flex flex-row px-3 py-4 justify-end bg-transparent'
