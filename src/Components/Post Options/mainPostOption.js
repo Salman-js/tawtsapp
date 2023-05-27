@@ -22,7 +22,7 @@ const MainPostOption = ({ isModalVisible, setIsModalVisible, post }) => {
     >
       <View className='bg-[#32283c] w-full rounded-2xl py-3'>
         <View className='rounded-full p-[3px] w-10 bg-slate-500 mx-auto'></View>
-        {user.id !== parseInt(post.userId) && (
+        {user?.id !== parseInt(post.userId) && (
           <>
             <List.Item
               title='Not interested in this post'
@@ -44,7 +44,7 @@ const MainPostOption = ({ isModalVisible, setIsModalVisible, post }) => {
           .filter(
             (followed) =>
               parseInt(followed.followedId) === parseInt(post.userId) &&
-              post.userId !== user.id
+              post.userId !== user?.id
           ) && (
           <List.Item
             title={`Follow @${post.userHandle}`}
@@ -58,7 +58,7 @@ const MainPostOption = ({ isModalVisible, setIsModalVisible, post }) => {
           .getQueryData(['followings'])
           .find(
             (user) =>
-              parseInt(user.id) === parseInt(post.userId) && (
+              parseInt(user?.id) === parseInt(post.userId) && (
                 <List.Item
                   title={`Unfollow @${post.userHandle}`}
                   titleStyle={tw.style('text-lg')}
@@ -73,7 +73,7 @@ const MainPostOption = ({ isModalVisible, setIsModalVisible, post }) => {
                 />
               )
           )}
-        {user.id !== parseInt(post.userId) && (
+        {user?.id !== parseInt(post.userId) && (
           <List.Item
             title={`Mute @${post.userHandle}`}
             titleStyle={tw.style('text-lg')}
@@ -87,10 +87,10 @@ const MainPostOption = ({ isModalVisible, setIsModalVisible, post }) => {
           .filter(
             (blocked) =>
               parseInt(blocked.blockedId) === parseInt(post.userId).length &&
-              post.userId !== user.id
+              post.userId !== user?.id
           ) && ( */}
 
-        {user.id !== parseInt(post.userId) && (
+        {user?.id !== parseInt(post.userId) && (
           <List.Item
             title={`Block @${post.userHandle}`}
             titleStyle={tw.style('text-lg')}
@@ -100,7 +100,7 @@ const MainPostOption = ({ isModalVisible, setIsModalVisible, post }) => {
           />
         )}
         {/* )} */}
-        {user.id === parseInt(post.userId) && (
+        {user?.id === parseInt(post.userId) && (
           <List.Item
             title='Delete post'
             titleStyle={tw.style('text-lg')}
@@ -109,7 +109,7 @@ const MainPostOption = ({ isModalVisible, setIsModalVisible, post }) => {
             )}
           />
         )}
-        {user.id !== parseInt(post.userId) && (
+        {user?.id !== parseInt(post.userId) && (
           <>
             <View className='p-[1px] w-4/5 bg-slate-700 mx-auto'></View>
             <List.Item
