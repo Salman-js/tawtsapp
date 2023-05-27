@@ -18,12 +18,16 @@ import { RefreshControl } from 'react-native';
 import { useToast } from 'react-native-toast-notifications';
 import { getMyFollowers, getMyFollowings, getNotifications } from '../api/user';
 import { setSearch } from '../../slices/authSlice';
+import MainPostOption from '../Components/Post Options/mainPostOption';
+import { useState } from 'react';
 
 const HomeScreen = ({ navigation }) => {
   const scrollView = useRef(null);
   const { user } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
   const toast = useToast(null);
+  const [isModalVisible, setIsModalVisible] = useState(false);
+  const [selectedPost, setSelectedPost] = useState(null);
   const myLikesQuery = useQuery({
     queryKey: ['likes'],
     queryFn: () => getMyLikes(),
@@ -96,6 +100,10 @@ const HomeScreen = ({ navigation }) => {
       }
     },
   });
+  function onOptionsSelect(item) {
+    setSelectedPost(item);
+    setIsModalVisible(true);
+  }
   useEffect(() => {
     const scrollToTop = navigation.addListener('tabPress', (e) => {
       scrollView.current?.scrollTo({ x: 5, y: 5, animated: true });
@@ -175,7 +183,13 @@ const HomeScreen = ({ navigation }) => {
         }
       >
         {tawtsQuery.data?.length ? (
-          tawtsQuery.data.map((tawt) => <PostItem key={tawt.id} item={tawt} />)
+          tawtsQuery.data.map((tawt) => (
+            <PostItem
+              key={tawt.id}
+              item={tawt}
+              onOptionsSelect={onOptionsSelect}
+            />
+          ))
         ) : (
           <View className='m-auto flex items-center justify-center mt-12'>
             <Material name='bubble-chart' color='#ece9e9' size={80} />
@@ -185,6 +199,13 @@ const HomeScreen = ({ navigation }) => {
           </View>
         )}
       </ScrollView>
+      {myFollowingsQuery.data && (
+        <MainPostOption
+          isModalVisible={isModalVisible}
+          setIsModalVisible={setIsModalVisible}
+          post={selectedPost ? selectedPost : {}}
+        />
+      )}
       <View className='absolute bottom-16 right-3 p-4 flex items-center justify-center'>
         <FAB
           icon='plus'

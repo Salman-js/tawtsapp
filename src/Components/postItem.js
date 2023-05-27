@@ -21,7 +21,7 @@ import {
   unlikeTawt,
 } from '../api/tawts';
 
-const PostItem = ({ item }) => {
+const PostItem = ({ item, onOptionsSelect }) => {
   const { user } = useSelector((state) => state.auth);
   const navigation = useNavigation();
   const route = useRoute();
@@ -218,7 +218,8 @@ const PostItem = ({ item }) => {
             icon={(props) => (
               <Icon name='dots-horizontal' {...props} color='#ece9e9' />
             )}
-            style={tw.style('')}
+            style={ tw.style('') }
+            onPress={() => onOptionsSelect(item)}
           />
         </View>
         <View className='w-full'>
