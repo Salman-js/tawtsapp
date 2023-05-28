@@ -86,6 +86,34 @@ export const unfollowUser = async (id) => {
     .then((res) => res.data);
 };
 
+// Mute user
+export const muteUser = async (id) => {
+  const config = {
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: await AsyncStorage.getItem('token'),
+    },
+    timeout: 5000,
+  };
+  return await axios
+    .post(`${URI}/api/user/mute/user/${id}`, config)
+    .then((res) => res.data);
+};
+
+// Block user
+export const blockUser = async (id) => {
+  const config = {
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: await AsyncStorage.getItem('token'),
+    },
+    timeout: 5000,
+  };
+  return await axios
+    .post(`${URI}/api/user/block/${id}`, config)
+    .then((res) => res.data);
+};
+
 // Get my followers
 export const getMyFollowers = async () => {
   const config = {
