@@ -7,7 +7,7 @@ export const updateProfile = async (updatedData) => {
   const config = {
     headers: {
       'Content-Type': 'application/json',
-      'Authorization': await AsyncStorage.getItem('token'),
+      Authorization: await AsyncStorage.getItem('token'),
     },
     timeout: 5000,
   };
@@ -21,7 +21,7 @@ export const getUserProfile = async (id) => {
   const config = {
     headers: {
       'Content-Type': 'application/json',
-      'Authorization': await AsyncStorage.getItem('token'),
+      Authorization: await AsyncStorage.getItem('token'),
     },
     timeout: 5000,
   };
@@ -35,7 +35,7 @@ export const checkHandle = async (e) => {
   const config = {
     headers: {
       'Content-Type': 'application/json',
-      'Authorization': await AsyncStorage.getItem('token'),
+      Authorization: await AsyncStorage.getItem('token'),
     },
     timeout: 5000,
   };
@@ -49,7 +49,7 @@ export const updateNotifCheckTime = async () => {
   const config = {
     headers: {
       'Content-Type': 'application/json',
-      'Authorization': await AsyncStorage.getItem('token'),
+      Authorization: await AsyncStorage.getItem('token'),
     },
     timeout: 5000,
   };
@@ -63,7 +63,7 @@ export const followUser = async (id) => {
   const config = {
     headers: {
       'Content-Type': 'application/json',
-      'Authorization': await AsyncStorage.getItem('token'),
+      Authorization: await AsyncStorage.getItem('token'),
     },
     timeout: 5000,
   };
@@ -77,7 +77,7 @@ export const unfollowUser = async (id) => {
   const config = {
     headers: {
       'Content-Type': 'application/json',
-      'Authorization': await AsyncStorage.getItem('token'),
+      Authorization: await AsyncStorage.getItem('token'),
     },
     timeout: 5000,
   };
@@ -91,7 +91,7 @@ export const getMyFollowers = async () => {
   const config = {
     headers: {
       'Content-Type': 'application/json',
-      'Authorization': await AsyncStorage.getItem('token'),
+      Authorization: await AsyncStorage.getItem('token'),
     },
     timeout: 5000,
   };
@@ -105,7 +105,7 @@ export const getMyFollowings = async () => {
   const config = {
     headers: {
       'Content-Type': 'application/json',
-      'Authorization': await AsyncStorage.getItem('token'),
+      Authorization: await AsyncStorage.getItem('token'),
     },
     timeout: 5000,
   };
@@ -119,7 +119,7 @@ export const getFollowers = async (id) => {
   const config = {
     headers: {
       'Content-Type': 'application/json',
-      'Authorization': await AsyncStorage.getItem('token'),
+      Authorization: await AsyncStorage.getItem('token'),
     },
     timeout: 5000,
   };
@@ -133,7 +133,7 @@ export const getFollowings = async (id) => {
   const config = {
     headers: {
       'Content-Type': 'application/json',
-      'Authorization': await AsyncStorage.getItem('token'),
+      Authorization: await AsyncStorage.getItem('token'),
     },
     timeout: 5000,
   };
@@ -142,12 +142,54 @@ export const getFollowings = async (id) => {
     .then((res) => res.data);
 };
 
+// Get my muted phrases
+export const getMyMutedPhrases = async () => {
+  const config = {
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: await AsyncStorage.getItem('token'),
+    },
+    timeout: 5000,
+  };
+  return await axios
+    .get(`${URI}/api/user/muted/phrases`, config)
+    .then((res) => res.data);
+};
+
+// Get my muted users
+export const getMyMutedUsers = async () => {
+  const config = {
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: await AsyncStorage.getItem('token'),
+    },
+    timeout: 5000,
+  };
+  return await axios
+    .get(`${URI}/api/user/muted/users`, config)
+    .then((res) => res.data);
+};
+
+// Get my blocks
+export const getMyBlocks = async () => {
+  const config = {
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: await AsyncStorage.getItem('token'),
+    },
+    timeout: 5000,
+  };
+  return await axios
+    .get(`${URI}/api/user/blocks`, config)
+    .then((res) => res.data);
+};
+
 // Get users by search
 export const getUsersBySearch = async (searchQuery) => {
   const config = {
     headers: {
       'Content-Type': 'application/json',
-      'Authorization': await AsyncStorage.getItem('token'),
+      Authorization: await AsyncStorage.getItem('token'),
     },
     timeout: 5000,
   };
@@ -161,7 +203,7 @@ export const getNotifications = async () => {
   const config = {
     headers: {
       'Content-Type': 'application/json',
-      'Authorization': await AsyncStorage.getItem('token'),
+      Authorization: await AsyncStorage.getItem('token'),
     },
     timeout: 5000,
   };

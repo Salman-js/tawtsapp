@@ -199,7 +199,7 @@ const HomeScreen = ({ navigation }) => {
           </View>
         )}
       </ScrollView>
-      {myFollowingsQuery.data && (
+      {myFollowingsQuery.data && followingTopics.data && (
         <MainPostOption
           isModalVisible={isModalVisible}
           setIsModalVisible={setIsModalVisible}

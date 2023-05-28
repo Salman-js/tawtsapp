@@ -22,23 +22,26 @@ const MainPostOption = ({ isModalVisible, setIsModalVisible, post }) => {
     >
       <View className='bg-[#32283c] w-full rounded-2xl py-3'>
         <View className='rounded-full p-[3px] w-10 bg-slate-500 mx-auto'></View>
-        {user?.id !== parseInt(post.userId) && (
-          <>
-            <List.Item
-              title='Not interested in this post'
-              titleStyle={tw.style('text-lg')}
-              left={(props) => (
-                <Icon
-                  name='emoticon-sad-outline'
-                  {...props}
-                  size={24}
-                  color='#b1adad'
-                />
-              )}
-            />
-            <View className='p-[1px] w-4/5 bg-slate-700 mx-auto'></View>
-          </>
-        )}
+        {queryClient
+          .getQueryData(['topics'])
+          .find((topic) => post.body.includes(topic.name)) &&
+          post.userId !== user?.id && (
+            <>
+              <List.Item
+                title='Not interested in this post'
+                titleStyle={tw.style('text-lg')}
+                left={(props) => (
+                  <Icon
+                    name='emoticon-sad-outline'
+                    {...props}
+                    size={24}
+                    color='#b1adad'
+                  />
+                )}
+              />
+              <View className='p-[1px] w-4/5 bg-slate-700 mx-auto'></View>
+            </>
+          )}
         {!queryClient
           .getQueryData(['followings'])
           .filter(
@@ -82,14 +85,6 @@ const MainPostOption = ({ isModalVisible, setIsModalVisible, post }) => {
             )}
           />
         )}
-        {/* {!queryClient
-          .getQueryData(['blocked'])
-          .filter(
-            (blocked) =>
-              parseInt(blocked.blockedId) === parseInt(post.userId).length &&
-              post.userId !== user?.id
-          ) && ( */}
-
         {user?.id !== parseInt(post.userId) && (
           <List.Item
             title={`Block @${post.userHandle}`}
@@ -99,7 +94,6 @@ const MainPostOption = ({ isModalVisible, setIsModalVisible, post }) => {
             )}
           />
         )}
-        {/* )} */}
         {user?.id === parseInt(post.userId) && (
           <List.Item
             title='Delete post'
